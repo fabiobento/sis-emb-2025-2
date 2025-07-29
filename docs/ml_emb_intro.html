@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introdução ao Machine Learning Embarcado</title>
+    
+    <!-- Chosen Palette: Earthy Tech -->
+    <!-- Application Structure Plan: A single-page application designed for exploration. It starts with an interactive hierarchical diagram that acts as a visual navigation hub. Clicking a layer scrolls the user to a dedicated card explaining the concept. This non-linear approach encourages exploration over passive reading. The structure flows from this interactive overview to detailed concept cards, a comparative section with a chart and table, and a final conclusion, creating a complete learning path. This was chosen to make the educational content more engaging and user-driven than a static slide deck. -->
+    <!-- Visualization & Content Choices: The core visualization is the interactive HTML/CSS hierarchy diagram, turning a static concept into a navigation tool. To fulfill the Chart.js requirement and enhance understanding, a conceptual bar chart was created to visualize the relative "Computational Power / Resource Constraint" of each hierarchy level. This abstract data makes the trade-offs between Cloud and Edge more apparent. A standard HTML table is used for direct comparison, enhanced with hover effects for readability. All choices support the goal of making a dense technical topic digestible and interactive. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4; /* Warm neutral background */
+            color: #44403c; /* stone-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .concept-card {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-10 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-stone-800">Introdução ao Machine Learning Embarcado</h1>
+            <p class="text-stone-600 mt-1">Entendendo os conceitos, da Nuvem ao TinyML.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="overview" class="text-center mb-20">
+            <h2 class="text-3xl font-bold text-stone-800 mb-4">A Hierarquia dos Conceitos</h2>
+            <p class="max-w-3xl mx-auto text-lg text-stone-600 mb-12">
+                Para entender o ML Embarcado, precisamos ver onde ele se encaixa no grande cenário da computação. Explore a hierarquia abaixo clicando em cada camada para navegar até sua definição.
+            </p>
+            
+            <div id="hierarchy-diagram" class="space-y-2 max-w-2xl mx-auto">
+                <div data-target="cloud" class="hierarchy-item bg-sky-100 text-sky-800 p-4 rounded-lg shadow-sm cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <h3 class="text-xl font-bold">☁️ Computação em Nuvem (Cloud Computing)</h3>
+                </div>
+                <div data-target="edge-computing" class="hierarchy-item bg-teal-100 text-teal-800 p-4 ml-4 rounded-lg shadow-sm cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <h3 class="text-xl font-bold">🌐 Computação de Borda (Edge Computing)</h3>
+                </div>
+                <div data-target="edge-ml" class="hierarchy-item bg-emerald-100 text-emerald-800 p-4 ml-8 rounded-lg shadow-sm cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <h3 class="text-xl font-bold">🧠 Edge ML</h3>
+                </div>
+                <div data-target="embedded-ml" class="hierarchy-item bg-amber-100 text-amber-800 p-4 ml-12 rounded-lg shadow-sm cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <h3 class="text-xl font-bold">🤖 Machine Learning Embarcado</h3>
+                </div>
+                <div data-target="tinyml" class="hierarchy-item bg-orange-100 text-orange-800 p-4 ml-16 rounded-lg shadow-sm cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <h3 class="text-xl font-bold">🐜 TinyML</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="concepts" class="space-y-16">
+            <div id="cloud" class="concept-card p-8 bg-white rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-2xl font-bold text-sky-800 mb-4">☁️ Camada 1: Computação em Nuvem (Cloud Computing)</h3>
+                <p class="text-lg text-stone-700">
+                    O modelo tradicional, onde os dados são enviados para datacenters remotos para serem processados por servidores potentes. Todo o treinamento e execução dos modelos de Machine Learning acontecem aqui, longe do dispositivo que coletou os dados.
+                </p>
+                <p class="text-sm text-stone-500 mt-4">Fonte: A **IBM** define como a entrega de serviços de computação pela Internet.</p>
+            </div>
+
+            <div id="edge-computing" class="concept-card p-8 bg-white rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-2xl font-bold text-teal-800 mb-4">🌐 Camada 2: Computação de Borda (Edge Computing)</h3>
+                <p class="text-lg text-stone-700">
+                    A prática de trazer o processamento para mais perto de onde os dados são gerados, na "borda" da rede. O objetivo principal é reduzir o tempo de resposta (latência), economizar banda de internet e permitir que os dispositivos funcionem de forma autônoma, sem conexão constante com a nuvem.
+                </p>
+                 <p class="text-sm text-stone-500 mt-4">Fonte: A **Nvidia** descreve como 'o processamento de dados onde eles são coletados'.</p>
+            </div>
+
+            <div id="edge-ml" class="concept-card p-8 bg-white rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-2xl font-bold text-emerald-800 mb-4">🧠 Camada 3: Edge ML (Machine Learning na Borda)</h3>
+                <p class="text-lg text-stone-700">
+                    É a aplicação direta de algoritmos de Machine Learning nos dispositivos de borda. É um termo amplo que cobre a execução de inferências (e, às vezes, até o treinamento) fora da nuvem. Isso pode acontecer em um smartphone potente, um gateway industrial ou um sistema embarcado.
+                </p>
+                 <p class="text-sm text-stone-500 mt-4">Fonte: A **Arm** define como o campo onde 'modelos de IA são processados localmente em um dispositivo de hardware'.</p>
+            </div>
+
+            <div id="embedded-ml" class="concept-card p-8 bg-white rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-2xl font-bold text-amber-800 mb-4">🤖 Camada 4: Machine Learning Embarcado (Embedded ML)</h3>
+                <p class="text-lg text-stone-700">
+                    Um **subconjunto específico do Edge ML**, focado em sistemas embarcados clássicos. A principal característica é lidar com severas restrições de hardware: baixo poder de processamento, pouca memória e consumo de energia limitado. É aqui que a otimização de modelos se torna crucial.
+                </p>
+                 <p class="text-sm text-stone-500 mt-4">Fonte: O **Google** destaca os desafios de rodar modelos em 'dispositivos com recursos limitados'.</p>
+            </div>
+
+            <div id="tinyml" class="concept-card p-8 bg-white rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-2xl font-bold text-orange-800 mb-4">🐜 Camada 5: TinyML</h3>
+                <p class="text-lg text-stone-700">
+                    Um subconjunto ainda mais especializado do Machine Learning Embarcado. O foco é executar modelos em hardware com as restrições mais severas possíveis: **microcontroladores** de baixíssimo custo e consumo energético (medido em miliwatts ou microwatts). Pense em inteligência artificial rodando em baterias por meses ou anos.
+                </p>
+                 <p class="text-sm text-stone-500 mt-4">Fonte: A **TinyMLedu (Harvard)** define como IA em dispositivos de baixíssima potência.</p>
+            </div>
+        </section>
+
+        <section id="comparison" class="mt-24">
+            <h2 class="text-3xl font-bold text-stone-800 text-center mb-4">Comparando os Conceitos</h2>
+            <p class="max-w-3xl mx-auto text-lg text-stone-600 text-center mb-12">
+                A visualização abaixo mostra o poder computacional relativo de cada camada, enquanto a tabela detalha as diferenças de hardware e escopo.
+            </p>
+
+            <div class="bg-white p-4 sm:p-8 rounded-xl shadow-md border border-gray-200 mb-16">
+                 <h3 class="text-2xl font-bold text-stone-800 text-center mb-6">Poder Computacional Relativo</h3>
+                <div class="chart-container">
+                    <canvas id="powerChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 sm:p-8 rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-2xl font-bold text-stone-800 text-center mb-8">Tabela Comparativa</h3>
+                <div class="overflow-x-auto">
+                    <table id="comparison-table" class="w-full min-w-max text-left text-stone-700">
+                        <thead class="bg-stone-100">
+                            <tr>
+                                <th class="p-4 font-bold">Termo</th>
+                                <th class="p-4 font-bold">O que é?</th>
+                                <th class="p-4 font-bold">Exemplos de Hardware</th>
+                                <th class="p-4 font-bold">Relação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-stone-200">
+                                <td class="p-4 font-semibold text-emerald-800">Edge ML</td>
+                                <td class="p-4">Execução de ML em qualquer dispositivo na borda.</td>
+                                <td class="p-4">Smartphones, gateways IoT, computadores industriais.</td>
+                                <td class="p-4 font-bold">Termo mais amplo.</td>
+                            </tr>
+                            <tr class="border-b border-stone-200">
+                                <td class="p-4 font-semibold text-amber-800">ML Embarcado</td>
+                                <td class="p-4">Execução de ML em sistemas embarcados.</td>
+                                <td class="p-4">Raspberry Pi, Jetson Nano, microprocessadores.</td>
+                                <td class="p-4 font-bold">Subconjunto de Edge ML.</td>
+                            </tr>
+                            <tr class="border-b border-stone-200">
+                                <td class="p-4 font-semibold text-orange-800">TinyML</td>
+                                <td class="p-4">Execução de ML em microcontroladores.</td>
+                                <td class="p-4">Arduino Nano, ESP32, ARM Cortex-M.</td>
+                                <td class="p-4 font-bold">Subconjunto do ML Embarcado.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mt-24 text-center bg-white p-12 rounded-xl shadow-md border border-gray-200">
+            <h2 class="text-3xl font-bold text-stone-800 mb-4">Conclusão: Onde Nossa Disciplina se Encaixa</h2>
+            <div class="max-w-4xl mx-auto text-lg text-stone-700 space-y-4 text-left md:text-center">
+                <p>O foco da nossa disciplina é o <strong class="text-amber-800">Machine Learning Embarcado</strong>. Esta é uma área de especialização do campo maior de <strong class="text-emerald-800">Edge ML</strong>.</p>
+                <p>Vamos aprender as técnicas para lidar com as <strong class="text-red-600">restrições de hardware</strong> (processamento, memória e energia) que definem os sistemas embarcados.</p>
+                <p>Muitas das técnicas de otimização que veremos nos aproximam do universo do <strong class="text-orange-800">TinyML</strong>, nos preparando para criar soluções de inteligência artificial eficientes e autônomas.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 mt-12 border-t border-stone-200">
+        <p class="text-stone-500"></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Interactive hierarchy diagram navigation
+            const hierarchyItems = document.querySelectorAll('.hierarchy-item');
+            hierarchyItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetId = item.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Comparison table row highlighting
+            const tableRows = document.querySelectorAll('#comparison-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseover', () => {
+                    row.classList.add('bg-stone-100');
+                });
+                row.addEventListener('mouseout', () => {
+                    row.classList.remove('bg-stone-100');
+                });
+            });
+            
+            // Chart.js implementation
+            const ctx = document.getElementById('powerChart').getContext('2d');
+            const powerChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Cloud Computing', 'Edge Computing', 'Edge ML', 'Embedded ML', 'TinyML'],
+                    datasets: [{
+                        label: 'Poder Computacional / Recursos (Relativo)',
+                        data: [100, 75, 60, 30, 10],
+                        backgroundColor: [
+                            'rgba(56, 189, 248, 0.6)', // sky
+                            'rgba(20, 184, 166, 0.6)', // teal
+                            'rgba(16, 185, 129, 0.6)', // emerald
+                            'rgba(245, 158, 11, 0.6)', // amber
+                            'rgba(249, 115, 22, 0.6)'  // orange
+                        ],
+                        borderColor: [
+                            'rgba(56, 189, 248, 1)',
+                            'rgba(20, 184, 166, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(249, 115, 22, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Nível de Recurso (Conceitual)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        y: {
+                           ticks: {
+                               font: {
+                                   size: 14
+                               }
+                           }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        let value = context.parsed.x;
+                                        if(value >= 100) label += "Massivo";
+                                        else if (value >= 75) label += "Alto";
+                                        else if (value >= 60) label += "Médio-Alto";
+                                        else if (value >= 30) label += "Limitado";
+                                        else label += "Muito Limitado";
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

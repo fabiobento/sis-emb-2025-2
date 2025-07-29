@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Usando um Modelo para Inferência (Deployment)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 4rem;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+            background-color: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0; /* slate-200 */
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .nav-button {
+            position: absolute;
+            bottom: 2rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 10;
+        }
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        #prev { left: 2rem; }
+        #next { right: 2rem; }
+        #progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background-color: #3b82f6; /* blue-500 */
+            transition: width 0.3s ease;
+            z-index: 5;
+        }
+        h1, h2, h3 {
+            color: #1e293b; /* slate-800 */
+        }
+        li { margin-bottom: 0.75rem; }
+        a { color: #2563eb; /* blue-600 */ text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        code {
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            color: #475569;
+        }
+        pre code {
+            display: block;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Título -->
+    <section class="slide active">
+        <div class="slide-content text-center">
+            <h1 class="text-5xl font-bold mb-4">Usando um Modelo para Inferência (Deployment)</h1>
+            <p class="text-xl text-slate-500">Do ambiente de desenvolvimento para o mundo real.</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: Etapa 1 - Exportando o Modelo -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">Etapa 1: Exportando o Modelo Otimizado</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg mb-4">A implantação em sistemas embarcados exige modelos pequenos, rápidos e eficientes em energia. Por isso, convertemos o modelo de treinamento para formatos otimizados.</p>
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><strong>TensorFlow Lite (TFLite):</strong> Um formato de modelo e um motor de inferência (interpretador) projetados para baixa latência e pequeno tamanho.</li>
+                        <li><strong>Modelo Quantizado (int8):</strong> Converte os pesos de <code>float32</code> para <code>int8</code>. Esta é uma das otimizações mais importantes.</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 class="font-bold text-xl mb-3 text-center">O Trade-off da Quantização</h3>
+                    <div style="height: 200px; width: 100%;">
+                        <canvas id="quantizationChart"></canvas>
+                    </div>
+                     <p class="text-center mt-4 text-sm text-slate-600">A quantização reduz drasticamente o tamanho do modelo com uma pequena (e geralmente aceitável) perda de acurácia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Etapa 2 - Inspecionando a Arquitetura -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">Etapa 2: Inspecionando a Arquitetura do Modelo</h2>
+             <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg mb-4">Antes de programar o dispositivo, é crucial inspecionar o modelo exportado. Ferramentas visuais como o <a href="https://netron.app/" target="_blank"><strong>Netron</strong></a> nos permitem verificar se a conversão ocorreu como esperado.</p>
+                    <h3 class="font-semibold text-xl mb-2">Perguntas a responder:</h3>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li>A forma (shape) e o tipo de dados da entrada estão corretos?</li>
+                        <li>Qual é a sequência de camadas da rede?</li>
+                        <li>A saída está no formato esperado? (ex: 4 classes)</li>
+                        <li>Quais são os parâmetros de quantização para a entrada e saída?</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-100 p-4 rounded-lg border text-center">
+                    <svg class="w-24 h-24 mx-auto text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                    <h3 class="text-lg font-bold mt-4">Visualizador Netron</h3>
+                    <p class="mt-2 text-slate-600">Permite "abrir" um arquivo <code>.tflite</code> e ver sua estrutura interna, desde os tensores de entrada/saída até os pesos de cada camada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Slide 4: Etapa 3 - Pipeline de Inferência -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6 text-center">Etapa 3: O Pipeline de Inferência no Dispositivo</h2>
+            <p class="text-center text-lg mb-8 max-w-3xl mx-auto">No dispositivo, o pipeline replica o processo de preparação de dados do treinamento, mas executado em um loop contínuo com dados "ao vivo".</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-2 text-center text-sm">
+                <div class="bg-green-100 p-4 rounded-lg border border-green-200 w-full md:w-1/5">
+                    <h3 class="font-bold">1. Coleta de Dados</h3>
+                    <p>Sensores capturam dados do ambiente</p>
+                </div>
+                <div class="text-2xl text-slate-400 font-mono">&rarr;</div>
+                <div class="bg-yellow-100 p-4 rounded-lg border border-yellow-200 w-full md:w-1/5">
+                    <h3 class="font-bold">2. Extração de Características</h3>
+                    <p>DSP transforma dados brutos em features</p>
+                </div>
+                <div class="text-2xl text-slate-400 font-mono">&rarr;</div>
+                <div class="bg-blue-100 p-4 rounded-lg border border-blue-200 w-full md:w-1/5">
+                    <h3 class="font-bold">3. Inferência</h3>
+                    <p>TFLite executa o modelo com as features</p>
+                </div>
+                <div class="text-2xl text-slate-400 font-mono">&rarr;</div>
+                 <div class="bg-purple-100 p-4 rounded-lg border border-purple-200 w-full md:w-1/5">
+                    <h3 class="font-bold">4. Decisão</h3>
+                    <p>Firmware age com base na saída do modelo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Etapa 4 - Tomando Decisões -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">Etapa 4: Tomando Decisões com a Saída</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                     <p class="text-lg mb-4">As probabilidades geradas pela inferência são a ponte entre a IA e a lógica da aplicação. O firmware usa esses valores, geralmente comparados a um **limiar de confiança**, para tomar decisões.</p>
+                     <p>Um limiar alto (ex: 80%) torna o sistema mais robusto contra falsos positivos, enquanto um limiar baixo o torna mais sensível.</p>
+                </div>
+                <div>
+                    <pre><code class="language-c">const float CONFIDENCE_THRESHOLD = 0.80;
+
+// Obter as probabilidades do modelo
+float p_left_right = results[0];
+
+// Apenas agir se a confiança for alta
+if (p_left_right > CONFIDENCE_THRESHOLD) {
+  // Aciona a função correspondente
+  ativar_funcao_A();
+} else {
+  // Nenhuma classe atingiu o limiar.
+  // Considerar como "incerto".
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Etapa 5 - Implementação em Tempo Real -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6 text-center">Etapa 5: Implementação em Tempo Real</h2>
+            <p class="text-center text-lg mb-8 max-w-3xl mx-auto">Garantir que o pipeline execute de forma contínua e sem atrasos em um microcontrolador exige técnicas de programação de baixo nível.</p>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-50 p-6 rounded-lg border text-center">
+                     <h3 class="font-bold text-xl mb-2">⏱️ Interrupção de Timer</h3>
+                     <p>Uma rotina (ISR) é executada em intervalos exatos para garantir a amostragem precisa dos sensores, independentemente de outras tarefas.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border text-center">
+                    <h3 class="font-bold text-xl mb-2">🔄 DMA (Direct Memory Access)</h3>
+                    <p>Um periférico de hardware que transfere dados do sensor para a RAM de forma autônoma, liberando a CPU para executar a inferência.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border text-center">
+                    <h3 class="font-bold text-xl mb-2">⚙️ RTOS (Real-Time OS)</h3>
+                    <p>Permite dividir o programa em tarefas com prioridades, garantindo que a coleta de dados (alta prioridade) nunca falhe, enquanto a inferência (baixa prioridade) roda quando possível.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Fontes -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">Fontes e Leitura Adicional</h2>
+            <ul class="list-disc list-inside space-y-3 text-lg">
+                <li><a href="https://www.tensorflow.org/lite/guide" target="_blank"><strong>TensorFlow Lite Documentation:</strong> A documentação oficial do Google sobre o TFLite.</a></li>
+                <li><a href="https://github.com/lutzroeder/netron" target="_blank"><strong>Netron on GitHub:</strong> Repositório do popular visualizador de modelos Netron.</a></li>
+                <li><a href="https://arm-software.github.io/CMSIS-NN/v4.0.0/index.html" target="_blank"><strong>Arm CMSIS-NN Documentation:</strong> Biblioteca de software da Arm com funções otimizadas para redes neurais em processadores Cortex-M.</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Navegação -->
+    <div id="prev" class="nav-button">&#x2190;</div>
+    <div id="next" class="nav-button">&#x2192;</div>
+    <div id="progress-bar"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const progressBar = document.getElementById('progress-bar');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    if (i === index) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                updateProgress();
+            }
+
+            function updateProgress() {
+                const progress = ((currentSlide + 1) / slides.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                prevButton.style.display = currentSlide === 0 ? 'none' : 'flex';
+                nextButton.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
+            }
+            
+            prevButton.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevButton.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextButton.click();
+                }
+            });
+            
+            showSlide(currentSlide);
+            
+            // Gráfico para o slide de Quantização
+            const quantizationCtx = document.getElementById('quantizationChart');
+            if (quantizationCtx) {
+                new Chart(quantizationCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Tamanho do Modelo', 'Acurácia'],
+                        datasets: [{
+                            label: 'float32 (Original)',
+                            data: [100, 98.5],
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        }, {
+                            label: 'int8 (Quantizado)',
+                            data: [25, 97.2],
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 110,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%'
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

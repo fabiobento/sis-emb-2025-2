@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo: O Pipeline de Machine Learning</title>
+    
+    <!-- Chosen Palette: Tech Blue -->
+    <!-- Application Structure Plan: The SPA is built around a central, interactive pipeline diagram. This visual-first approach allows users to click on each stage (Coleta, Pré-processamento, etc.) to reveal detailed explanations in a content area below. This is more engaging than a linear document. The structure is complemented by a dedicated section comparing Parameters vs. Hyperparameters and a conceptual bar chart visualizing effort distribution across the pipeline stages. The flow guides the user from a high-level process view to detailed explanations and a final summary on MLOps, creating a comprehensive learning tool. -->
+    <!-- Visualization & Content Choices: The main interactive element is the HTML/CSS pipeline diagram with JS click handlers, which acts as the primary navigation. To fulfill the Chart.js requirement and add value, a conceptual bar chart visualizes the typical time/effort spent in each pipeline phase, making an abstract concept more concrete. The critical distinction between Parameters and Hyperparameters is handled with a dedicated two-column card layout for clear comparison. Unicode characters are used for icons to keep the design clean and lightweight. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .pipeline-stage {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .pipeline-stage.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #3b82f6; /* blue-500 */
+        }
+        .pipeline-arrow {
+            font-size: 2rem;
+            color: #94a3b8; /* slate-400 */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">O Pipeline de Machine Learning</h1>
+            <p class="text-lg text-slate-600 mt-2">Uma jornada estruturada, dos dados brutos ao modelo inteligente.</p>
+        </header>
+
+        <section id="pipeline-interactive" class="mb-12">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">Explore o Pipeline</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                Clique em cada etapa para ver os detalhes.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-2 flex-wrap">
+                <div id="stage-collect" data-target="content-collect" class="pipeline-stage active bg-white p-6 rounded-xl shadow-md border-2 w-full md:w-auto text-center">
+                    <h3 class="text-xl font-bold text-slate-800">1. Coleta de Dados</h3>
+                </div>
+                <div class="pipeline-arrow hidden md:block">→</div>
+                <div id="stage-process" data-target="content-process" class="pipeline-stage bg-white p-6 rounded-xl shadow-md border-2 w-full md:w-auto text-center">
+                    <h3 class="text-xl font-bold text-slate-800">2. Preparação</h3>
+                </div>
+                <div class="pipeline-arrow hidden md:block">→</div>
+                <div id="stage-train" data-target="content-train" class="pipeline-stage bg-white p-6 rounded-xl shadow-md border-2 w-full md:w-auto text-center">
+                    <h3 class="text-xl font-bold text-slate-800">3. Treinamento</h3>
+                </div>
+                <div class="pipeline-arrow hidden md:block">→</div>
+                <div id="stage-infer" data-target="content-infer" class="pipeline-stage bg-white p-6 rounded-xl shadow-md border-2 w-full md:w-auto text-center">
+                    <h3 class="text-xl font-bold text-slate-800">4. Inferência</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="pipeline-content" class="max-w-4xl mx-auto mb-20">
+            <div id="content-collect" class="pipeline-content-item bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">1. Coleta de Dados</h3>
+                <p class="text-lg text-slate-700">Tudo começa aqui. Esta é a matéria-prima do nosso modelo. Os dados devem ser representativos do fenômeno que queremos que o modelo entenda. Para cada amostra de dado coletada, atribuímos um **rótulo (label)** que a identifica, como "andar", "correr" ou "parado".</p>
+            </div>
+            <div id="content-process" class="pipeline-content-item hidden bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Pré-processamento e Extração de Características</h3>
+                <p class="text-lg text-slate-700">Dados brutos raramente estão prontos para uso. Nesta fase, eles são limpos e transformados:</p>
+                <ul class="list-disc list-inside mt-4 space-y-2 text-lg text-slate-700">
+                    <li><strong>Pré-processamento:</strong> Envolve limpar ruídos, normalizar valores e tratar dados faltantes para garantir a qualidade.</li>
+                    <li><strong>Extração de Características:</strong> Em vez de usar milhares de pontos de dados brutos, extraímos informações mais significativas (como média, RMS, picos de frequência) para criar um resumo compacto e poderoso.</li>
+                </ul>
+            </div>
+            <div id="content-train" class="pipeline-content-item hidden bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">3. Treinamento do Modelo</h3>
+                <p class="text-lg text-slate-700">Com as características prontas, alimentamos um algoritmo de ML. O algoritmo ajusta seus **parâmetros** internos para aprender a mapear as características de entrada aos seus rótulos de saída. O resultado é o **modelo** treinado.</p>
+            </div>
+            <div id="content-infer" class="pipeline-content-item hidden bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Inferência (Implantação)</h3>
+                <p class="text-lg text-slate-700">É o momento da verdade. O modelo treinado é implantado em um dispositivo (como um microcontrolador). A **inferência** é o processo de usar este modelo para fazer previsões sobre novos dados nunca antes vistos, tudo localmente no dispositivo, permitindo respostas rápidas e offline.</p>
+            </div>
+        </section>
+
+        <section id="params-hyperparams" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">Parâmetros vs. Hiperparâmetros</h2>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-2xl font-bold text-slate-800 mb-3">⚙️ Parâmetros</h4>
+                    <p class="text-lg text-slate-600">São os valores **internos** do modelo que o algoritmo **aprende** a partir dos dados durante o treinamento (ex: os pesos em uma rede neural). Eles são um **resultado** do processo de treinamento.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-2xl font-bold text-slate-800 mb-3">🎛️ Hiperparâmetros</h4>
+                    <p class="text-lg text-slate-600">São as configurações que o desenvolvedor **define antes** do treinamento para controlar o algoritmo (ex: a taxa de aprendizado, o número de camadas da rede). Eles **não são aprendidos** pelos dados.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="chart-section" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">Distribuição de Esforço no Pipeline</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-8">
+                Esta visualização conceitual mostra onde o tempo e o esforço são tipicamente investidos em um projeto de Machine Learning.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <div class="chart-container">
+                    <canvas id="effortChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="mlops" class="bg-slate-800 text-white p-12 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-6">MLOps: O Ciclo de Vida Contínuo</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-300 text-center">
+                Em um ambiente de produção, o pipeline não é um processo único, mas um ciclo contínuo. **MLOps (Machine Learning Operations)** integra o desenvolvimento e as operações para monitorar, retreinar e reimplantar modelos, garantindo que eles permaneçam precisos e relevantes ao longo do tempo.
+            </p>
+        </section>
+
+    </div>
+
+    <footer class="text-center py-8 mt-8 border-t border-slate-200">
+        <p class="text-slate-500">Fontes e Leitura Adicional:</p>
+        <div class="flex justify-center space-x-4 mt-2">
+             <a href="https://docs.edgeimpulse.com/reference/data-ingestion/ingestion-api" target="_blank" class="text-blue-500 hover:underline">Edge Impulse API</a>
+             <a href="https://blogs.nvidia.com/blog/2020/09/03/what-is-mlops/" target="_blank" class="text-blue-500 hover:underline">NVIDIA MLOps</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stages = document.querySelectorAll('.pipeline-stage');
+            const contents = document.querySelectorAll('.pipeline-content-item');
+
+            stages.forEach(stage => {
+                stage.addEventListener('click', () => {
+                    const targetId = stage.dataset.target;
+                    
+                    stages.forEach(s => s.classList.remove('active'));
+                    stage.classList.add('active');
+                    
+                    contents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetId);
+                    });
+                });
+            });
+
+            const ctx = document.getElementById('effortChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Coleta de Dados', 'Pré-processamento & Extração', 'Treinamento & Validação', 'Implantação & Monitoramento'],
+                    datasets: [{
+                        label: 'Esforço Relativo (%)',
+                        data: [40, 35, 15, 10],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(107, 114, 128, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(37, 99, 235, 1)',
+                            'rgba(5, 150, 105, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(75, 85, 99, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: '% de Esforço / Tempo Total'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo: Coleta de Dados para Machine Learning</title>
+    
+    <!-- Chosen Palette: Calm & Educational -->
+    <!-- Application Structure Plan: The SPA is structured into three main thematic sections, mirroring the logical flow of the source document: 1. Processo de Coleta, 2. Divisão do Dataset, and 3. Características de um Bom Dataset. A sticky top navigation allows users to jump to any section, enabling non-linear exploration. The core interactive element is a visual, clickable diagram for the "Holdout Method," which is more engaging than static text. This is followed by an interactive chart section to compare balanced vs. imbalanced datasets. This structure was chosen to break down a dense topic into manageable, interactive modules, enhancing user engagement and comprehension over a simple text document. -->
+    <!-- Visualization & Content Choices: For the "Divisão do Dataset" section, an interactive diagram built with HTML/CSS/JS is used to visually represent the Holdout Method. Users can click on 'Training', 'Validation', or 'Test' to highlight the section and read its purpose, making the concept tangible. For the "Conjunto de Dados Balanceado" section, two donut charts from Chart.js are used to starkly contrast a balanced dataset with an imbalanced one, visually demonstrating the "lazy classifier" problem. This provides a clear, data-driven visual that reinforces the text. Unicode characters are used for icons to maintain a clean, image-free design. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px; /* Smaller for side-by-side donut charts */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        .nav-link.active {
+            color: #0ea5e9; /* sky-500 */
+            font-weight: 700;
+        }
+        section {
+            scroll-margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-20 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-slate-800">Coleta de Dados para ML</h1>
+            <nav id="main-nav" class="hidden md:flex space-x-6 text-lg">
+                <a href="#processo" class="nav-link text-slate-600 hover:text-sky-500 transition-colors">Processo</a>
+                <a href="#divisao" class="nav-link text-slate-600 hover:text-sky-500 transition-colors">Divisão</a>
+                <a href="#caracteristicas" class="nav-link text-slate-600 hover:text-sky-500 transition-colors">Qualidade</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="intro" class="text-center mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Guia Essencial sobre Coleta de Dados</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                A base de qualquer projeto de Machine Learning bem-sucedido é um conjunto de dados de alta qualidade. O famoso ditado "garbage in, garbage out" (lixo entra, lixo sai) captura perfeitamente essa realidade. Vamos detalhar as etapas e os conceitos cruciais para o sucesso.
+            </p>
+        </section>
+
+        <section id="processo" class="mb-20">
+            <h3 class="text-3xl font-bold text-slate-800 mb-8 text-center">1. O Processo de Coleta de Dados</h3>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                <p class="text-lg text-slate-700 mb-6">A coleta de dados é a primeira e talvez a mais crítica etapa. O objetivo é capturar um grande volume de exemplos representativos do fenômeno que você quer que seu modelo reconheça. Para sistemas embarcados, isso geralmente significa usar sensores para capturar dados do mundo real.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">📱 Dispositivos de Borda (Smartphones)</h4>
+                        <p class="text-slate-600">Excelentes para a prototipagem rápida. Possuem sensores de alta qualidade e conectividade nativa, ideais para validar uma ideia rapidamente.</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        <h4 class="text-xl font-bold text-slate-800 mb-2">🤖 Placas de Desenvolvimento (Microcontroladores)</h4>
+                        <p class="text-slate-600">A escolha para o produto final. Coletar dados com o hardware real garante que as limitações dos sensores sejam as mesmas que o modelo encontrará em operação.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="divisao" class="mb-20">
+            <h3 class="text-3xl font-bold text-slate-800 mb-8 text-center">2. A Importância da Divisão do Dataset</h3>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                <p class="text-lg text-slate-700 mb-8">Nunca use todos os seus dados para treinar. A prática padrão, **Holdout Method**, divide o dataset em três conjuntos para avaliar realisticamente se o modelo está aprendendo ou apenas "decorando". Clique nos blocos para saber mais.</p>
+                
+                <div class="flex flex-col md:flex-row h-48 w-full rounded-lg overflow-hidden border-2 border-slate-300">
+                    <button data-target="desc-train" class="holdout-btn flex-grow bg-sky-500 text-white flex items-center justify-center text-xl font-bold hover:bg-sky-600 transition-colors" style="flex-basis: 60%;">Treinamento (60%)</button>
+                    <button data-target="desc-val" class="holdout-btn flex-grow bg-teal-500 text-white flex items-center justify-center text-xl font-bold hover:bg-teal-600 transition-colors" style="flex-basis: 20%;">Validação (20%)</button>
+                    <button data-target="desc-test" class="holdout-btn flex-grow bg-indigo-500 text-white flex items-center justify-center text-xl font-bold hover:bg-indigo-600 transition-colors" style="flex-basis: 20%;">Teste (20%)</button>
+                </div>
+                
+                <div id="holdout-descriptions" class="mt-6">
+                    <div id="desc-train" class="holdout-desc p-6 bg-sky-50 rounded-lg border-l-4 border-sky-500">
+                        <h4 class="font-bold text-xl text-sky-800">Conjunto de Treinamento</h4>
+                        <p class="text-slate-700 mt-2">É a maior parte dos dados, usada para ensinar o modelo. O algoritmo analisa esses dados para encontrar padrões e ajustar seus parâmetros internos. É aqui que o aprendizado acontece.</p>
+                    </div>
+                    <div id="desc-val" class="holdout-desc hidden p-6 bg-teal-50 rounded-lg border-l-4 border-teal-500">
+                        <h4 class="font-bold text-xl text-teal-800">Conjunto de Validação</h4>
+                        <p class="text-slate-700 mt-2">Usado para avaliar o modelo *durante* o treinamento. Ajuda a ajustar os "hiperparâmetros" (configurações do modelo) e a evitar o superajuste (*overfitting*), garantindo que o modelo generalize para novos dados.</p>
+                    </div>
+                     <div id="desc-test" class="holdout-desc hidden p-6 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
+                        <h4 class="font-bold text-xl text-indigo-800">Conjunto de Teste</h4>
+                        <p class="text-slate-700 mt-2">É o "exame final" e só deve ser usado uma vez. Fornece a avaliação mais honesta da performance do modelo no mundo real. <strong class="text-red-600">Nunca use para ajustar o modelo.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="caracteristicas" class="mb-20">
+            <h3 class="text-3xl font-bold text-slate-800 mb-8 text-center">3. Características de um Bom Dataset</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                    <h4 class="text-2xl font-bold text-slate-800 mb-4">✅ a) Dados Representativos e Diversificados</h4>
+                    <p class="text-lg text-slate-700">Seu dataset deve ser um espelho fiel do mundo real. A falta de diversidade é uma das principais causas de falha de modelos.</p>
+                    <p class="text-lg text-slate-600 mt-4 bg-slate-50 p-4 rounded-lg"><strong>Exemplo:</strong> Para reconhecer cães, não use apenas fotos de uma raça em um estúdio. Inclua diversas raças, ambientes, iluminações e ângulos para que o modelo aprenda o conceito de "cão", e não apenas um cenário específico.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                    <h4 class="text-2xl font-bold text-slate-800 mb-4">⚖️ b) Conjunto de Dados Balanceado</h4>
+                    <p class="text-lg text-slate-700 mb-4">Um dataset é balanceado quando a quantidade de amostras para cada classe é aproximadamente a mesma. O desbalanceamento é um problema silencioso e perigoso.</p>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+                        <div>
+                            <h5 class="font-bold text-red-600">Desbalanceado</h5>
+                            <div class="chart-container">
+                                <canvas id="imbalancedChart"></canvas>
+                            </div>
+                            <p class="text-sm text-slate-600 mt-2">Um modelo "preguiçoso" pode ter 99% de acurácia apenas dizendo "Campo", sendo inútil.</p>
+                        </div>
+                        <div>
+                             <h5 class="font-bold text-green-600">Balanceado</h5>
+                            <div class="chart-container">
+                                <canvas id="balancedChart"></canvas>
+                            </div>
+                            <p class="text-sm text-slate-600 mt-2">Força o modelo a aprender as características reais de cada classe.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 mt-12 border-t border-slate-200">
+        <p class="text-slate-500">Fontes para Aprofundamento:</p>
+         <div class="flex justify-center space-x-4 mt-2">
+             <a href="https://developers.google.com/machine-learning/crash-course/training-and-test-sets/splitting-data" target="_blank" class="text-sky-600 hover:underline">Google Developers</a>
+             <a href="https://towardsdatascience.com/train-validation-and-test-sets-72cb40cba9e7" target="_blank" class="text-sky-600 hover:underline">Towards Data Science</a>
+             <a href="https://machinelearningmastery.com/what-is-imbalanced-classification/" target="_blank" class="text-sky-600 hover:underline">Machine Learning Mastery</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation scroll highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => observer.observe(section));
+            
+            // Holdout method interactive diagram
+            const holdoutBtns = document.querySelectorAll('.holdout-btn');
+            const holdoutDescs = document.querySelectorAll('.holdout-desc');
+
+            holdoutBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.dataset.target;
+                    holdoutDescs.forEach(desc => {
+                        desc.classList.toggle('hidden', desc.id !== targetId);
+                    });
+                });
+            });
+
+            // Chart.js implementation
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            const imbalancedCtx = document.getElementById('imbalancedChart').getContext('2d');
+            new Chart(imbalancedCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Campo', 'Cão'],
+                    datasets: [{
+                        data: [99, 1],
+                        backgroundColor: ['#a3e635', '#f87171'], // lime-400, red-400
+                    }]
+                },
+                options: chartOptions
+            });
+
+            const balancedCtx = document.getElementById('balancedChart').getContext('2d');
+            new Chart(balancedCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Campo', 'Cão'],
+                    datasets: [{
+                        data: [50, 50],
+                        backgroundColor: ['#a3e635', '#34d399'], // lime-400, emerald-400
+                    }]
+                },
+                options: chartOptions
+            });
+        });
+    </script>
+</body>
+</html>
