@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Detecção de Anomalias em Machine Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 4rem;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+            background-color: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .nav-button {
+            position: absolute;
+            bottom: 2rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 10;
+        }
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        #prev { left: 2rem; }
+        #next { right: 2rem; }
+        #progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background-color: #3b82f6; /* blue-500 */
+            transition: width 0.3s ease;
+            z-index: 5;
+        }
+        h1, h2, h3 {
+            color: #1e293b; /* slate-800 */
+        }
+        li { margin-bottom: 0.75rem; }
+        a { color: #2563eb; /* blue-600 */ text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Título -->
+    <section class="slide active">
+        <div class="slide-content text-center">
+            <h1 class="text-5xl font-bold mb-4">Detecção de Anomalias em Machine Learning</h1>
+            <p class="text-xl text-slate-500">Identificando o inesperado em um mundo de dados.</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: O que é? -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">O que é uma Anomalia?</h2>
+            <p class="text-lg mb-6">
+                É uma técnica de Machine Learning focada em identificar itens, eventos ou observações raras que diferem significativamente da maioria dos dados. Em vez de classificar, o objetivo é modelar o que é **"normal"** para então sinalizar qualquer desvio.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                <div class="bg-slate-100 p-4 rounded-lg">
+                    <h3 class="font-semibold text-lg">Também conhecida como:</h3>
+                    <p>Outliers, Novidades, Ruído, Exceções</p>
+                </div>
+                 <div class="bg-sky-100 p-4 rounded-lg border border-sky-200">
+                    <h3 class="font-semibold text-lg text-sky-800">Objetivo Principal:</h3>
+                    <p class="text-sky-700">Aprender o padrão normal para identificar o anormal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Tipos de Anomalias -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6 text-center">Tipos de Anomalias</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-50 p-6 rounded-lg border">
+                    <h3 class="font-bold text-xl mb-2">📍 Anomalias de Ponto</h3>
+                    <p>Um ponto de dado individual que é anômalo em relação ao resto. </p>
+                    <p class="mt-2 text-sm text-slate-500"><strong>Ex:</strong> Uma única transação de cartão de crédito com valor extremamente alto.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border">
+                    <h3 class="font-bold text-xl mb-2">🗓️ Anomalias Contextuais</h3>
+                    <p>Uma observação que é anômala apenas em um contexto específico.</p>
+                    <p class="mt-2 text-sm text-slate-500"><strong>Ex:</strong> Gastar R$ 500 em brinquedos é normal em Dezembro, mas pode ser anômalo em Maio.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border">
+                    <h3 class="font-bold text-xl mb-2">👥 Anomalias Coletivas</h3>
+                    <p>Um conjunto de observações que é anômalo como um todo, embora os pontos individuais não sejam.</p>
+                    <p class="mt-2 text-sm text-slate-500"><strong>Ex:</strong> Um padrão de tráfego de rede que representa um ataque DDoS.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Slide 4: Paradigma -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">O Paradigma de Aprendizado</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-3">Principalmente Não Supervisionado</h3>
+                    <p class="mb-4">Treinamos o modelo usando um dataset que contém apenas (ou majoritariamente) dados que representam o comportamento **normal**. O modelo aprende as fronteiras desse "normal".</p>
+                    <p>Qualquer dado que caia fora dessas fronteiras é marcado como uma anomalia.</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 p-6 rounded-lg">
+                    <h4 class="font-bold text-lg mb-3">Ideal para cenários onde anomalias são:</h4>
+                    <ul class="list-disc list-inside">
+                        <li><strong>Raras:</strong> É difícil coletar exemplos suficientes de falhas ou ataques para treinar um modelo supervisionado.</li>
+                        <li><strong>Desconhecidas:</strong> O modelo precisa ser capaz de identificar uma falha que nunca viu antes.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Caso de Uso -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">Caso de Uso: Manutenção Preditiva</h2>
+             <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg mb-4">Uma das aplicações mais poderosas é monitorar a "saúde" de equipamentos para prever falhas antes que elas aconteçam, evitando paradas não planejadas.</p>
+                    <p class="mb-4">Um estudo clássico monitorou rolamentos industriais até a falha, analisando dados de vibração. Características estatísticas mudaram drasticamente antes da falha:</p>
+                     <ul class="list-none space-y-3">
+                        <li><strong class="text-blue-600">RMS (Root Mean Square):</strong> Mede a "energia" da vibração. Aumenta com o desgaste.</li>
+                        <li><strong class="text-blue-600">Curtose (Kurtosis):</strong> Mede a presença de picos. Aumenta com impactos de defeitos.</li>
+                    </ul>
+                </div>
+                <div style="height: 300px; width: 100%;">
+                    <canvas id="bearingChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Como Funciona - K-Means -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6 text-center">Como Funciona: Clusterização (K-Means)</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 class="font-bold text-xl mb-3">1. Treinamento (Dados Normais)</h3>
+                    <p>O algoritmo analisa as características dos dados normais e os agrupa em *k* clusters (agrupamentos).</p>
+                    <p class="mt-2">O modelo armazena a localização do **centro de cada cluster**, que representa uma "região de operação normal".</p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                     <h3 class="font-bold text-xl mb-3">2. Inferência (Novo Dado)</h3>
+                     <p>Quando um novo dado chega, o sistema calcula a **distância Euclidiana** desse novo ponto ao centro de todos os clusters.</p>
+                     <p class="mt-2">A distância ao cluster mais próximo é a **pontuação de anomalia**. Se for muito grande, o dado é considerado anômalo.</p>
+                </div>
+            </div>
+            <p class="text-center mt-8 text-slate-600">Plataformas como o **Edge Impulse** integram essa funcionalidade diretamente no pipeline de ML.</p>
+        </div>
+    </section>
+
+    <!-- Slide 7: Outras Abordagens -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6 text-center">Outras Abordagens Populares</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-slate-50 p-6 rounded-lg border">
+                    <h3 class="font-bold text-xl mb-2">🌳 Isolation Forest</h3>
+                    <p>Um método eficiente que tenta "isolar" as anomalias em vez de modelar o que é normal. A lógica é que anomalias, por serem raras e diferentes, são mais fáceis de separar do resto dos dados com poucas divisões.</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border">
+                    <h3 class="font-bold text-xl mb-2">🤖 Autoencoders</h3>
+                    <p>Um tipo de rede neural treinada para reconstruir sua própria entrada. Quando treinada apenas com dados normais, ela aprende a reconstruí-los bem, mas falha ao tentar reconstruir uma anomalia, resultando em um alto "erro de reconstrução", que serve como pontuação de anomalia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Combinando Modelos -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6 text-center">A Combinação Perfeita: Classificação + Anomalia</h2>
+            <p class="text-center text-lg mb-8 max-w-3xl mx-auto">A verdadeira força em sistemas embarcados surge ao combinar os dois modelos para criar um sistema mais robusto e seguro.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div class="bg-blue-100 p-6 rounded-lg border border-blue-200 text-center w-full md:w-1/3">
+                    <h3 class="font-bold text-xl mb-2">1. Classificador</h3>
+                    <p>Identifica e categoriza os **eventos conhecidos** para os quais foi treinado (ex: "máquina operando", "máquina em espera").</p>
+                </div>
+                <div class="text-4xl font-bold text-slate-400 mx-4">+</div>
+                <div class="bg-red-100 p-6 rounded-lg border border-red-200 text-center w-full md:w-1/3">
+                    <h3 class="font-bold text-xl mb-2">2. Detector de Anomalias</h3>
+                    <p>Atua como uma "rede de segurança", identificando qualquer evento que não se pareça com **nenhum dos dados normais** (ex: uma vibração desconhecida).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: Fontes -->
+    <section class="slide">
+        <div class="slide-content">
+            <h2 class="text-3xl font-bold mb-6">Fontes e Leitura Adicional</h2>
+            <ul class="list-disc list-inside space-y-3 text-lg">
+                <li><a href="https://www.nasa.gov/content/prognostics-center-of-excellence-data-set-repository" target="_blank"><strong>NASA Prognostics Center of Excellence Data Set Repository:</strong> Repositório com datasets para estudos de prognóstico.</a></li>
+                <li><a href="https://www.researchgate.net/publication/355681851_Anomaly_Detection_A_Survey" target="_blank"><strong>Anomaly Detection: A Survey (PDF):</strong> Um artigo de pesquisa abrangente sobre várias técnicas.</a></li>
+                <li><a href="https://scikit-learn.org/stable/modules/clustering.html" target="_blank"><strong>K-Means Clustering (Scikit-learn):</strong> Documentação da popular biblioteca sobre o algoritmo K-Means.</a></li>
+                <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html" target="_blank"><strong>Isolation Forest (Scikit-learn):</strong> Documentação sobre o algoritmo Isolation Forest.</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Navegação -->
+    <div id="prev" class="nav-button">&#x2190;</div>
+    <div id="next" class="nav-button">&#x2192;</div>
+    <div id="progress-bar"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevButton = document.getElementById('prev');
+            const nextButton = document.getElementById('next');
+            const progressBar = document.getElementById('progress-bar');
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    if (i === index) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                updateProgress();
+            }
+
+            function updateProgress() {
+                const progress = ((currentSlide + 1) / slides.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                prevButton.style.display = currentSlide === 0 ? 'none' : 'flex';
+                nextButton.style.display = currentSlide === slides.length - 1 ? 'none' : 'flex';
+            }
+            
+            prevButton.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevButton.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextButton.click();
+                }
+            });
+            
+            showSlide(currentSlide);
+            
+            // Gráfico para o slide de Manutenção Preditiva
+            const bearingCtx = document.getElementById('bearingChart');
+            if (bearingCtx) {
+                new Chart(bearingCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: 34 }, (_, i) => `Dia ${i + 1}`),
+                        datasets: [{
+                            label: 'RMS da Vibração (Energia)',
+                            data: [0.1, 0.11, 0.1, 0.12, 0.11, 0.1, 0.11, 0.12, 0.13, 0.12, 0.11, 0.12, 0.13, 0.12, 0.13, 0.13, 0.14, 0.13, 0.14, 0.15, 0.14, 0.15, 0.16, 0.15, 0.17, 0.18, 0.19, 0.22, 0.25, 0.29, 0.35, 0.45, 0.55, 0.7],
+                            borderColor: '#3b82f6',
+                            tension: 0.1,
+                            yAxisID: 'y'
+                        }, {
+                            label: 'Curtose (Picos)',
+                            data: [3, 3.1, 2.9, 3, 3.2, 3, 3.1, 3.3, 3.2, 3.1, 3.3, 3.4, 3.3, 3.5, 3.4, 3.6, 3.7, 3.8, 4, 4.2, 4.5, 5, 5.8, 6.5, 8, 10, 15, 25, 40, 55, 70, 65, 80],
+                            borderColor: '#f59e0b',
+                            tension: 0.1,
+                            yAxisID: 'y1'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: { display: true, text: 'RMS' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                title: { display: true, text: 'Curtose' },
+                                grid: { drawOnChartArea: false }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

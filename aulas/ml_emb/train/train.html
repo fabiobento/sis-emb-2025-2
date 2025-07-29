@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo: Introdução às Redes Neurais</title>
+    
+    <!-- Chosen Palette: Tech & Learning -->
+    <!-- Application Structure Plan: The application is designed as a narrative journey to deconstruct a neural network. It starts with the biological inspiration, then dives into an interactive diagram of a single perceptron where users can click each component to learn its function. This is followed by a tabbed interface for exploring activation functions, each with a dynamic chart. The core learning process is presented as a clickable step-by-step guide. A conceptual line chart visualizes the goal of training: error reduction. This structure transforms a static document into a hands-on, explorable learning module. -->
+    <!-- Visualization & Content Choices: The perceptron's anatomy is an interactive HTML/CSS diagram with JS handlers, making it more engaging than a static image. For the activation functions, Chart.js is used to render the graphs for Sigmoid, ReLU, and Tanh within an interactive tabbed component. To visualize the training process, another Chart.js line chart shows a conceptual "Training Error vs. Epochs" curve, making the abstract idea of 'learning' tangible. All interactions are built with vanilla JS. Unicode characters are used for icons. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 40vh;
+        }
+        .training-chart-container {
+             position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .tab-button.active {
+            background-color: #0ea5e9; /* sky-500 */
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .perceptron-part {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .perceptron-part:hover, .perceptron-part.active {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">Introdução às Redes Neurais</h1>
+            <p class="text-lg text-slate-600 mt-2">Dos neurônios biológicos aos modelos computacionais.</p>
+        </header>
+
+        <section id="inspiration" class="grid md:grid-cols-2 gap-8 mb-20">
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">🧠 Inspiração Biológica</h3>
+                <p class="text-lg text-slate-600">Um neurônio biológico recebe sinais, processa-os e, se o estímulo for forte o suficiente, dispara um sinal para outros neurônios. As redes neurais artificiais se inspiram nesse princípio fundamental.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-slate-800 mb-4">🤖 Modelo Matemático: O Perceptron</h3>
+                <p class="text-lg text-slate-600">O **perceptron** é a unidade básica de uma rede neural. É uma simplificação matemática que recebe entradas, realiza um cálculo e produz uma saída, imitando um neurônio biológico.</p>
+            </div>
+        </section>
+
+        <section id="perceptron-anatomy" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">Anatomia de um Perceptron</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                Um único neurônio artificial realiza um cálculo em duas etapas. Clique em cada componente do diagrama para entender sua função.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div id="p-inputs" class="perceptron-part bg-green-100 text-green-800 p-4 rounded-lg"><strong>Entradas (x)</strong></div>
+                    <div class="text-2xl text-slate-400">→</div>
+                    <div id="p-sum" class="perceptron-part bg-blue-100 text-blue-800 p-4 rounded-lg"><strong>Soma Ponderada + Viés</strong></div>
+                    <div class="text-2xl text-slate-400">→</div>
+                    <div id="p-activation" class="perceptron-part bg-purple-100 text-purple-800 p-4 rounded-lg"><strong>Função de Ativação (f)</strong></div>
+                    <div class="text-2xl text-slate-400">→</div>
+                    <div id="p-output" class="perceptron-part bg-red-100 text-red-800 p-4 rounded-lg"><strong>Saída (y)</strong></div>
+                </div>
+                <div id="perceptron-explanation" class="mt-8 p-6 bg-slate-50 rounded-lg min-h-[100px]">
+                    <p class="text-lg text-slate-700">Clique em um componente acima para ver a explicação.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="activation-functions" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">Funções de Ativação</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                A função de ativação introduz não-linearidade, permitindo que a rede aprenda padrões complexos. Ela "decide" se e como um neurônio deve disparar.
+            </p>
+            <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                <div class="flex justify-center border-b border-slate-300 mb-6">
+                    <button data-target="relu" class="tab-button active text-lg font-semibold py-2 px-5 transition-colors duration-300 rounded-t-lg">ReLU</button>
+                    <button data-target="sigmoid" class="tab-button text-lg font-semibold py-2 px-5 transition-colors duration-300 rounded-t-lg">Sigmoid</button>
+                    <button data-target="tanh" class="tab-button text-lg font-semibold py-2 px-5 transition-colors duration-300 rounded-t-lg">Tanh</button>
+                </div>
+                <div id="tabs-content">
+                    <div id="relu" class="tab-content active">
+                        <p class="text-center text-lg mb-4"><strong>ReLU (Rectified Linear Unit):</strong> A mais popular em redes profundas. Retorna 0 para entradas negativas e o próprio valor para as positivas. Fórmula: `f(x) = max(0, x)`</p>
+                        <div class="chart-container"><canvas id="reluChart"></canvas></div>
+                    </div>
+                    <div id="sigmoid" class="tab-content">
+                        <p class="text-center text-lg mb-4"><strong>Sigmoid:</strong> Comprime qualquer valor de entrada para um intervalo entre 0 e 1. Útil em camadas de saída para problemas de classificação binária. Fórmula: `σ(x) = 1 / (1 + e⁻ˣ)`</p>
+                        <div class="chart-container"><canvas id="sigmoidChart"></canvas></div>
+                    </div>
+                    <div id="tanh" class="tab-content">
+                        <p class="text-center text-lg mb-4"><strong>Tanh (Tangente Hiperbólica):</strong> Similar à Sigmoid, mas comprime os valores para um intervalo entre -1 e 1.</p>
+                        <div class="chart-container"><canvas id="tanhChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="training-process" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">Como a Rede Aprende? O Processo de Treinamento</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                O treinamento é um processo iterativo para ajustar os pesos e vieses da rede, minimizando o erro das suas previsões. O objetivo é encontrar os valores que melhor mapeiam as entradas para as saídas corretas.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                 <div class="training-chart-container">
+                    <canvas id="trainingChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center py-8 mt-8 border-t border-slate-200">
+        <p class="text-slate-500">Fontes e Leitura Adicional:</p>
+        <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2">
+             <a href="https://www.youtube.com/watch?v=aircAruvnKk" target="_blank" class="text-blue-500 hover:underline">3Blue1Brown</a>
+             <a href="https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6" target="_blank" class="text-blue-500 hover:underline">Towards Data Science</a>
+             <a href="https://cs231n.github.io/optimization-2/" target="_blank" class="text-blue-500 hover:underline">Stanford CS231n</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Perceptron Anatomy Interaction
+            const parts = document.querySelectorAll('.perceptron-part');
+            const explanationDiv = document.getElementById('perceptron-explanation');
+            const explanations = {
+                'p-inputs': '<strong>Entradas (x):</strong> São os valores das características que alimentam o neurônio. Cada entrada representa uma informação, como um pixel de uma imagem ou um dado de um sensor.',
+                'p-sum': '<strong>Soma Ponderada + Viés (Σwᵢxᵢ + b):</strong> Cada entrada (xᵢ) é multiplicada por um peso (wᵢ) que representa sua importância. Os resultados são somados e um "viés" (b) é adicionado para ajustar a saída, tornando o modelo mais flexível.',
+                'p-activation': '<strong>Função de Ativação (f):</strong> O resultado da soma é passado por esta função, que introduz não-linearidade e "decide" se e como o neurônio deve disparar, permitindo o aprendizado de padrões complexos.',
+                'p-output': '<strong>Saída (y):</strong> O valor final produzido pelo neurônio após a ativação. Esta saída pode então servir como entrada para outros neurônios em camadas subsequentes.'
+            };
+
+            parts.forEach(part => {
+                part.addEventListener('click', () => {
+                    parts.forEach(p => p.classList.remove('active'));
+                    part.classList.add('active');
+                    explanationDiv.innerHTML = `<p class="text-lg text-slate-700">${explanations[part.id]}</p>`;
+                });
+            });
+
+            // Activation Function Tabs
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    document.getElementById(tab.dataset.target).classList.add('active');
+                });
+            });
+
+            // Chart.js Implementations
+            const chartDefaultOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        grid: { color: '#e2e8f0' }
+                    },
+                    y: {
+                        grid: { color: '#e2e8f0' }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            };
+
+            const activationData = (func) => {
+                const data = [];
+                for (let x = -5; x <= 5; x += 0.1) {
+                    data.push({x: x, y: func(x)});
+                }
+                return data;
+            };
+
+            new Chart('reluChart', {
+                type: 'line',
+                data: { datasets: [{ data: activationData(x => Math.max(0, x)), borderColor: '#0ea5e9', tension: 0.1 }] },
+                options: chartDefaultOptions
+            });
+            new Chart('sigmoidChart', {
+                type: 'line',
+                data: { datasets: [{ data: activationData(x => 1 / (1 + Math.exp(-x))), borderColor: '#0ea5e9', tension: 0.1 }] },
+                options: chartDefaultOptions
+            });
+            new Chart('tanhChart', {
+                type: 'line',
+                data: { datasets: [{ data: activationData(x => Math.tanh(x)), borderColor: '#0ea5e9', tension: 0.1 }] },
+                options: chartDefaultOptions
+            });
+
+            // Training Chart
+            const epochs = Array.from({length: 20}, (_, i) => i + 1);
+            const loss = epochs.map(epoch => 1 / Math.log(epoch + 2) + (Math.random() - 0.5) * 0.1);
+            new Chart('trainingChart', {
+                type: 'line',
+                data: {
+                    labels: epochs,
+                    datasets: [{
+                        label: 'Erro do Modelo (Loss)',
+                        data: loss,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Épocas de Treinamento' } },
+                        y: { title: { display: true, text: 'Erro (Loss)' } }
+                    },
+                    plugins: {
+                        title: { display: true, text: 'Conceito: Redução do Erro Durante o Treinamento', font: { size: 18 } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Interativo: Underfitting vs. Overfitting</title>
+    
+    <!-- Chosen Palette: Interactive Learning -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive laboratory. It starts with an introduction to the core challenge: generalization. The centerpiece is an interactive "playground" where users can select a model type (Underfit, Good Fit, Overfit) via buttons. This action dynamically updates two side-by-side charts: a scatter plot showing the model's decision boundary and a line chart showing the corresponding training/validation accuracy curves. Below this hands-on section, a "Deep Dive" area provides detailed explanations and solutions for each scenario. This structure prioritizes active exploration before reinforcing concepts with text, which is a highly effective learning pattern. -->
+    <!-- Visualization & Content Choices: The core visualizations are two dynamically updated charts from Chart.js. The first is a scatter plot with an overlaid line chart to represent the decision boundary, which visually demonstrates how each model type fits the data. The second is a line chart showing accuracy curves, making the abstract concepts of diverging or stagnating performance tangible. The main interaction is handled by vanilla JS attached to the model selection buttons. These buttons control the state, updating the data for both charts simultaneously. This provides immediate visual feedback, connecting a user's action directly to a conceptual outcome. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .control-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .control-btn.active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">Underfitting vs. Overfitting</h1>
+            <p class="text-lg text-slate-600 mt-2">Encontrando o equilíbrio perfeito para o seu modelo.</p>
+        </header>
+
+        <section id="playground" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">Laboratório de Modelos</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                O objetivo de um modelo é **generalizar** a partir dos dados de treino para prever novos dados. Selecione um tipo de modelo abaixo para ver como ele tenta aprender e como seu desempenho se comporta.
+            </p>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <button id="btn-underfit" data-model="underfit" class="control-btn bg-gray-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-600">Modelo Simples (Underfit)</button>
+                    <button id="btn-goodfit" data-model="goodfit" class="control-btn active bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600">Modelo Ideal (Good Fit)</button>
+                    <button id="btn-overfit" data-model="overfit" class="control-btn bg-red-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-600">Modelo Complexo (Overfit)</button>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 text-center mb-4">Fronteira de Decisão do Modelo</h3>
+                        <div class="chart-container">
+                            <canvas id="decisionBoundaryChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 text-center mb-4">Curvas de Acurácia</h3>
+                        <div class="chart-container">
+                            <canvas id="accuracyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-10">Análise e Soluções</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="bg-white p-8 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">📉 Underfitting (Alto Viés)</h3>
+                    <p class="text-lg text-slate-600 mb-4">O modelo é muito simples e não consegue capturar os padrões dos dados. Ele erra muito, tanto no treino quanto na validação.</p>
+                    <h4 class="font-bold text-slate-800 mb-2">Como Corrigir:</h4>
+                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                        <li>Aumentar a complexidade do modelo</li>
+                        <li>Melhorar ou adicionar características</li>
+                        <li>Treinar por mais tempo</li>
+                        <li>Reduzir a regularização</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-green-500">
+                    <h3 class="text-2xl font-bold text-green-700 mb-3">✅ Bom Ajuste (Equilíbrio)</h3>
+                    <p class="text-lg text-slate-600 mb-4">O modelo aprende o padrão geral dos dados e consegue generalizar bem para novos dados. As curvas de treino e validação andam juntas.</p>
+                    <h4 class="font-bold text-slate-800 mb-2">O Dilema Bias-Variância:</h4>
+                    <p class="text-slate-600">Este é o "ponto ideal" que todo cientista de dados busca, equilibrando a simplicidade (baixo viés) com a flexibilidade (baixa variância).</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold text-red-800 mb-3">📈 Overfitting (Alta Variância)</h3>
+                    <p class="text-lg text-slate-600 mb-4">O modelo é tão complexo que "decora" os dados de treino, incluindo o ruído. Ele acerta tudo no treino, mas erra em dados novos.</p>
+                    <h4 class="font-bold text-slate-800 mb-2">Como Corrigir:</h4>
+                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                        <li>Obter mais dados de treinamento</li>
+                        <li>Usar Parada Precoce (Early Stopping)</li>
+                        <li>Simplificar o modelo</li>
+                        <li>Adicionar Regularização (L1/L2, Dropout)</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center py-8 mt-8 border-t border-slate-200">
+        <p class="text-slate-500">Fontes e Leitura Adicional nos links do documento original.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA & STATE ---
+            const data = {
+                scatter: {
+                    classA: Array.from({length: 30}, () => ({x: Math.random() * 4 + 1, y: Math.random() * 4 + 5})),
+                    classB: Array.from({length: 30}, () => ({x: Math.random() * 4 + 5, y: Math.random() * 4 + 1}))
+                },
+                boundaries: {
+                    underfit: [{x: 5, y: 0}, {x: 5, y: 10}],
+                    goodfit: Array.from({length: 100}, (_, i) => { const x = i * 0.1; return {x: x, y: 25/x}; }),
+                    overfit: [{x:1,y:9},{x:2,y:6},{x:3,y:8},{x:4,y:5},{x:5,y:7},{x:6,y:4},{x:7,y:6},{x:8,y:3},{x:9,y:2}]
+                },
+                performance: {
+                    underfit: {
+                        train: [10, 25, 38, 45, 50, 52, 53, 53.5, 54, 54.2],
+                        val:   [11, 26, 39, 46, 51, 52.5, 53.2, 53.6, 53.8, 54]
+                    },
+                    goodfit: {
+                        train: [20, 50, 75, 85, 90, 92, 93, 93.5, 94, 94.2],
+                        val:   [18, 48, 73, 84, 89, 91, 92, 92.5, 92.8, 93]
+                    },
+                    overfit: {
+                        train: [25, 60, 85, 92, 96, 98, 99, 99.5, 99.8, 100],
+                        val:   [22, 58, 82, 88, 91, 90, 89.5, 89, 88.8, 88.7]
+                    }
+                }
+            };
+            
+            // --- CHART INSTANCES ---
+            let decisionChart, accuracyChart;
+
+            // --- DOM ELEMENTS ---
+            const buttons = document.querySelectorAll('.control-btn');
+
+            // --- FUNCTIONS ---
+            function createCharts() {
+                const decisionCtx = document.getElementById('decisionBoundaryChart').getContext('2d');
+                decisionChart = new Chart(decisionCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            { label: 'Classe A', data: data.scatter.classA, backgroundColor: 'rgba(59, 130, 246, 0.7)' },
+                            { label: 'Classe B', data: data.scatter.classB, backgroundColor: 'rgba(239, 68, 68, 0.7)' },
+                            {
+                                label: 'Fronteira de Decisão',
+                                type: 'line',
+                                data: [],
+                                borderColor: 'rgba(16, 185, 129, 1)',
+                                borderWidth: 4,
+                                fill: false,
+                                tension: 0.4,
+                                showLine: true
+                            }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { min: 0, max: 10 }, y: { min: 0, max: 10 } } }
+                });
+
+                const accuracyCtx = document.getElementById('accuracyChart').getContext('2d');
+                accuracyChart = new Chart(accuracyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({length: 10}, (_, i) => `Época ${i+1}`),
+                        datasets: [
+                            { label: 'Acurácia de Treino', data: [], borderColor: 'rgba(59, 130, 246, 1)', tension: 0.1 },
+                            { label: 'Acurácia de Validação', data: [], borderColor: 'rgba(245, 158, 11, 1)', tension: 0.1 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 105, title: { display: true, text: 'Acurácia (%)' } } } }
+                });
+            }
+
+            function updateVisuals(modelType) {
+                // Update decision boundary
+                decisionChart.data.datasets[2].data = data.boundaries[modelType];
+                const boundaryColors = { underfit: '#6b7280', goodfit: '#10b981', overfit: '#ef4444' };
+                decisionChart.data.datasets[2].borderColor = boundaryColors[modelType];
+                decisionChart.update();
+
+                // Update accuracy curves
+                accuracyChart.data.datasets[0].data = data.performance[modelType].train;
+                accuracyChart.data.datasets[1].data = data.performance[modelType].val;
+                accuracyChart.update();
+
+                // Update button styles
+                buttons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.model === modelType);
+                });
+            }
+
+            // --- INITIALIZATION ---
+            createCharts();
+            updateVisuals('goodfit'); // Start with the good fit model
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateVisuals(button.dataset.model);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

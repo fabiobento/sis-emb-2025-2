@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Interativo: Avaliação de Modelos de ML</title>
+    
+    <!-- Chosen Palette: Educational Analytics -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive lab. It starts with a brief introduction, leading into the core component: an interactive Confusion Matrix simulator. Users click a button to "run" a model on a sample validation set, populating the matrix dynamically. This is followed by a section where users can click on the matrix terms (TP, TN, FP, FN) for detailed explanations. The next section is a metrics calculator where clicking a metric (Accuracy, Precision, etc.) highlights the relevant cells in the matrix and shows the calculation. The experience concludes with a Chart.js visualization demonstrating the "Accuracy Trap" in imbalanced datasets. This hands-on, sequential structure was chosen to make abstract evaluation concepts tangible and memorable. -->
+    <!-- Visualization & Content Choices: The central interactive element is the HTML/CSS/JS Confusion Matrix, which is dynamically populated. This makes the process of its creation clear. For the metrics section, JS is used to highlight table cells and update text content, visually linking formulas to their components. The key data visualization is a bar chart from Chart.js comparing Accuracy and F1-Score for a balanced vs. an imbalanced model. This chart provides a powerful, data-driven conclusion about the importance of choosing the right metric. Unicode characters are used for icons. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .matrix-cell {
+            transition: all 0.3s ease;
+        }
+        .highlight-tp { background-color: #dcfce7 !important; /* green-100 */ }
+        .highlight-tn { background-color: #dbeafe !important; /* blue-100 */ }
+        .highlight-fp { background-color: #fee2e2 !important; /* red-100 */ }
+        .highlight-fn { background-color: #ffedd5 !important; /* orange-100 */ }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">Laboratório de Avaliação de Modelos</h1>
+            <p class="text-lg text-slate-600 mt-2">Uma introdução interativa à Matriz de Confusão e suas métricas.</p>
+        </header>
+
+        <section id="simulator" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">A Matriz de Confusão</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                A Matriz de Confusão é a principal ferramenta para entender o desempenho de um modelo de classificação. Ela mostra não apenas os acertos, mas também os tipos de erros cometidos. Vamos construir uma interativamente.
+            </p>
+            <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="text-center mb-8">
+                    <button id="run-model-btn" class="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-transform hover:scale-105">
+                        Executar Modelo no Conjunto de Teste
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="p-4 border-b-2 border-slate-300"></th>
+                                <th colspan="2" class="p-4 border-b-2 border-slate-300 font-bold text-slate-800 text-lg">Classe Prevista</th>
+                            </tr>
+                            <tr>
+                                <th class="p-4 border-r-2 border-slate-300"></th>
+                                <th class="p-4 border-r-2 border-slate-300"></th>
+                                <th class="p-4 border-b border-slate-200 bg-green-50 text-green-800">Positivo</th>
+                                <th class="p-4 border-b border-slate-200 bg-blue-50 text-blue-800">Negativo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th rowspan="2" class="p-4 border-r-2 border-slate-300 font-bold text-slate-800 text-lg align-middle"><div class="-rotate-90">Classe Real</div></th>
+                                <th class="p-4 border-r border-slate-200 bg-green-50 text-green-800">Positivo</th>
+                                <td id="tp" data-desc="Verdadeiro Positivo (TP)" class="matrix-cell p-8 text-center text-3xl font-bold border-r border-slate-200">0</td>
+                                <td id="fn" data-desc="Falso Negativo (FN)" class="matrix-cell p-8 text-center text-3xl font-bold">0</td>
+                            </tr>
+                            <tr>
+                                <th class="p-4 border-r border-slate-200 bg-blue-50 text-blue-800">Negativo</th>
+                                <td id="fp" data-desc="Falso Positivo (FP)" class="matrix-cell p-8 text-center text-3xl font-bold border-r border-slate-200">0</td>
+                                <td id="tn" data-desc="Verdadeiro Negativo (TN)" class="matrix-cell p-8 text-center text-3xl font-bold">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="matrix-explanation" class="mt-6 p-4 bg-slate-50 rounded-lg min-h-[60px] text-center text-lg text-slate-700">
+                    Passe o mouse sobre as células para ver a definição.
+                </div>
+            </div>
+        </section>
+
+        <section id="metrics" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-8">Calculando as Métricas de Avaliação</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                A partir da matriz, calculamos métricas que nos dão uma visão mais profunda do desempenho. Clique em cada métrica para ver como ela é calculada.
+            </p>
+            <div class="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <button data-metric="accuracy" class="metric-btn bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-full hover:bg-slate-300">Acurácia</button>
+                    <button data-metric="precision" class="metric-btn bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-full hover:bg-slate-300">Precisão</button>
+                    <button data-metric="recall" class="metric-btn bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-full hover:bg-slate-300">Recall</button>
+                    <button data-metric="f1" class="metric-btn bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-full hover:bg-slate-300">F1-Score</button>
+                </div>
+                <div id="metric-explanation" class="p-6 bg-slate-50 rounded-lg text-center">
+                    <h3 id="metric-title" class="text-2xl font-bold text-slate-800">Selecione uma Métrica</h3>
+                    <p id="metric-question" class="text-lg text-slate-600 mt-2">O que ela mede?</p>
+                    <div id="metric-formula" class="mt-4 text-xl font-mono bg-white p-4 rounded"></div>
+                    <p id="metric-result" class="text-2xl font-bold text-blue-600 mt-4"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="accuracy-trap" class="mb-20">
+            <h2 class="text-3xl font-bold text-slate-800 text-center mb-4">A Armadilha da Acurácia</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 text-center mb-10">
+                A acurácia pode ser enganosa, especialmente em datasets desbalanceados. Um F1-Score baixo, mesmo com alta acurácia, pode indicar um modelo inútil.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                <div class="chart-container">
+                    <canvas id="accuracyTrapChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center py-8 mt-8 border-t border-slate-200">
+        <p class="text-slate-500">Fontes e Leitura Adicional nos links do documento original.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA & STATE ---
+            const modelResults = {
+                tp: 38, tn: 42, fp: 3, fn: 17
+            };
+            const metricsData = {
+                accuracy: {
+                    title: 'Acurácia',
+                    question: 'Qual a proporção de acertos totais?',
+                    formula: '(TP + TN) / (TP + TN + FP + FN)',
+                    highlight: ['tp', 'tn', 'fp', 'fn']
+                },
+                precision: {
+                    title: 'Precisão',
+                    question: 'De tudo que o modelo previu como "Positivo", quanto ele acertou?',
+                    formula: 'TP / (TP + FP)',
+                    highlight: ['tp', 'fp']
+                },
+                recall: {
+                    title: 'Recall (Sensibilidade)',
+                    question: 'De tudo que era realmente "Positivo", quanto o modelo encontrou?',
+                    formula: 'TP / (TP + FN)',
+                    highlight: ['tp', 'fn']
+                },
+                f1: {
+                    title: 'F1-Score',
+                    question: 'Qual a média harmônica entre Precisão e Recall?',
+                    formula: '2 * (Precisão * Recall) / (Precisão + Recall)',
+                    highlight: ['tp', 'fp', 'fn']
+                }
+            };
+            
+            // --- DOM ELEMENTS ---
+            const runBtn = document.getElementById('run-model-btn');
+            const cells = {
+                tp: document.getElementById('tp'),
+                tn: document.getElementById('tn'),
+                fp: document.getElementById('fp'),
+                fn: document.getElementById('fn')
+            };
+            const matrixExplanation = document.getElementById('matrix-explanation');
+            const metricBtns = document.querySelectorAll('.metric-btn');
+            const metricTitle = document.getElementById('metric-title');
+            const metricQuestion = document.getElementById('metric-question');
+            const metricFormula = document.getElementById('metric-formula');
+            const metricResult = document.getElementById('metric-result');
+
+            // --- FUNCTIONS ---
+            function runSimulation() {
+                Object.keys(cells).forEach(key => {
+                    let i = 0;
+                    const target = modelResults[key];
+                    const interval = setInterval(() => {
+                        if (i >= target) {
+                            clearInterval(interval);
+                        } else {
+                            i++;
+                            cells[key].textContent = i;
+                        }
+                    }, 20);
+                });
+                runBtn.disabled = true;
+                runBtn.textContent = 'Modelo Executado!';
+                runBtn.classList.add('bg-green-500', 'hover:bg-green-500');
+            }
+
+            function calculateMetric(metric) {
+                const { tp, tn, fp, fn } = modelResults;
+                switch(metric) {
+                    case 'accuracy':
+                        return (tp + tn) / (tp + tn + fp + fn);
+                    case 'precision':
+                        return tp / (tp + fp);
+                    case 'recall':
+                        return tp / (tp + fn);
+                    case 'f1':
+                        const precision = tp / (tp + fp);
+                        const recall = tp / (tp + fn);
+                        return 2 * (precision * recall) / (precision + recall);
+                    default:
+                        return 0;
+                }
+            }
+
+            function displayMetric(metricKey) {
+                const data = metricsData[metricKey];
+                metricTitle.textContent = data.title;
+                metricQuestion.textContent = data.question;
+                metricFormula.textContent = data.formula;
+                
+                const result = calculateMetric(metricKey);
+                metricResult.textContent = `Resultado: ${result.toFixed(3)}`;
+
+                // Highlight cells
+                Object.values(cells).forEach(cell => cell.classList.remove('highlight-tp', 'highlight-tn', 'highlight-fp', 'highlight-fn'));
+                data.highlight.forEach(cellKey => {
+                    cells[cellKey].classList.add(`highlight-${cellKey}`);
+                });
+            }
+
+            // --- EVENT LISTENERS ---
+            runBtn.addEventListener('click', runSimulation);
+
+            Object.entries(cells).forEach(([key, cell]) => {
+                cell.addEventListener('mouseover', () => {
+                    matrixExplanation.textContent = cell.dataset.desc;
+                });
+                 cell.addEventListener('mouseout', () => {
+                    matrixExplanation.textContent = 'Passe o mouse sobre as células para ver a definição.';
+                });
+            });
+
+            metricBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    displayMetric(btn.dataset.metric);
+                });
+            });
+
+            // --- CHARTS ---
+            new Chart('accuracyTrapChart', {
+                type: 'bar',
+                data: {
+                    labels: ['Acurácia', 'F1-Score'],
+                    datasets: [
+                        {
+                            label: 'Modelo A (Dataset Balanceado)',
+                            data: [81.3, 81.8],
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        },
+                        {
+                            label: 'Modelo B (Dataset Desbalanceado)',
+                            data: [97.3, 24.7],
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: 'Pontuação (%)' } } },
+                    plugins: {
+                        title: { display: true, text: 'Acurácia vs. F1-Score em Diferentes Cenários', font: { size: 18 } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
