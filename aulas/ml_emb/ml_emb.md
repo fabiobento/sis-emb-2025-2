@@ -18,6 +18,7 @@
        - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/feature_extraction.html)
     3. Treinamento do modelo
        - [Notas de Aula](./train/train.md)
+       - [Tensorflow-Playground](https://playground.tensorflow.org/)
        - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/train.html)
     4. Avaliação do modelo
        - Como avaliar?
