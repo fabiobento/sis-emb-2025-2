@@ -10,7 +10,7 @@ Tudo começa com a coleta de dados. Esta é a matéria-prima do nosso modelo. Os
 
 ### **2\. Pré-processamento e Extração de Características**
 
-Uma vez que temos os dados brutos, eles raramente estão prontos para serem usados diretamente. Eles passam por duas fases cruciais:
+Uma vez que temos os dados brutos, eles raramente estão prontos para serem usados diretamente. Eles passam por duas fases:
 
 * **Pré-processamento:** Esta etapa envolve limpar e preparar os dados. Isso pode incluir a remoção de ruído, a normalização de valores ou o tratamento de dados faltantes para garantir a qualidade.  
 * **Extração de Características (Feature Extraction):** Como vimos anteriormente, em vez de usar os dados brutos, nós extraímos **características** mais informativas. Calculamos estatísticas (como RMS, média) ou aplicamos transformações (como FFT) para criar um resumo compacto e significativo dos dados. O resultado é um conjunto de "vetores de características", onde cada vetor representa uma amostra de dados original.
