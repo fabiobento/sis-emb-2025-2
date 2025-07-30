@@ -4,7 +4,7 @@
   - [Notas de Aula](./ml_emb_intro/ml_emb_intro.md)
   - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/ml_emb_intro.html)
 - O que é aprendizado de máquina?
-  - [Notas de Aula](./what_is_ml/what_is_ml.md)
+  - [Notas de Aula](./evaluation/what_is_ml/what_is_ml.md)
   - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/what_is_ml.html)
 - Ciclo de vida de um projeto de *Machine Learning*:
   - Pipeline de *Machine Learning*
@@ -22,7 +22,7 @@
        - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/train.html)
     4. Avaliação do modelo
        - Como avaliar?
-          - [Notas de Aula](./how_to_evaluate/how_to_evaluate.md)
+          - [Notas de Aula](./evaluation/how_to_evaluate/how_to_evaluate.md)
           - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/how_to_evaluate.html)
        - Overfitting vs Underfitting
           - [Notas de Aula](./evaluation/underfitting_overfitting/underfitting_overfitting.md)
