@@ -47,12 +47,3 @@ Encontrar esse equilíbrio é o cerne do chamado **Dilema Viés-Variância (Bias
 * Modelos muito complexos têm **baixo viés** e alta variância (Overfitting).
 
 O trabalho de um cientista de dados é navegar por esse dilema, usando as técnicas mencionadas acima para encontrar o "ponto ideal" onde o erro total (uma combinação de erro de viés e erro de variância) é minimizado nos dados de validação.
-
-### **Conteúdo Adicional Recomendado**
-
-Para aprofundar nos temas abordados, os seguintes recursos são recomendados:
-
-* **Vídeo sobre Underfitting:** [Underfitting in a Neural Network](https://www.google.com/search?q=https://www.youtube.com/watch?v%3DrH__AdGg-aQ)  
-* **Vídeo sobre Overfitting:** [Overfitting and a Neural Network](https://www.google.com/search?q=https://www.youtube.com/watch?v%3DS-tSQGN-8hM)  
-* **Palestra Aprofundada sobre Overfitting:** [Caltech Lecture: Overfitting](https://www.google.com/search?q=https://www.youtube.com/watch?v%3DsIX_1A-Ka-A)  
-* **Artigo sobre Dropout:** [Dropout: A Simple Way to Prevent Neural Networks from Overfitting](https://jmlr.org/papers/v15/srivastava14a.html)
