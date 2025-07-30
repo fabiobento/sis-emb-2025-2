@@ -22,7 +22,7 @@
        - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/train.html)
     4. Avaliação do modelo
        - Como avaliar?
-          - [Notas de Aula](https://fabiobento.github.io/sis-emb-2025-2/how_to_evaluate.md)
+          - [Notas de Aula](./how_to_evaluate/how_to_evaluate.md)
           - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/how_to_evaluate.html)
        - Overfitting vs Underfitting
           - [Notas de Aula](./evaluation/underfitting_overfitting/underfitting_overfitting.md)
