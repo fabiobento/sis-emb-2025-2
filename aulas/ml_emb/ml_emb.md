@@ -34,4 +34,4 @@
   - [Notas de Aula](./anomaly_detection/anomaly_detection/anomaly_detection.md)
   - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/anomaly_detection.html)
 - Reconhecimento de movimentos contínuos
-  - [Roteiro de Laboratório](lab_imu.pdf)
+  - [Roteiro de Laboratório](https://docs.google.com/presentation/d/1dWCcOaViw2XahO1umN897Qceew8agAQffbjKhScnEh8/edit?usp=sharing)
