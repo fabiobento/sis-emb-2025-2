@@ -35,4 +35,4 @@
   - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/anomaly_detection.html)
 - Reconhecimento de movimentos contínuos
   - [Roteiro de Laboratório](https://docs.google.com/presentation/d/1dWCcOaViw2XahO1umN897Qceew8agAQffbjKhScnEh8/edit?usp=sharing)
-- Os cálculos do bloco de análise espectral podem ser nesse notebook: [https://github.com/fabiobento/continuous-motion-recognition/blob/main/Edge_Impulse_Spectral_Analysis_Block.ipynb](https://github.com/fabiobento/continuous-motion-recognition/blob/main/Edge_Impulse_Spectral_Analysis_Block.ipynb) 
+- Os cálculos do bloco de análise espectral estão implementados em python nesse notebook: [https://github.com/fabiobento/continuous-motion-recognition/blob/main/Edge_Impulse_Spectral_Analysis_Block.ipynb](https://github.com/fabiobento/continuous-motion-recognition/blob/main/Edge_Impulse_Spectral_Analysis_Block.ipynb) 
