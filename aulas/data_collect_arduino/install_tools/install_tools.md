@@ -32,9 +32,9 @@
     - [https://docs.edgeimpulse.com/docs/tools/edge-impulse-for-linux/linux-python-sdk](https://docs.edgeimpulse.com/docs/tools/edge-impulse-for-linux/linux-python-sdk)  
 - Faça o download do seguinte script para instalação das ferramentas do Edge Impulse:
     ```bash
-     wget https://fabiobento.github.io/sis-emb-2025-2/aulas/data_collect_arduino/install_tools/install_tools.sh
+     wget https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/data_collect_arduino/install_tools/install_tools.sh
     ```    
-- Conceda permissão de execução e, então,  execute o script install_tools.sh:
+- No mesmo diretório em que baixou o script acima, conceda permissão de execução e, então,  execute o script install_tools.sh:
     ```bash
     chmod +x install_tools.sh ./install_tools.sh
     ```
