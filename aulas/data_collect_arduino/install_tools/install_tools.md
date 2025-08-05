@@ -34,10 +34,14 @@
     ```bash
      wget https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/data_collect_arduino/install_tools/install_tools.sh
     ```    
-- No mesmo diretório em que baixou o script acima, conceda permissão de execução e, então,  execute o script install_tools.sh:
+- No mesmo diretório em que baixou o script acima, conceda permissão de execução:
     ```bash
     chmod +x install_tools.sh ./install_tools.sh
     ```
+- Agora execute o script install_tools.sh:
+    ```bash
+    ./install_tools.sh
+    ```    
 - Baixar o modelo de seu projeto com
 
     ```bash
