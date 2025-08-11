@@ -1,9 +1,25 @@
-# Roteiro de Laboratório - Serialização de Dados de Sensor
+# **Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050**
 
-## Comunicação básica do Arduino com o MPU-6050
-A listagem abaixo é um código básico para leitura de sensor do sensor MPU6050 com o Arduino UNO. Carregue [esse script](./leitura_basica/leitura_basica.ino) no Arduino, e observe os resultados no monitor serial do Arduino IDE. 
+### **Objetivo**
 
-```bash
+Este roteiro tem dois objetivos principais:
+
+1. **Leitura Básica:** Realizar a leitura dos dados de aceleração e giroscópio de um sensor MPU-6050 com o Arduino.  
+2. **Serialização de Dados:** Modificar o código para formatar (serializar) a saída dos dados em um protocolo simples, preparando-os para serem usados por aplicações externas, como modelos de aprendizado de máquina.
+
+---
+
+### **Parte 1: Comunicação Básica com o Sensor**
+
+O código abaixo demonstra a leitura fundamental dos eixos do acelerômetro e do giroscópio do MPU-6050.
+
+**Instruções:**
+
+1. Carregue o [script](./leitura_basica/leitura_basica.ino) no seu Arduino UNO.  
+2. Abra o Monitor Serial do Arduino IDE com a taxa de 9600 bps.  
+3. Observe os dados sendo impressos.
+
+```arduino
 #include <Wire.h>
 #include <MPU6050.h> // Biblioteca para comunicação com o sensor MPU6050
 
@@ -71,44 +87,54 @@ void loop() {
   
   delay(1000); // Aguarda 1 segundo antes da próxima leitura
 }
-
 ```
-Se tudo correu bem, você observou algo parecido com isso aqui:
+
+#### **Saída Esperada no Monitor Serial**
+
+A saída será um texto descritivo, facilitando a leitura humana.
 
 ```bash
--------------------
-Acelerômetro (g): 6.91, -0.38, -7.69
-Giroscópio (graus/s): -1.08, -1.55, 1.13
--------------------
-Acelerômetro (g): 6.94, -0.42, -7.70
-Giroscópio (graus/s): -1.12, -1.66, 1.28
--------------------
-Acelerômetro (g): 6.90, -0.46, -7.64
-Giroscópio (graus/s): -0.96, -1.84, 1.50
--------------------
-Acelerômetro (g): 6.86, -0.42, -7.67
-Giroscópio (graus/s): -0.93, -1.66, 1.48
+-------------------  
+Acelerômetro (m/s²): 0.51, -0.12, 9.75  
+Giroscópio (graus/s): -1.08, -1.55, 1.13  
+-------------------  
+Acelerômetro (m/s²): 0.52, -0.13, 9.74  
+Giroscópio (graus/s): -1.12, -1.66, 1.28  
 -------------------
 ```
+---
 
-## Preparação dos dados para o aprendizado de máquina: Serialização 
-Para que essas informações possam ser utilizados em modelos de aprendizado de máquina precisamos **serializar** os dados lidos. Esse procedimento também é chamado de [*Data Ingestion*](https://docs.edgeimpulse.com/reference/data-ingestion/ingestion-api).
+### **Parte 2: Serialização dos Dados**
 
-**Serialização** ds dados é o ato de converter os dados lidos para o formato especificado por um **protocolo**. Em nosso contexto, você estará formatando os dados dos sensores em uma string, separando os valores por vírgula ou TAB, e enviando cada conjunto de dados como uma linha única pela comunicação serial.
+Softwares de análise de dados ou modelos de machine learning não conseguem interpretar o texto descritivo da saída anterior. Eles precisam dos dados em um formato bruto e consistente. O processo de converter os dados dos sensores para esse formato é chamado de **serialização**.
 
-## Protocolo
-O protocolo requerido pelos nossos modelos de aprendizado de máquina é muito simples. O dispositivo deve:
-1. enviar dados na taxa de transmissão de 115.200 bps
-2. com uma linha por leitura, e
-3. os dados individuais do sensor devem ser divididos com uma `,` ou um caractere TAB (`\t`).
-Por exemplo, esse seria o formato adequado para os dados de um acelerômetro de 3 eixos:
- ```bash
--0.12,-6.20,7.90
--0.13,-6.19,7.91
--0.14,-6.20,7.92
+#### **Requisitos de Formatação (Protocolo)**
+
+O dispositivo deve enviar os dados do **acelerômetro** seguindo estritamente estas regras:
+
+1. A taxa de transmissão serial (baud rate) deve ser **115200 bps**.  
+2. Cada leitura dos 3 eixos deve ser enviada em uma **única linha**.  
+3. Os valores de cada eixo (x, y, z) devem ser separados por uma **vírgula (,)**.  
+4. A linha **não** deve conter textos, espaços ou outros caracteres além dos valores e das vírgulas.
+5. A taxa de amostragem deve ser de aproximadamente 62,5 Hz.
+
+**Exemplo de Saída Serial Válida:**
+
+```bash
+-0.12,-6.20,7.90  
+-0.13,-6.19,7.91  
+-0.14,-6.20,7.92  
 -0.13,-6.20,7.90
--0.14,-6.20,7.91
 ```
 
-## Agora é com você!
-Modifique o código básico para leitura de sensor para que os estados estejam no formato requerido pelo protocolo de comunicação.
+### **Sua Tarefa**
+
+**Modifique o código da Parte 1 para que a saída serial siga estritamente os requisitos do protocolo.**
+
+**Dicas:**
+
+* Altere a taxa de transmissão em Serial.begin().  
+* Remova todos os Serial.print() que imprimem texto (ex: "Acelerômetro (m/s²): ").  
+* Envie apenas os dados do acelerômetro (accelX, accelY, accelZ).  
+* Use Serial.print() para os dois primeiros valores e Serial.println() para o último, garantindo a quebra de linha no final.  
+* Ajuste ou remova o delay(1000) para gerar dados com mais frequência, conforme requerido por sua aplicação final.
