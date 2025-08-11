@@ -44,7 +44,7 @@ O script final deve ser uma implementação robusta que atenda aos seguintes req
 * **Código-fonte (.py):** O script Python completo, comentado e organizado.  
 * **Relatório (PDF):** Um documento conciso explicando:  
   * A arquitetura do seu código.  
-  * **O que são as "raw features" neste contexto e por que sua extração correta em variáveis é crucial.**  
+  * **O que são as "raw features" neste contexto e por que sua extração correta em variáveis é muito importante.**  
   * Dificuldades encontradas e as soluções que você implementou.
 
 ---
