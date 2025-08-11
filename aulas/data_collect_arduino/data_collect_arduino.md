@@ -11,7 +11,6 @@
 
 - Código para comunicação básica do seu computador com Arduino com o sensor MPU-6050:
    - [Notas de Aula](./pc_arduino_comm/pc_arduino_comm.md)
-   - [Listagem de código](./pc_arduino_comm/leitura_basica.py)
 
 - Comunicação serial com o Arduino para coleta de dados do MPU-6050
   - [Roteiro de Laboratório](https://docs.google.com/document/d/17_doq3NHbU_uvZ2sUwwRHI7oDgyCNcqC/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true)
