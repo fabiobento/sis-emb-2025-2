@@ -1,4 +1,4 @@
-A listagem abaixo é um código básico para comunicação serial do seu PC com o arduino UNO:
+A listagem abaixo é um [código básico](./pc_arduino_comm/leitura_basica.py) para comunicação serial do seu PC com o arduino UNO:
 ```python
 import serial
 import time
