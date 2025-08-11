@@ -1,7 +1,7 @@
 # Roteiro de Laboratório - Serialização de Dados de Sensor
 
 ## Comunicação básica do Arduino com o MPU-6050
-A listagem abaixo é um código básico para leitura de sensor do sensor MPU6050 com o Arduino UNO. Carregue esse script no Arduino, e observe os resultados no monitor serial do Arduino IDE.
+A listagem abaixo é um código básico para leitura de sensor do sensor MPU6050 com o Arduino UNO. Carregue [esse script](./leitura_basica/leitura_basica.ino) no Arduino, e observe os resultados no monitor serial do Arduino IDE. 
 
 ```bash
 #include <Wire.h>
