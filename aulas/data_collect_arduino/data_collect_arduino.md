@@ -1,4 +1,4 @@
-# Coleta de Dados com Arduino Uno
+# Coleta de Dados com Arduino Uno Rev3
 
 - Introdução:
    - [Slides de Aula](https://docs.google.com/presentation/d/1hxq8a5sli60JcUFc5-LRpduTTpjgUcyc/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true)
@@ -6,7 +6,7 @@
 - Instalação das ferramentas de desenvolvimento
   - [Notas de Aula](./install_tools/install_tools.md)
 
-- Serialização dos dados do sensor MPU-6050:
+- Serialização dos dados do sensor MPU-6050 para o Arduino:
   - [Roteiro de Laboratório](./arduino_imu_comm/arduino_imu_comm.md)
 
 - Código para comunicação básica do Arduino com seu computador:
