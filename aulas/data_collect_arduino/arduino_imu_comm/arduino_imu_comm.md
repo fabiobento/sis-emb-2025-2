@@ -1,6 +1,6 @@
 # **Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050**
 
-### **Objetivo**
+## **Objetivo**
 
 Este roteiro tem dois objetivos principais:
 
@@ -9,7 +9,7 @@ Este roteiro tem dois objetivos principais:
 
 ---
 
-### **Parte 1: Comunicação Básica com o Sensor**
+## **Parte 1: Comunicação Básica com o Sensor**
 
 O código abaixo demonstra a leitura fundamental dos eixos do acelerômetro e do giroscópio do MPU-6050.
 
@@ -89,7 +89,7 @@ void loop() {
 }
 ```
 
-#### **Saída Esperada no Monitor Serial**
+### **Saída Esperada no Monitor Serial**
 
 A saída será um texto descritivo, facilitando a leitura humana.
 
@@ -104,11 +104,11 @@ Giroscópio (graus/s): -1.12, -1.66, 1.28
 ```
 ---
 
-### **Parte 2: Serialização dos Dados**
+## **Parte 2: Serialização dos Dados**
 
 Softwares de análise de dados ou modelos de machine learning não conseguem interpretar o texto descritivo da saída anterior. Eles precisam dos dados em um formato bruto e consistente. O processo de converter os dados dos sensores para esse formato é chamado de **serialização**.
 
-#### **Requisitos de Formatação (Protocolo)**
+### **Requisitos de Formatação (Protocolo)**
 
 O dispositivo deve enviar os dados do **acelerômetro** seguindo estritamente estas regras:
 
@@ -127,7 +127,7 @@ O dispositivo deve enviar os dados do **acelerômetro** seguindo estritamente es
 -0.13,-6.20,7.90
 ```
 
-### **Sua Tarefa**
+## **Sua Tarefa**
 
 **Modifique o código da Parte 1 para que a saída serial siga estritamente os requisitos do protocolo.**
 
