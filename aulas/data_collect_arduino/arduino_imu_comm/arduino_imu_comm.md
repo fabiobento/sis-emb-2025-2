@@ -106,7 +106,7 @@ Giroscópio (graus/s): -1.12, -1.66, 1.28
 
 ## **Parte 2: Serialização dos Dados**
 
-Softwares de análise de dados ou modelos de machine learning não conseguem interpretar o texto descritivo da saída anterior. Eles precisam dos dados em um formato bruto e consistente. O processo de converter os dados dos sensores para esse formato é chamado de **serialização**.
+Modelos de aprendizado de máquina em sistemas embarcados tem capacidade de processamento limitada e, via de regra, não foram projetados para interpretar um texto descritivo como o da saída anterior. Eles precisam dos dados em um formato bruto e consistente. O processo de converter os dados dos sensores para esse formato é chamado de **serialização**.
 
 ### **Requisitos de Formatação (Protocolo)**
 
