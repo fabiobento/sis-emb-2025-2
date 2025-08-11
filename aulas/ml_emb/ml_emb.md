@@ -1,13 +1,13 @@
-# *Machine Learning* Embarcado na Prática: da Coleta de Dados à Detecção de Anomalias
+# Aprendizado de Máquina Embarcado na Prática: da Coleta de Dados à Detecção de Anomalias
 
-- Introdução ao *Machine Learning* Embarcado
+- Introdução ao Aprendizado de Máquina Embarcado
   - [Notas de Aula](./ml_emb_intro/ml_emb_intro.md)
   - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/ml_emb_intro.html)
 - O que é aprendizado de máquina?
   - [Notas de Aula](./evaluation/what_is_ml/what_is_ml.md)
   - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/what_is_ml.html)
-- Ciclo de vida de um projeto de *Machine Learning*:
-  - Pipeline de *Machine Learning*
+- Ciclo de vida de um projeto de Aprendizado de Máquina:
+  - Pipeline de Aprendizado de Máquina
     - [Notas de Aula](./pipeline_ml/pipeline_ml.md)
     - [Slides de Aula](https://fabiobento.github.io/sis-emb-2025-2/pipeline_ml.html)
     1. Coleta de Dados:
