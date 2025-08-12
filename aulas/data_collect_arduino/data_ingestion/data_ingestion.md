@@ -28,7 +28,16 @@ Sua principal vantagem é a simplicidade: você não precisa implementar protoco
 
 ### **Passo 1: Preparar o Código do Dispositivo (Exemplo Arduino)**
 
-O Data Forwarder exige que os dados cheguem em um formato específico. Carregue no seu dispositivo o código que você desenvolveu na Parte 2 do [Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050](../arduino_imu_comm/arduino_imu_comm.md)
+O Data Forwarder exige que os dados cheguem em um formato específico. Carregue no seu dispositivo o código que você desenvolveu na Parte 2 do [Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050](../arduino_imu_comm/arduino_imu_comm.md).
+Lembre-se que o protocolo é muito simples. O dispositivo deve enviar dados na taxa de transmissão de 115.200 bps com uma linha por leitura, e os dados individuais do sensor devem ser divididos com uma `,` ou um `TAB`. Por exemplo, esses são os dados de um acelerômetro de 3 eixos:
+ ```bash
+ -0.12,-6.20,7.90
+-0.13,-6.19,7.91
+-0.14,-6.20,7.92
+-0.13,-6.20,7.90
+-0.14,-6.20,7.91
+ ```
+Posteriormente o encaminhador de dados determinará automaticamente a taxa de amostragem e o número de sensores com base na saída. Se você carregar um novo aplicativo em que a frequência de amostragem ou o número de eixos seja alterado, o encaminhador de dados será reconfigurado automaticamente.
 
 ### **Passo 2: Iniciar o Data Forwarder**
 
