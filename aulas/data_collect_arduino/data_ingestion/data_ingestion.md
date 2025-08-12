@@ -28,7 +28,7 @@ Sua principal vantagem é a simplicidade: você não precisa implementar protoco
 
 ### **Passo 1: Preparar o Código do Dispositivo (Exemplo Arduino)**
 
-O Data Forwarder exige que os dados cheguem em um formato específico. Carregue no seu dispositivo o código que você desenvolveu na Parte 2 do [Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050](./arduino_imu_comm/arduino_imu_comm.md)
+O Data Forwarder exige que os dados cheguem em um formato específico. Carregue no seu dispositivo o código que você desenvolveu na Parte 2 do [Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050](../arduino_imu_comm/arduino_imu_comm.md)
 
 ### **Passo 2: Iniciar o Data Forwarder**
 
@@ -42,19 +42,22 @@ edge-impulse-data-forwarder
 O terminal pedirá suas credenciais e as informações do projeto. Preencha os campos conforme solicitado.
 
 ```bash
-Edge Impulse data forwarder v1.18.0  
-? What is your user name or e-mail address? seu-email@provedor.com  
-? What is your password? \[hidden\]
+Edge Impulse data forwarder v1.5.0
+? What is your user name or e-mail address (edgeimpulse.com)? jan@edgeimpulse.com
+? What is your password? [hidden]
+Endpoints:
+    Websocket: wss://remote-mgmt.edgeimpulse.com
+    API:       https://studio.edgeimpulse.com
+    Ingestion: https://ingestion.edgeimpulse.com
 
-\[SER\] Connecting to /dev/tty.usbmodem1234  \<-- Detectou seu dispositivo  
-\[SER\] Serial is connected  
-\[WS \] Connecting to wss://remote-mgmt.edgeimpulse.com  
-\[WS \] Connected to wss://remote-mgmt.edgeimpulse.com
-
-? To which project do you want to add this device? meu-projeto-acelerometro  
-? 3 sensor axes detected. What do you want to call them? Separate the names with ',': accX, accY, accZ  
-? What name do you want to give this device? Arduino Nano 33  
-\[WS \] Authenticated. Go to https://studio.edgeimpulse.com/studio/ID\_PROJETO/acquisition/training to collect data.
+[SER] Connecting to /dev/tty.usbmodem401203
+[SER] Serial is connected
+[WS ] Connecting to wss://remote-mgmt.edgeimpulse.com
+[WS ] Connected to wss://remote-mgmt.edgeimpulse.com
+? To which project do you want to add this device? accelerometer-demo-1
+? 3 sensor axes detected. What do you want to call them? Separate the names with ',': accX, accY, accZ
+? What name do you want to give this device? Jan's DISCO-L475VG
+[WS ] Authenticated
 ```
 **Observação:** Suas credenciais são usadas apenas para obter um token de autenticação e nunca são armazenadas.
 
@@ -67,17 +70,17 @@ Com o forwarder em execução, vá para o seu projeto no **Edge Impulse Studio**
 ## **5\. Comandos Adicionais Úteis**
 
 * **Limpar a configuração anterior:** Se precisar se conectar a outro projeto ou resetar as configurações.  
-  Bash  
-  edge-impulse-data-forwarder \--clean
-
+```bash
+  edge-impulse-data-forwarder --clean
+```
 * **Forçar uma frequência de amostragem:** Caso o forwarder não a detecte corretamente. (Valor em Hz).  
-  Bash  
-  edge-impulse-data-forwarder \--frequency 100
-
+```bash
+  edge-impulse-data-forwarder --frequency 100
+```
 * **Alterar a taxa de comunicação (baud rate):** Se seu dispositivo usa uma taxa diferente de 115200\.  
-  Bash  
-  edge-impulse-data-forwarder \--baud-rate 9600
-
+```bash
+  edge-impulse-data-forwarder --baud-rate 9600
+```
 ## **6\. Referência**
 
 Para mais detalhes, consulte a documentação oficial: [Edge Impulse CLI Data Forwarder](https://docs.edgeimpulse.com/docs/tools/edge-impulse-cli/cli-data-forwarder)
