@@ -15,4 +15,8 @@
 - Extração de *features* de aceleração via comunicação serial
   - [Roteiro de Laboratório](./features_collect/features_collect.md)
 
+
+- Ingestão de dados
+  - [Roteiro de Laboratório](./data_ingestion/data_ingestion.md)
+
   
