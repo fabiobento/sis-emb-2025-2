@@ -12,7 +12,7 @@
 - Código básico para comunicação do Arduino com seu computador:
    - [Notas de Aula](./pc_arduino_comm/pc_arduino_comm.md)
 
-- Comunicação serial com o Arduino para coleta de dados do MPU-6050
+- Extração de *features* de aceleração via comunicação serial
   - [Roteiro de Laboratório](./features_collect/features_collect.md)
 
   
