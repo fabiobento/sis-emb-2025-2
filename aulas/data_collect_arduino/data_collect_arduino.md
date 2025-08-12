@@ -16,7 +16,7 @@
   - [Roteiro de Laboratório](./features_collect/features_collect.md)
 
 
-- Ingestão de dados
+- Ingestão de Dados com o *Edge Impulse Data Forwarder*
   - [Roteiro de Laboratório](./data_ingestion/data_ingestion.md)
 
   
