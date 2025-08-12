@@ -1,34 +1,43 @@
 import serial
 import time
 
-# Configuração da porta serial
-#port = "/dev/ttyUSB0"  # Exemplo de porta USB
-port = "/dev/ttyACM1"   # Porta atualmente utilizada
-# Para identificar a porta serial utilize:
-#    ls -la /dev/ttyACM*
-#    ls -la /dev/ttyUSB*
-baudrate = 115200  # Taxa de transmissão em bits por segundo
-timeout = 1      # Tempo limite para leitura (em segundos)
+# --- CONFIGURAÇÕES ---
+# Altere esta variável para a porta serial correta do seu Arduino.
+# Exemplo Linux: "/dev/ttyACM0"
+# Exemplo Windows: "COM3"
+PORTA_SERIAL = "/dev/ttyACM1" 
+TAXA_DE_TRANSMISSAO = 115200 # Deve ser a mesma configurada no Arduino
+TIMEOUT_LEITURA = 1      # Tempo em segundos para esperar por dados
 
-# Abrir a porta serial
-ser = serial.Serial(port, baudrate, timeout=timeout)
+def ler_dados_seriais():
+    """
+    Função principal para ler e exibir os dados da porta serial continuamente.
+    """
+    print(f"Tentando conectar na porta {PORTA_SERIAL} a {TAXA_DE_TRANSMISSAO} bps...")
 
-def read_serial_data():
-    # Função para ler dados da porta serial continuamente
-    while True:
-        try:
-            # Lê uma linha da porta serial, decodifica e remove espaços extras
-            line = ser.readline().decode("utf-8").strip()
-            if line:
-                print(line)  # Exibe a linha lida
-        except Exception as e:
-            print(f"Error: {e}")  # Exibe erro, se ocorrer
-            break  # Encerra o loop em caso de erro
-
-if __name__ == "__main__":
+    # O bloco 'with' garante que a porta serial será fechada automaticamente.
     try:
-        read_serial_data()  # Inicia a leitura dos dados
+        with serial.Serial(PORTA_SERIAL, TAXA_DE_TRANSMISSAO, timeout=TIMEOUT_LEITURA) as ser:
+            print("Conexão bem-sucedida! Lendo dados... (Pressione Ctrl+C para parar)")
+            
+            while True:
+                # Lê uma linha (até encontrar '\n'), decodifica de bytes para string
+                # e remove espaços em branco no início ou fim.
+                linha = ser.readline().decode('utf-8').strip()
+                
+                # Exibe a linha somente se ela não estiver vazia.
+                if linha:
+                    print(linha)
+
+    except serial.SerialException as e:
+        print(f"Erro ao abrir a porta serial: {e}")
     except KeyboardInterrupt:
-        print("Parando o script.")  # Mensagem ao interromper com Ctrl+C
+        print("\nLeitura interrompida pelo usuário.")
+    except Exception as e:
+        print(f"Ocorreu um erro inesperado: {e}")
     finally:
-        ser.close()  # Fecha a porta serial ao finalizar
+        print("Script finalizado.")
+
+# Ponto de entrada do script
+if __name__ == "__main__":
+    ler_dados_seriais()
