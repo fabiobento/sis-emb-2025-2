@@ -26,9 +26,9 @@ Sua principal vantagem é a simplicidade: você não precisa implementar protoco
 
 ## **4\. Passo a Passo**
 
-### **Passo 1: Preparar o Código do Dispositivo (Exemplo Arduino)**
+### **Passo 1: Preparar o código do dispositivo**
 
-O Data Forwarder exige que os dados cheguem em um formato específico. Carregue no seu dispositivo o código que você desenvolveu na Parte 2 do [Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050](../arduino_imu_comm/arduino_imu_comm.md).
+O *Data Forwarder* exige que os dados cheguem em um formato específico. Carregue no seu dispositivo o código que você desenvolveu na Parte 2 do [Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050](../arduino_imu_comm/arduino_imu_comm.md).
 Lembre-se que o protocolo é muito simples. O dispositivo deve enviar dados na taxa de transmissão de 115.200 bps com uma linha por leitura, e os dados individuais do sensor devem ser divididos com uma `,` ou um `TAB`. Por exemplo, esses são os dados de um acelerômetro de 3 eixos:
  ```bash
  -0.12,-6.20,7.90
@@ -72,7 +72,7 @@ Endpoints:
 
 ### **Passo 4: Coletar os Dados**
 
-Com o forwarder em execução, vá para o seu projeto no **Edge Impulse Studio**. Na aba **Data acquisition**, seu dispositivo aparecerá listado e pronto para a coleta de novas amostras.
+Com o *data forwarder* em execução, vá para o seu projeto no **Edge Impulse Studio**. Na aba **Data acquisition**, seu dispositivo aparecerá listado e pronto para a coleta de novas amostras.
 
 ---
 
