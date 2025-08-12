@@ -1,4 +1,4 @@
-# Coleta de Dados com Arduino Uno Rev3
+# Ingestão de Dados com Arduino Uno Rev3
 
 - Introdução:
    - [Slides de Aula](https://docs.google.com/presentation/d/1hxq8a5sli60JcUFc5-LRpduTTpjgUcyc/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true)
