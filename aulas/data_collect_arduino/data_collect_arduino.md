@@ -9,7 +9,7 @@
 - Serialização dos dados do sensor MPU-6050 para o Arduino:
   - [Roteiro de Laboratório](./arduino_imu_comm/arduino_imu_comm.md)
 
-- Código básico para comunicação do Arduino com seu computador:
+- Código básico para comunicação do seu computador com o Arduino:
    - [Notas de Aula](./pc_arduino_comm/pc_arduino_comm.md)
 
 - Extração de *features* de aceleração via comunicação serial

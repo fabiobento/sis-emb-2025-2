@@ -91,17 +91,15 @@ void loop() {
 
 ### **Saída Esperada no Monitor Serial**
 
-A saída será um texto descritivo, facilitando a leitura humana.
+Clique o `Serial Monitor` no canto superior direito da Arduino IDE que é bem assim:
 
-```bash
--------------------  
-Acelerômetro (m/s²): 0.51, -0.12, 9.75  
-Giroscópio (graus/s): -1.08, -1.55, 1.13  
--------------------  
-Acelerômetro (m/s²): 0.52, -0.13, 9.74  
-Giroscópio (graus/s): -1.12, -1.66, 1.28  
--------------------
-```
+![Ícone do Serial Monitor](./imagens/serial_monitor_icon.png)
+
+A saída será um texto descritivo, que facilita a leitura humana, conforme exemplo da figura abaixo.
+
+![Saída do Serial Monitor](./imagens/serial_monitor_output.png)
+
+
 ---
 
 ## **Parte 2: Serialização dos Dados**
@@ -119,17 +117,23 @@ O dispositivo deve enviar os dados do **acelerômetro** seguindo estritamente es
 5. A taxa de amostragem deve ser de aproximadamente 62,5 Hz.
 
 **Exemplo de Saída Serial Válida:**
+Para observar os seus resultados, ative novamente o `Serial Monitor`.
+Agora a saída deve ter formatação semelhante ao exemplo abaixo:
 
-```bash
--0.12,-6.20,7.90  
--0.13,-6.19,7.91  
--0.14,-6.20,7.92  
--0.13,-6.20,7.90
-```
+![Saída do Serial Monitor](./imagens/serial_monitor_output_protocol.png)
 
 ## **Sua Tarefa**
 
 **Modifique o código da Parte 1 para que a saída serial siga estritamente os requisitos do protocolo.**
+
+Quando tiver concluído você pode acompanhar a plotagem dos dados serializados coletados do sensor pelo Arduino. Para isso ative o `Serial Plotter` clicando no ícone que também fica no canto superior direito:
+
+![Saída do Serial Monitor](./imagens/serial_plotter_icon.png)
+
+O seu resultado será exibido com um aspecto semelhante ao da figura abaixo:
+
+![Saída do Serial Monitor](./imagens/serial_plotter_output.png)
+
 
 **Dicas:**
 

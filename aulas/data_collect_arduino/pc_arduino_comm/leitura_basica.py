@@ -3,11 +3,11 @@ import time
 
 # Configuração da porta serial
 #port = "/dev/ttyUSB0"  # Exemplo de porta USB
-port = "/dev/ttyACM1"   # Porta atualmente utilizada
+port = "/dev/ttyACM0"   # Porta atualmente utilizada
 # Para identificar a porta serial utilize:
 #    ls -la /dev/ttyACM*
 #    ls -la /dev/ttyUSB*
-baudrate = 9600  # Taxa de transmissão em bits por segundo
+baudrate = 115200  # Taxa de transmissão em bits por segundo
 timeout = 1      # Tempo limite para leitura (em segundos)
 
 # Abrir a porta serial
