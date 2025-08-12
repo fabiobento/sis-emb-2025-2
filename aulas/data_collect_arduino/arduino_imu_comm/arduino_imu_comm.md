@@ -133,8 +133,8 @@ O dispositivo deve enviar os dados do **acelerômetro** seguindo estritamente es
 
 **Dicas:**
 
-* Altere a taxa de transmissão em Serial.begin().  
-* Remova todos os Serial.print() que imprimem texto (ex: "Acelerômetro (m/s²): ").  
+* Altere a taxa de transmissão em `Serial.begin`().  
+* Remova todos os `Serial.print()` que imprimem texto (ex: "Acelerômetro (m/s²): ").  
 * Envie apenas os dados do acelerômetro (accelX, accelY, accelZ).  
-* Use Serial.print() para os dois primeiros valores e Serial.println() para o último, garantindo a quebra de linha no final.  
+* Use `Serial.print()` para os dois primeiros valores e `Serial.println()` para o último, garantindo a quebra de linha no final.  
 * Ajuste ou remova o delay(1000) para gerar dados com mais frequência, conforme requerido por sua aplicação final.
