@@ -35,3 +35,7 @@ if __name__ == "__main__":
     finally:
         ser.close()  # Fecha a porta serial ao finalizar
 ```
+
+Se o seu Arduino estiver com o código que você desenvolveu no roteiro de laboratório [Serialização dos dados do sensor MPU-6050 para o Arduino](./arduino_imu_comm/arduino_imu_comm.md), a saída esperada tem o seguinte aspecto:
+
+![Saída do Serial Monitor](./imagens/pc_python_output_protocol.png)

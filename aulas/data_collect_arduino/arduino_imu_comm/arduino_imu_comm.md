@@ -91,7 +91,7 @@ void loop() {
 
 ### **Saída Esperada no Monitor Serial**
 
-Clique o `Serial Monitor` no canto superior direito da Arduino IDE que é bem assim:
+Ative o `Serial Monitor` clicando no ícone correspondente no canto superior direito da Arduino IDE:
 
 ![Ícone do Serial Monitor](./imagens/serial_monitor_icon.png)
 
