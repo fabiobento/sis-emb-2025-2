@@ -8,7 +8,7 @@
    ```bash
     sudo usermod -a -G dialout $USER
    ```
-   - Importante: Após executar o comando, você precisa fazer logout e login novamente ou, para garantir, reiniciar o computador. A alteração de grupo só terá efeito em uma nova sessão.
+   - *Importante*: Após executar o comando, você precisa fazer logout e login novamente ou, para garantir, reiniciar o computador. A alteração de grupo só terá efeito em uma nova sessão.
     - Eliminar conflito com brltty:
     ```bash
     sudo apt remove brltty
