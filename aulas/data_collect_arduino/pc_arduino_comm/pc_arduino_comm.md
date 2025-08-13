@@ -18,11 +18,11 @@ O objetivo desta etapa é desenvolver e executar um script em Python para ler e 
 Antes de executar o script, você precisa saber em qual porta seu Arduino está conectado.
 
 * **Em Linux ou macOS:** Abra o terminal e execute um dos comandos abaixo. Geralmente a porta se chama ttyACM\* ou ttyUSB\*.  
-  Bash  
+  ```bash  
   ls /dev/ttyACM\*  
   \# ou  
   ls /dev/ttyUSB\*
-
+  ```
 
 ### **Passo 2: Criar e Configurar o Script Python**
 
