@@ -34,7 +34,7 @@ A janela deslizante funciona assim:
 
 1. **Coleta:** Acumulamos um número fixo de amostras (ex: 100 leituras) em uma lista. Isso é o `WINDOW_SIZE`.  
 2. **Processamento:** Uma vez que a janela está cheia, executamos nossa lógica sobre ela (neste caso, apenas imprimimos os dados).  
-3. **Deslize:** Para a próxima iteração, não descartamos a janela inteira. Mantemos uma parte dos dados mais recentes e removemos apenas os mais antigos. A quantidade de amostras descartadas é definida pelo **passo** (`STRIDE`).
+3. **Deslocamento:** Para a próxima iteração, não descartamos a janela inteira. Mantemos uma parte dos dados mais recentes e removemos apenas os mais antigos. A quantidade de amostras descartadas é definida pelo **passo** (`STRIDE`).
 
 **Exemplo:** Com `WINDOW_SIZE` = 10 e STRIDE = 4:
 
@@ -120,7 +120,7 @@ def main():
                 if len(data_window) >= WINDOW_SIZE:  
                     process_window(data_window)  
                         
-                    # TODO 6: Implemente o "deslize".  
+                    # TODO 6: Implemente o "deslocamento".  
                     # A nova janela deve ser uma fatia da janela antiga.  
                     # Dica: data\_window = data_window[STRIDE:]  
                     data_window = data_window[STRIDE:]
