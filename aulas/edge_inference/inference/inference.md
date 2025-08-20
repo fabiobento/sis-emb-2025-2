@@ -37,12 +37,12 @@
      * Instancie o objeto de manipulação de modelos, informando o caminho até o `modelfile.eim` que você baixou: `runner = ImpulseRunner(model)`.
      * Implemente a função `classify_data` conforme o modelo abaixo:  
         ```bash
-        def classify\_data(features, runner):  
-            res \= runner.classify(features)  
+        def classify_data(features, runner):  
+            res = runner.classify(features)  
             print("classificação:")  
-            print(res\["result"\])  
+            print(res["result"])  
             print("tempo:")  
-            print(res\["timing"\])
+            print(res["timing"])
         ```
   
 5. **Execução e Encerramento:**
