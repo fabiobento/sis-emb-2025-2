@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Interativo: Janela Deslizante para Análise de Dados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .fira-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .content-section {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .concept-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+        .data-point {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+        }
+        .window-container {
+            position: absolute;
+            height: 2.5rem;
+            border: 2px dashed #4f46e5;
+            border-radius: 0.5rem;
+            transition: left 0.5s ease-in-out;
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+        <!-- Chosen Palette: Slate & Indigo -->
+        <!-- Application Structure Plan: A single-page, scrollable tutorial format. The structure follows a logical learning path: "The Problem" (why single data points fail), "The Solution" (introducing the sliding window concept), "Key Concepts" (defining WINDOW_SIZE and STRIDE), and finally, an "Interactive Simulation" to demonstrate the process in action. This narrative approach is highly effective for teaching a complex data processing technique. -->
+        <!-- Visualization & Content Choices: Report Info: Lab guide on implementing a sliding window. -> Goal: Teach the concept and mechanics of a sliding window. -> Viz/Presentation Method: A combination of conceptual diagrams, clear definitions, and a dynamic, animated simulation. -> Interaction: A "Run Simulation" button that visually demonstrates the window collecting, processing, and sliding over a stream of data points. -> Justification: The simulation is the core learning tool. It makes the abstract concepts of WINDOW_SIZE and STRIDE tangible by showing how the data buffer changes over time, which is far more effective than static text or code alone. -> Library/Method: Vanilla JS and Tailwind CSS. -->
+        <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-slate-800 text-white text-center py-8 shadow-lg">
+        <h1 class="text-3xl md:text-4xl font-bold">Janela Deslizante para Análise de Dados</h1>
+        <p class="text-slate-300 mt-2">Dando contexto aos dados de sensores em tempo real.</p>
+    </header>
+
+    <main class="container mx-auto px-4">
+
+        <section id="intro" class="content-section text-center">
+            <h2 class="text-3xl font-bold mb-4 text-slate-700">Por Que Olhar Para o Contexto?</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">
+                Dados de sensores, como um acelerômetro, chegam como um fluxo contínuo. Analisar uma única amostra isolada não nos diz muito sobre o movimento real. Foi um tremor rápido ou o início de um gesto longo? Para entender, precisamos olhar para um **"pedaço" de tempo**, ou uma **janela**, de dados.
+            </p>
+            <div class="flex justify-center items-start space-x-8">
+                <div class="text-center p-6 bg-red-50 border border-red-200 rounded-lg">
+                    <h3 class="font-bold text-red-700">Análise Isolada (Ruim)</h3>
+                    <div class="text-4xl my-4">❓</div>
+                    <p class="text-sm text-red-600">Este ponto é um movimento?</p>
+                </div>
+                <div class="text-center p-6 bg-indigo-50 border border-indigo-200 rounded-lg">
+                    <h3 class="font-bold text-indigo-700">Análise em Janela (Bom)</h3>
+                    <div class="text-4xl my-4">📈</div>
+                    <p class="text-sm text-indigo-600">Este conjunto de pontos forma uma onda!</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="concept" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">O Conceito: Janela Deslizante</h2>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="concept-card text-center">
+                    <div class="text-3xl mb-3">📥</div>
+                    <h3 class="text-xl font-semibold text-slate-800">1. Coleta</h3>
+                    <p class="text-slate-500 mt-2">Acumulamos um número fixo de amostras de dados em uma lista ou buffer.</p>
+                </div>
+                <div class="concept-card text-center">
+                    <div class="text-3xl mb-3">⚙️</div>
+                    <h3 class="text-xl font-semibold text-slate-800">2. Processamento</h3>
+                    <p class="text-slate-500 mt-2">Quando a janela está cheia, executamos nossa lógica (ex: extrair features, classificar).</p>
+                </div>
+                <div class="concept-card text-center">
+                    <div class="text-3xl mb-3">➡️</div>
+                    <h3 class="text-xl font-semibold text-slate-800">3. Deslize</h3>
+                    <p class="text-slate-500 mt-2">Descartamos os dados mais antigos e mantemos os mais recentes para a próxima coleta.</p>
+                </div>
+            </div>
+            <div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-semibold mb-4 text-center">Parâmetros Chave</h3>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-indigo-700">WINDOW_SIZE</h4>
+                        <p class="text-slate-600">O tamanho total da janela. Quantas amostras precisamos coletar antes de processar.</p>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-indigo-700">STRIDE (Passo)</h4>
+                        <p class="text-slate-600">Quantas das amostras mais antigas descartamos após o processamento. Um `STRIDE` menor que o `WINDOW_SIZE` cria sobreposição, garantindo que nenhum evento seja perdido entre as janelas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="simulation" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">Demonstração Interativa</h2>
+            <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-md">
+                <div class="flex flex-col md:flex-row gap-4 mb-4 items-center justify-center">
+                    <p><strong>Configuração:</strong></p>
+                    <p class="fira-code text-sm">WINDOW_SIZE = <span class="font-bold text-indigo-600">10</span></p>
+                    <p class="fira-code text-sm">STRIDE = <span class="font-bold text-indigo-600">4</span></p>
+                </div>
+                <div class="relative h-20 bg-slate-100 p-4 rounded-lg">
+                    <div id="data-stream" class="relative flex items-center space-x-2">
+                        <!-- Data points will be injected here by JS -->
+                    </div>
+                    <div id="window-visual" class="window-container hidden"></div>
+                </div>
+                <div id="status-text" class="text-center mt-4 h-6 text-slate-600 font-semibold"></div>
+                <button id="run-button" class="mt-4 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    ▶ Iniciar Simulação
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 bg-slate-100 mt-8">
+        <p class="text-slate-500 text-sm">Tutorial Interativo criado com HTML, Tailwind CSS e JavaScript.</p>
+    </footer>
+
+    <script>
+        const runButton = document.getElementById('run-button');
+        const dataStreamDiv = document.getElementById('data-stream');
+        const windowVisual = document.getElementById('window-visual');
+        const statusText = document.getElementById('status-text');
+        
+        let isRunning = false;
+        let simulationTimeout;
+        const WINDOW_SIZE = 10;
+        const STRIDE = 4;
+        const POINT_WIDTH_MARGIN = 40; // 32px width + 8px margin
+
+        function createDataPoint(index) {
+            const dp = document.createElement('div');
+            dp.className = 'data-point bg-slate-300 text-slate-600';
+            dp.textContent = `d${index}`;
+            dp.id = `dp-${index}`;
+            return dp;
+        }
+
+        function resetSimulation() {
+            clearTimeout(simulationTimeout);
+            isRunning = false;
+            dataStreamDiv.innerHTML = '';
+            windowVisual.classList.add('hidden');
+            statusText.textContent = 'Clique em iniciar para começar.';
+            runButton.textContent = '▶ Iniciar Simulação';
+            runButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+            runButton.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
+        }
+
+        function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            runButton.textContent = '■ Parar Simulação';
+            runButton.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
+            runButton.classList.add('bg-red-500', 'hover:bg-red-600');
+
+            let dataBuffer = [];
+            let dataCounter = 1;
+
+            function runStep() {
+                // Add new data point
+                const newData = createDataPoint(dataCounter++);
+                dataStreamDiv.appendChild(newData);
+                dataBuffer.push(newData);
+                statusText.textContent = `Coletando... (${dataBuffer.length}/${WINDOW_SIZE})`;
+
+                // Highlight points in buffer
+                dataBuffer.forEach(dp => {
+                    dp.classList.remove('bg-slate-300', 'text-slate-600');
+                    dp.classList.add('bg-indigo-200', 'text-indigo-800');
+                });
+
+                // Check if window is full
+                if (dataBuffer.length >= WINDOW_SIZE) {
+                    statusText.textContent = `Janela cheia! Processando...`;
+                    
+                    // Show and position the visual window
+                    const firstPoint = dataBuffer[0];
+                    windowVisual.style.left = `${firstPoint.offsetLeft}px`;
+                    windowVisual.style.width = `${WINDOW_SIZE * POINT_WIDTH_MARGIN - 8}px`;
+                    windowVisual.classList.remove('hidden');
+
+                    // Highlight window content
+                    dataBuffer.forEach(dp => {
+                        dp.classList.remove('bg-indigo-200');
+                        dp.classList.add('bg-indigo-500', 'text-white');
+                    });
+
+                    simulationTimeout = setTimeout(() => {
+                        statusText.textContent = `Deslizando a janela... (descartando ${STRIDE} pontos)`;
+                        
+                        // "Discard" old data by changing color
+                        const toDiscard = dataBuffer.slice(0, STRIDE);
+                        toDiscard.forEach(dp => {
+                            dp.classList.remove('bg-indigo-500', 'text-white');
+                            dp.classList.add('bg-slate-300', 'text-slate-600');
+                        });
+
+                        // Update buffer
+                        dataBuffer = dataBuffer.slice(STRIDE);
+                        
+                        // Hide window temporarily
+                        windowVisual.classList.add('hidden');
+
+                        if (dataCounter > 20) {
+                             statusText.textContent = 'Simulação concluída!';
+                             setTimeout(resetSimulation, 2000);
+                        } else {
+                            simulationTimeout = setTimeout(runStep, 500);
+                        }
+
+                    }, 1500);
+
+                } else {
+                    simulationTimeout = setTimeout(runStep, 300);
+                }
+            }
+            runStep();
+        }
+
+        runButton.addEventListener('click', () => {
+            if (isRunning) {
+                resetSimulation();
+            } else {
+                startSimulation();
+            }
+        });
+
+        resetSimulation();
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Interativo: Classificação em Tempo Real com Edge Impulse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .fira-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .content-section {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .pipeline-step {
+            transition: transform 0.2s;
+        }
+        .pipeline-step:hover {
+            transform: scale(1.05);
+        }
+        .result-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        <!-- Chosen Palette: Slate & Emerald -->
+        <!-- Application Structure Plan: A single-page, scrollable tutorial format. The structure follows the complete data pipeline: from raw data collection to intelligent classification. It starts with the "Big Picture" (the full pipeline), introduces the "Brain" (the Edge Impulse model), shows the "Implementation" (the Python code), and culminates in an "Interactive Demo" that simulates the entire process. This structure builds knowledge progressively and ends with a practical, rewarding demonstration. -->
+        <!-- Visualization & Content Choices: Report Info: Lab guide for real-time classification. -> Goal: Teach how to integrate a pre-trained model to make live predictions. -> Viz/Presentation Method: A visual pipeline diagram, annotated code, and a dynamic simulation showing classification results. -> Interaction: A "Run Simulation" button that animates data collection, windowing, and the final classification output with probability bars. -> Justification: The simulation is crucial. It visually connects the data window to the model's output, making the abstract concept of "inference" concrete. Showing the classification probabilities in a bar chart format is more intuitive and visually appealing than plain text. -> Library/Method: Vanilla JS and Tailwind CSS. -->
+        <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-slate-800 text-white text-center py-8 shadow-lg">
+        <h1 class="text-3xl md:text-4xl font-bold">Classificação em Tempo Real com Edge Impulse</h1>
+        <p class="text-slate-300 mt-2">Adicionando inteligência ao nosso fluxo de dados.</p>
+    </header>
+
+    <main class="container mx-auto px-4">
+
+        <section id="intro" class="content-section text-center">
+            <h2 class="text-3xl font-bold mb-4 text-slate-700">O Ponto Culminante</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-12">
+                Até agora, aprendemos a ler dados, extrair features e agrupá-las em janelas. Agora, vamos dar o passo final: usar um modelo de Machine Learning treinado para **classificar esses dados em tempo real** e entender o que o sensor está "sentindo".
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-2 text-center">
+                <div class="pipeline-step bg-white p-4 rounded-lg shadow-md">
+                    <div class="text-4xl">🤖</div>
+                    <h3 class="font-bold mt-2">Sensor</h3>
+                    <p class="text-xs text-slate-500">Dados Brutos</p>
+                </div>
+                <div class="text-2xl text-slate-400 font-sans p-2">&rarr;</div>
+                <div class="pipeline-step bg-white p-4 rounded-lg shadow-md">
+                    <div class="text-4xl">📦</div>
+                    <h3 class="font-bold mt-2">Janela Deslizante</h3>
+                    <p class="text-xs text-slate-500">Dados Agrupados</p>
+                </div>
+                <div class="text-2xl text-slate-400 font-sans p-2">&rarr;</div>
+                <div class="pipeline-step bg-emerald-50 border-2 border-emerald-400 p-4 rounded-lg shadow-lg">
+                    <div class="text-4xl">🧠</div>
+                    <h3 class="font-bold mt-2 text-emerald-700">Modelo de ML</h3>
+                    <p class="text-xs text-emerald-600">Inferência</p>
+                </div>
+                <div class="text-2xl text-slate-400 font-sans p-2">&rarr;</div>
+                <div class="pipeline-step bg-white p-4 rounded-lg shadow-md">
+                    <div class="text-4xl">🏁</div>
+                    <h3 class="font-bold mt-2">Resultado</h3>
+                    <p class="text-xs text-slate-500">Ex: "Onda"</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="model" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">O "Cérebro": O Modelo Edge Impulse</h2>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-8 rounded-xl shadow-md">
+                    <p class="text-slate-600 mb-4">
+                        O Edge Impulse nos permite treinar um modelo de classificação e exportá-lo como um único arquivo executável: o <code class="fira-code text-sm bg-slate-200 p-1 rounded">.eim</code>.
+                    </p>
+                    <p class="text-slate-600">
+                        Este arquivo contém toda a "inteligência": a pipeline de processamento de sinal (DSP) e a rede neural treinada. Nosso script Python simplesmente carrega este arquivo e o utiliza para fazer previsões.
+                    </p>
+                </div>
+                <div class="bg-slate-800 text-white p-4 rounded-lg fira-code text-sm">
+                    <p class="text-slate-400"># Baixe seu modelo treinado com o CLI</p>
+                    <p>$ edge-impulse-linux-runner --download modelfile.eim</p>
+                    <br>
+                    <p class="text-slate-400"># Execute seu script, passando o modelo</p>
+                    <p>$ python3 classify.py modelfile.eim</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="code" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">Integrando o Modelo em Python</h2>
+             <div class="max-w-4xl mx-auto bg-slate-800 rounded-xl shadow-lg p-6 fira-code text-sm text-white overflow-x-auto">
+                <p><span class="text-slate-400"># 1. Importar a biblioteca do Edge Impulse</span></p>
+                <p><span class="text-purple-400">from</span> edge_impulse_linux.runner <span class="text-purple-400">import</span> ImpulseRunner</p>
+                <br>
+                <p><span class="text-purple-400">def</span> <span class="text-yellow-300">main</span>():</p>
+                <p class="pl-4">model_path = sys.argv[<span class="text-orange-300">1</span>]</p>
+                <p class="pl-4">runner = <span class="text-orange-300">None</span></p>
+                <p class="pl-4"><span class="text-purple-400">try</span>:</p>
+                <p class="pl-8"><span class="text-slate-400"># 2. Carregar e inicializar o modelo</span></p>
+                <p class="pl-8">runner = ImpulseRunner(model_path)</p>
+                <p class="pl-8">runner.init()</p>
+                <br>
+                <p class="pl-8"><span class="text-slate-400"># (Loop de leitura da serial e preenchimento da janela...)</span></p>
+                <p class="pl-8"><span class="text-purple-400">if</span> len(data_window) >= WINDOW_SIZE:</p>
+                <p class="pl-12"><span class="text-slate-400"># 3. Quando a janela estiver cheia, classificar!</span></p>
+                <p class="pl-12">classify_window(data_window, runner)</p>
+                <p class="pl-12">data_window = data_window[STRIDE:]</p>
+                <p class="pl-4"><span class="text-purple-400">finally</span>:</p>
+                <p class="pl-8"><span class="text-slate-400"># 4. Parar o runner de forma segura</span></p>
+                <p class="pl-8"><span class="text-purple-400">if</span> runner:</p>
+                <p class="pl-12">runner.stop()</p>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="simulation" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">Simulação de Inferência em Tempo Real</h2>
+            <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+                <p class="text-slate-600 mb-4">Clique no botão para simular o sistema completo. Observe a janela de dados ser preenchida e, em seguida, o modelo de ML classificar o movimento, exibindo as probabilidades para cada classe.</p>
+                
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex-1">
+                        <h4 class="font-semibold mb-2 text-slate-700">Janela de Dados de Entrada</h4>
+                        <div id="window-buffer" class="bg-slate-100 p-2 rounded-lg h-24 flex items-center justify-center text-slate-400 text-sm">Aguardando dados...</div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5 mt-2">
+                            <div id="progress-bar" class="bg-emerald-500 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold mb-2 text-slate-700">Resultado da Classificação</h4>
+                        <div id="results-container" class="space-y-2 h-24 flex flex-col justify-center text-slate-400 text-sm">Aguardando processamento...</div>
+                    </div>
+                </div>
+
+                <button id="run-button" class="mt-6 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    ▶ Iniciar Simulação
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 bg-slate-100 mt-8">
+        <p class="text-slate-500 text-sm">Tutorial Interativo criado com HTML, Tailwind CSS e JavaScript.</p>
+    </footer>
+
+    <script>
+        const runButton = document.getElementById('run-button');
+        const windowBuffer = document.getElementById('window-buffer');
+        const progressBar = document.getElementById('progress-bar');
+        const resultsContainer = document.getElementById('results-container');
+        
+        let isRunning = false;
+        let simulationInterval;
+
+        const WINDOW_SIZE = 10;
+        const classes = ['idle', 'onda', 'cobra'];
+        const mockResults = [
+            { idle: 0.95, onda: 0.03, cobra: 0.02 },
+            { idle: 0.80, onda: 0.15, cobra: 0.05 },
+            { idle: 0.10, onda: 0.85, cobra: 0.05 },
+            { idle: 0.05, onda: 0.92, cobra: 0.03 },
+            { idle: 0.02, onda: 0.10, cobra: 0.88 },
+            { idle: 0.03, onda: 0.07, cobra: 0.90 },
+        ];
+
+        function resetSimulation() {
+            clearInterval(simulationInterval);
+            isRunning = false;
+            windowBuffer.textContent = 'Aguardando dados...';
+            windowBuffer.classList.add('text-slate-400');
+            resultsContainer.innerHTML = '<div class="text-slate-400">Aguardando processamento...</div>';
+            progressBar.style.width = '0%';
+            runButton.textContent = '▶ Iniciar Simulação';
+            runButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+            runButton.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+        }
+
+        function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            runButton.textContent = '■ Parar Simulação';
+            runButton.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+            runButton.classList.add('bg-red-500', 'hover:bg-red-600');
+            
+            let bufferCount = 0;
+            
+            simulationInterval = setInterval(() => {
+                bufferCount++;
+                const progress = (bufferCount / WINDOW_SIZE) * 100;
+                progressBar.style.width = `${progress}%`;
+                windowBuffer.textContent = `Coletando amostra ${bufferCount}/${WINDOW_SIZE}...`;
+                windowBuffer.classList.remove('text-slate-400');
+
+                if (bufferCount >= WINDOW_SIZE) {
+                    bufferCount = 0;
+                    windowBuffer.textContent = 'Janela cheia. Classificando...';
+                    
+                    // Simulate classification
+                    const result = mockResults[Math.floor(Math.random() * mockResults.length)];
+                    
+                    setTimeout(() => {
+                        resultsContainer.innerHTML = '';
+                        Object.entries(result).sort(([,a],[,b]) => b-a).forEach(([key, value]) => {
+                            const isMax = value === Math.max(...Object.values(result));
+                            const resultDiv = document.createElement('div');
+                            resultDiv.className = 'w-full bg-slate-100 rounded-full h-6 relative text-xs flex items-center';
+                            
+                            const bar = document.createElement('div');
+                            bar.className = `result-bar h-6 rounded-full ${isMax ? 'bg-emerald-400' : 'bg-slate-300'}`;
+                            bar.style.width = `${value * 100}%`;
+                            
+                            const text = document.createElement('span');
+                            text.className = `absolute left-2 font-semibold ${isMax ? 'text-white' : 'text-slate-700'}`;
+                            text.textContent = `${key}: ${(value * 100).toFixed(0)}%`;
+                            
+                            resultDiv.appendChild(bar);
+                            resultDiv.appendChild(text);
+                            resultsContainer.appendChild(resultDiv);
+                        });
+                    }, 500);
+                }
+            }, 200);
+        }
+
+        runButton.addEventListener('click', () => {
+            if (isRunning) {
+                resetSimulation();
+            } else {
+                startSimulation();
+            }
+        });
+
+        resetSimulation();
+    </script>
+</body>
+</html>

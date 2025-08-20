@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Interativo: Comunicação Arduino-PC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .fira-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .content-section {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .interactive-code-line {
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .interactive-code-line:hover {
+            background-color: #e2e8f0;
+        }
+        .explanation-popup {
+            display: none;
+            position: absolute;
+            left: 105%;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 250px;
+            z-index: 10;
+            font-size: 0.875rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .interactive-code-line:hover .explanation-popup {
+            display: block;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            background-color: #f8fafc;
+            width: 8px;
+            height: 1.2em;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: #f8fafc; }
+        }
+        <!-- Chosen Palette: Slate & Sky Blue -->
+        <!-- Application Structure Plan: A single-page, scrollable tutorial that follows the logical flow of the original presentation. The structure is thematic: Introduction, Concept Explanation, Hands-On Project (Prerequisites, Port Finding, Code Exploration, Simulated Execution), and Conclusion. This linear path is the most intuitive for a learning module. The key interaction is a simulated terminal that visually demonstrates the script's output without requiring hardware, making the learning process self-contained and immediately rewarding. -->
+        <!-- Visualization & Content Choices: Report Info: Step-by-step guide for Arduino-PC communication. -> Goal: Teach and demonstrate. -> Viz/Presentation Method: Interactive code block with pop-up explanations and a simulated terminal animation. -> Interaction: Users click code lines for info and a button to run the simulation. -> Justification: This transforms passive reading into an active learning experience. The simulation provides instant visual feedback, which is crucial for understanding the concept of a real-time data stream. -> Library/Method: Vanilla JS for interactions, Tailwind CSS for styling. -->
+        <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-slate-800 text-white text-center py-8 shadow-lg">
+        <h1 class="text-3xl md:text-4xl font-bold">Comunicação Básica: Arduino ↔ PC</h1>
+        <p class="text-slate-300 mt-2">Uma ponte interativa entre o mundo físico e o software.</p>
+    </header>
+
+    <main class="container mx-auto px-4">
+
+        <section id="intro" class="content-section text-center">
+            <h2 class="text-3xl font-bold mb-4 text-slate-700">A Ponte Entre Dois Mundos</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">
+                Neste tutorial, vamos construir a ponte fundamental que conecta o mundo físico, controlado pelo Arduino, com o mundo do software, rodando em nosso computador. Nosso objetivo é simples, mas poderoso: **ler em um script Python os dados que um Arduino está enviando pela porta serial.**
+            </p>
+            <div class="flex justify-center items-center space-x-4 md:space-x-8">
+                <div class="text-center">
+                    <div class="text-5xl mb-2">🤖</div>
+                    <div class="font-bold text-slate-700">Arduino (Emissor)</div>
+                    <p class="text-sm text-slate-500">Mundo Físico</p>
+                </div>
+                <div class="text-5xl text-sky-500 font-sans animate-pulse">&rarr;</div>
+                <div class="text-center">
+                    <div class="text-5xl mb-2">🖥️</div>
+                    <div class="font-bold text-slate-700">Computador (Receptor)</div>
+                    <p class="text-sm text-slate-500">Mundo do Software</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="concept" class="content-section">
+            <h2 class="text-3xl font-bold mb-6 text-center text-slate-700">O Que é Comunicação Serial?</h2>
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md flex flex-col md:flex-row items-center gap-8">
+                <div class="flex-1">
+                    <p class="text-slate-600 mb-4">
+                        Imagine uma conversa por um único fio, onde cada palavra é enviada letra por letra, em sequência. É exatamente isso que a comunicação serial faz. O Arduino "fala" através do cabo USB, e nosso script Python "escuta" para capturar a mensagem.
+                    </p>
+                    <p class="text-slate-600">
+                        A regra mais importante é que ambos devem conversar na mesma velocidade. Essa velocidade, medida em bits por segundo, é chamada de <strong class="text-sky-600">Baud Rate</strong>. Se as taxas forem diferentes, a comunicação falhará.
+                    </p>
+                </div>
+                <div class="flex-1 w-full">
+                    <div class="bg-slate-100 p-4 rounded-lg text-center">
+                        <div class="font-mono text-sm text-slate-500 mb-2">Fluxo de Dados</div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl">🤖</span>
+                            <div class="w-full h-1 bg-slate-300 mx-2 relative overflow-hidden">
+                                <div class="absolute h-full bg-sky-500 w-1/2 animate-flow"></div>
+                            </div>
+                            <span class="text-2xl">🖥️</span>
+                        </div>
+                        <div class="font-mono text-xs text-sky-600 mt-2">Baud Rate: 115200 bps</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <style>
+            @keyframes flow {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(200%); }
+            }
+            .animate-flow {
+                animation: flow 2s linear infinite;
+            }
+        </style>
+
+        <hr class="border-slate-200">
+
+        <section id="project" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">Mão na Massa: Nosso Projeto</h2>
+            
+            <div class="max-w-4xl mx-auto space-y-12">
+                
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-700 flex items-center"><span class="bg-sky-500 text-white rounded-full h-8 w-8 text-lg flex items-center justify-center mr-3">1</span> Pré-requisitos</h3>
+                    <ul class="list-none bg-white p-6 rounded-xl shadow-md space-y-3">
+                        <li class="flex items-center"><span class="text-green-500 mr-3">✓</span> Python 3 e a biblioteca `pyserial` instalados.</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-3">✓</span> Um Arduino conectado via USB.</li>
+                        <li class="flex items-center"><span class="text-green-500 mr-3">✓</span> O Arduino deve estar rodando o código que envia dados no formato `x,y,z`.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-700 flex items-center"><span class="bg-sky-500 text-white rounded-full h-8 w-8 text-lg flex items-center justify-center mr-3">2</span> Encontre sua Porta Serial</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-slate-600 mb-4">Precisamos saber "onde" o Arduino está conectado. Use o comando correspondente ao seu sistema operacional no terminal:</p>
+                        <div class="bg-slate-800 text-white p-4 rounded-lg fira-code text-sm">
+                            <p class="text-slate-400"># Em Linux ou macOS</p>
+                            <p>$ ls /dev/ttyACM* <span class="text-slate-500">ou</span> ls /dev/ttyUSB*</p>
+                            <p class="text-slate-400 mt-2"># Em Windows, verifique no Gerenciador de Dispositivos (Portas COM & LPT)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-700 flex items-center"><span class="bg-sky-500 text-white rounded-full h-8 w-8 text-lg flex items-center justify-center mr-3">3</span> O Código Python (O Ouvinte)</h3>
+                    <div class="bg-slate-800 rounded-xl shadow-lg p-6 fira-code text-sm text-white overflow-x-auto">
+                        <div class="interactive-code-line">
+                            <span><span class="text-purple-400">import</span> serial</span>
+                            <div class="explanation-popup">Importa a biblioteca `pyserial`, essencial para a comunicação serial.</div>
+                        </div>
+                        <div class="interactive-code-line">
+                            <span><span class="text-purple-400">import</span> time</span>
+                        </div>
+                        <br>
+                        <div class="interactive-code-line">
+                            <span><span class="text-slate-400"># --- CONFIGURAÇÕES ---</span></span>
+                        </div>
+                        <div class="interactive-code-line">
+                            <span>PORTA_SERIAL = <span class="text-green-300">"/dev/ttyACM0"</span></span>
+                            <div class="explanation-popup">A porta que você encontrou no passo anterior. Ajuste se necessário!</div>
+                        </div>
+                        <div class="interactive-code-line">
+                            <span>TAXA_DE_TRANSMISSAO = <span class="text-orange-300">115200</span></span>
+                            <div class="explanation-popup">O Baud Rate. Deve ser idêntico ao configurado no código do Arduino.</div>
+                        </div>
+                        <br>
+                        <div class="interactive-code-line">
+                            <span><span class="text-purple-400">def</span> <span class="text-yellow-300">ler_dados_seriais</span>():</span>
+                        </div>
+                        <div class="pl-4">
+                            <div class="interactive-code-line">
+                                <span><span class="text-purple-400">try</span>:</span>
+                            </div>
+                            <div class="pl-4">
+                                <div class="interactive-code-line">
+                                    <span><span class="text-purple-400">with</span> serial.Serial(PORTA_SERIAL, TAXA_DE_TRANSMISSAO, timeout=1) <span class="text-purple-400">as</span> ser:</span>
+                                    <div class="explanation-popup">Abre a porta serial. O `with` garante que ela será fechada automaticamente no final.</div>
+                                </div>
+                                <div class="pl-4">
+                                    <div class="interactive-code-line">
+                                        <span><span class="text-yellow-300">print</span>(<span class="text-green-300">"Conexão bem-sucedida!"</span>)</span>
+                                    </div>
+                                    <div class="interactive-code-line">
+                                        <span><span class="text-purple-400">while</span> <span class="text-orange-300">True</span>:</span>
+                                    </div>
+                                    <div class="pl-4">
+                                        <div class="interactive-code-line">
+                                            <span>linha = ser.readline().decode(<span class="text-green-300">'utf-8'</span>).strip()</span>
+                                            <div class="explanation-popup">Lê uma linha de dados, converte de bytes para texto e remove espaços extras.</div>
+                                        </div>
+                                        <div class="interactive-code-line">
+                                            <span><span class="text-purple-400">if</span> linha:</span>
+                                        </div>
+                                        <div class="pl-4">
+                                            <div class="interactive-code-line">
+                                                <span><span class="text-yellow-300">print</span>(linha)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="interactive-code-line">
+                                <span><span class="text-purple-400">except</span> <span class="text-red-400">serial.SerialException</span> <span class="text-purple-400">as</span> e:</span>
+                                <div class="explanation-popup">Captura erros comuns, como a porta não ser encontrada ou estar em uso.</div>
+                            </div>
+                            <div class="pl-4">
+                                <span>...</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="interactive-code-line">
+                            <span><span class="text-purple-400">if</span> __name__ == <span class="text-green-300">"__main__"</span>:</span>
+                        </div>
+                        <div class="pl-4">
+                            <div class="interactive-code-line">
+                                <span><span class="text-yellow-300">ler_dados_seriais</span>()</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-slate-700 flex items-center"><span class="bg-sky-500 text-white rounded-full h-8 w-8 text-lg flex items-center justify-center mr-3">4</span> Execute e Veja a Mágica</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <p class="text-slate-600 mb-4">Clique no botão abaixo para simular a execução do script. Você verá os dados do acelerômetro aparecendo em tempo real, como se estivessem vindo diretamente do Arduino.</p>
+                        
+                        <div id="terminal" class="bg-slate-800 text-white p-4 rounded-lg fira-code text-sm h-64 overflow-y-auto">
+                            <p id="terminal-output"></p>
+                        </div>
+                        <button id="run-button" class="mt-4 w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                            ▶ Executar Simulação
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="conclusion" class="content-section text-center">
+            <h2 class="text-3xl font-bold mb-4 text-slate-700">Parabéns! 🎉</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">
+                Você construiu com sucesso uma ponte de comunicação entre o hardware e o software. Este é o primeiro e mais crucial passo para qualquer projeto que envolva a interação entre um computador e o mundo físico.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <div class="bg-white p-4 rounded-lg shadow-sm flex-1"><strong>✓ Porta Serial Correta:</strong> Essencial para encontrar o dispositivo.</div>
+                <div class="bg-white p-4 rounded-lg shadow-sm flex-1"><strong>✓ Baud Rate Idêntico:</strong> A chave para uma comunicação sem erros.</div>
+                <div class="bg-white p-4 rounded-lg shadow-sm flex-1"><strong>✓ `pyserial` é Poderoso:</strong> Simplifica todo o processo de leitura.</div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 bg-slate-100 mt-8">
+        <p class="text-slate-500 text-sm">Tutorial Interativo criado com HTML, Tailwind CSS e JavaScript.</p>
+    </footer>
+
+    <script>
+        const runButton = document.getElementById('run-button');
+        const terminalOutput = document.getElementById('terminal-output');
+        let simulationInterval;
+        let isRunning = false;
+
+        const sampleData = [
+            "-0.12,-6.20,7.90",
+            "-0.13,-6.19,7.91",
+            "-0.14,-6.20,7.92",
+            "-0.13,-6.20,7.90",
+            "-0.14,-6.20,7.91",
+            "-0.12,-6.21,7.89",
+            "-0.13,-6.18,7.92",
+            "-0.15,-6.20,7.90",
+            "-0.14,-6.19,7.91",
+            "-0.12,-6.22,7.88"
+        ];
+
+        function startSimulation() {
+            isRunning = true;
+            runButton.textContent = '■ Parar Simulação';
+            runButton.classList.remove('bg-sky-500', 'hover:bg-sky-600');
+            runButton.classList.add('bg-red-500', 'hover:bg-red-600');
+            
+            terminalOutput.innerHTML = 'Tentando conectar na porta /dev/ttyACM0...<br>Conexão bem-sucedida! Lendo dados...<br><br>';
+            
+            let lineIndex = 0;
+            simulationInterval = setInterval(() => {
+                if (lineIndex < 20) { // Limit to 20 lines for demo
+                    const dataLine = sampleData[Math.floor(Math.random() * sampleData.length)];
+                    terminalOutput.innerHTML += `${dataLine}<br>`;
+                    terminalOutput.parentElement.scrollTop = terminalOutput.parentElement.scrollHeight;
+                    lineIndex++;
+                } else {
+                    terminalOutput.innerHTML += '<br>... (Simulação contínua) ...<span class="terminal-cursor"></span>';
+                    clearInterval(simulationInterval);
+                    setTimeout(stopSimulation, 2000); // Auto-stop after a while
+                }
+            }, 200);
+        }
+
+        function stopSimulation() {
+            isRunning = false;
+            clearInterval(simulationInterval);
+            terminalOutput.innerHTML += '<br><br>Leitura interrompida.<br>Script finalizado.';
+            terminalOutput.parentElement.scrollTop = terminalOutput.parentElement.scrollHeight;
+            runButton.textContent = '▶ Executar Simulação Novamente';
+            runButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+            runButton.classList.add('bg-sky-500', 'hover:bg-sky-600');
+        }
+
+        runButton.addEventListener('click', () => {
+            if (isRunning) {
+                stopSimulation();
+            } else {
+                startSimulation();
+            }
+        });
+    </script>
+</body>
+</html>

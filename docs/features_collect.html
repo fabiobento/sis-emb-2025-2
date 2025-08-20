@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Interativo: Extração de Features de Aceleração</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .fira-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .content-section {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.1);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            background-color: #f8fafc;
+            width: 8px;
+            height: 1.2em;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: #f8fafc; }
+        }
+        <!-- Chosen Palette: Slate & Teal -->
+        <!-- Application Structure Plan: A single-page, scrollable tutorial format. The structure logically progresses from the "Why" (concept) to the "How" (process and code), culminating in an interactive "Demonstration" (simulation). This linear narrative is best for teaching a procedural task. The core interaction is a more advanced simulation that visually breaks down the string parsing and feature assignment, directly addressing the lab's main learning objective. -->
+        <!-- Visualization & Content Choices: Report Info: Lab guide for parsing serial data into features. -> Goal: Teach the process of data parsing and feature extraction. -> Viz/Presentation Method: A visual flowchart of the process, an annotated code block, and an interactive terminal simulation. -> Interaction: Users can click a button to run a simulation that animates the data transformation from a raw string to structured variables. -> Justification: The visual flowchart clarifies the steps, while the simulation makes the abstract concept of "extraction" tangible and easy to grasp. It provides immediate feedback on what the code accomplishes. -> Library/Method: Vanilla JS and Tailwind CSS. -->
+        <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-slate-800 text-white text-center py-8 shadow-lg">
+        <h1 class="text-3xl md:text-4xl font-bold">Extração de Features de Aceleração</h1>
+        <p class="text-slate-300 mt-2">Transformando dados brutos em informação útil.</p>
+    </header>
+
+    <main class="container mx-auto px-4">
+
+        <section id="intro" class="content-section text-center">
+            <h2 class="text-3xl font-bold mb-4 text-slate-700">De Texto a Significado</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600 mb-8">
+                No último laboratório, aprendemos a ler os dados do Arduino. Mas recebemos apenas uma string de texto, como <code class="fira-code text-sm bg-slate-200 p-1 rounded">"1.23,-0.45,9.81"</code>. Para qualquer análise, visualização ou Machine Learning, precisamos transformar esse texto em **características (features)**: variáveis numéricas que representam o movimento real.
+            </p>
+            <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md">
+                <div class="text-left fira-code text-sm">
+                    <div class="text-slate-500 mb-2">// Dado Bruto (String)</div>
+                    <div class="text-red-500 bg-red-50 p-2 rounded">"1.23,-0.45,9.81"</div>
+                    <div class="text-center text-2xl my-4 text-teal-500">&darr;</div>
+                    <div class="text-slate-500 mb-2">// Features Extraídas (Floats)</div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-teal-50 p-2 rounded"><span class="font-bold text-teal-700">acc_x</span><br>1.23</div>
+                        <div class="bg-teal-50 p-2 rounded"><span class="font-bold text-teal-700">acc_y</span><br>-0.45</div>
+                        <div class="bg-teal-50 p-2 rounded"><span class="font-bold text-teal-700">acc_z</span><br>9.81</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="process" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">O Processo de Extração</h2>
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="step-card">
+                    <div class="text-4xl mb-3">📡</div>
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">1. Leitura e Decodificação</h3>
+                    <p class="text-slate-500">Lemos a linha de dados da porta serial e a convertemos de bytes para uma string de texto legível (UTF-8).</p>
+                </div>
+                <div class="step-card">
+                    <div class="text-4xl mb-3">🔍</div>
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">2. Validação e Divisão</h3>
+                    <p class="text-slate-500">Verificamos se a string tem o formato esperado. Se sim, a dividimos usando a vírgula como delimitador, criando uma lista de strings.</p>
+                </div>
+                <div class="step-card">
+                    <div class="text-4xl mb-3">🔢</div>
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">3. Conversão e Atribuição</h3>
+                    <p class="text-slate-500">Convertemos cada string da lista para um número (float) e atribuímos a uma variável nomeada, como `acc_x`, `acc_y` e `acc_z`.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="code" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">Implementando em Python</h2>
+            <div class="max-w-4xl mx-auto bg-slate-800 rounded-xl shadow-lg p-6 fira-code text-sm text-white overflow-x-auto">
+                <p><span class="text-purple-400">def</span> <span class="text-yellow-300">read_serial_data</span>(ser):</p>
+                <p class="pl-4"><span class="text-purple-400">while</span> <span class="text-orange-300">True</span>:</p>
+                <p class="pl-8"><span class="text-purple-400">try</span>:</p>
+                <p class="pl-12">line = ser.readline().decode(<span class="text-green-300">"utf-8"</span>).strip()</p>
+                <p class="pl-12"><span class="text-purple-400">if</span> line:</p>
+                <p class="pl-16"><span class="text-slate-400"># 1. Dividir a string pela vírgula</span></p>
+                <p class="pl-16">parts = line.split(<span class="text-green-300">","</span>)</p>
+                <br>
+                <p class="pl-16"><span class="text-slate-400"># 2. Validar se temos exatamente 3 partes</span></p>
+                <p class="pl-16"><span class="text-purple-400">if</span> len(parts) == <span class="text-orange-300">3</span>:</p>
+                <p class="pl-20"><span class="text-slate-400"># 3. Converter e atribuir às variáveis (features)</span></p>
+                <p class="pl-20">accX = float(parts[<span class="text-orange-300">0</span>])</p>
+                <p class="pl-20">accY = float(parts[<span class="text-orange-300">1</span>])</p>
+                <p class="pl-20">accZ = float(parts[<span class="text-orange-300">2</span>])</p>
+                <p class="pl-20"><span class="text-yellow-300">print</span>(f<span class="text-green-300">"X: {accX:.2f}, Y: {accY:.2f}, Z: {accZ:.2f}"</span>)</p>
+                <p class="pl-16"><span class="text-purple-400">else</span>:</p>
+                <p class="pl-20"><span class="text-yellow-300">print</span>(<span class="text-green-300">"Formato de dados inválido!"</span>)</p>
+                <p class="pl-8"><span class="text-purple-400">except</span> (<span class="text-red-400">ValueError</span>, <span class="text-red-400">IndexError</span>) <span class="text-purple-400">as</span> e:</p>
+                <p class="pl-12"><span class="text-yellow-300">print</span>(f<span class="text-green-300">"Erro ao processar dados: {e}"</span>)</p>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <section id="simulation" class="content-section">
+            <h2 class="text-3xl font-bold mb-8 text-center text-slate-700">Demonstração Interativa</h2>
+            <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+                <p class="text-slate-600 mb-4">Clique no botão para simular o processo. Observe como cada linha de dados brutos é recebida e imediatamente transformada em *features* estruturadas e rotuladas.</p>
+                
+                <div id="terminal" class="bg-slate-800 text-white p-4 rounded-lg fira-code text-sm h-80 overflow-y-auto">
+                    <p id="terminal-output"></p>
+                </div>
+                <button id="run-button" class="mt-4 w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                    ▶ Iniciar Simulação de Extração
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 bg-slate-100 mt-8">
+        <p class="text-slate-500 text-sm">Tutorial Interativo criado com HTML, Tailwind CSS e JavaScript.</p>
+    </footer>
+
+    <script>
+        const runButton = document.getElementById('run-button');
+        const terminalOutput = document.getElementById('terminal-output');
+        let simulationInterval;
+        let isRunning = false;
+
+        const sampleData = [
+            "1.23,-0.45,9.81",
+            "1.22,-0.46,9.80",
+            "formato_invalido", // Invalid data
+            "1.24,-0.45,9.82",
+            "1.23,-0.44,9.81",
+            "1.25,9.83", // Invalid data
+            "1.22,-0.46,9.79"
+        ];
+
+        function startSimulation() {
+            isRunning = true;
+            runButton.textContent = '■ Parar Simulação';
+            runButton.classList.remove('bg-teal-500', 'hover:bg-teal-600');
+            runButton.classList.add('bg-red-500', 'hover:bg-red-600');
+            
+            terminalOutput.innerHTML = 'Conectado! Aguardando dados do Arduino...<br><br>';
+            
+            let i = 0;
+            simulationInterval = setInterval(() => {
+                if (i >= sampleData.length) {
+                    stopSimulation();
+                    return;
+                }
+
+                const line = sampleData[i];
+                terminalOutput.innerHTML += `<span class="text-slate-400">&lt; Recebido: "${line}"</span><br>`;
+                
+                const parts = line.split(',');
+
+                if (parts.length === 3) {
+                    try {
+                        const accX = parseFloat(parts[0]);
+                        const accY = parseFloat(parts[1]);
+                        const accZ = parseFloat(parts[2]);
+                        if (isNaN(accX) || isNaN(accY) || isNaN(accZ)) throw new Error();
+                        
+                        terminalOutput.innerHTML += `<span class="text-teal-300">&gt; Extraído: X: ${accX.toFixed(2)}, Y: ${accY.toFixed(2)}, Z: ${accZ.toFixed(2)}</span><br><br>`;
+                    } catch (e) {
+                         terminalOutput.innerHTML += `<span class="text-red-400">&gt; Erro: Não foi possível converter para float.</span><br><br>`;
+                    }
+                } else {
+                    terminalOutput.innerHTML += `<span class="text-yellow-400">&gt; Alerta: Formato de dados inválido (partes: ${parts.length}).</span><br><br>`;
+                }
+                
+                terminalOutput.parentElement.scrollTop = terminalOutput.parentElement.scrollHeight;
+                i++;
+            }, 1000);
+        }
+
+        function stopSimulation() {
+            isRunning = false;
+            clearInterval(simulationInterval);
+            terminalOutput.innerHTML += 'Simulação finalizada.<span class="terminal-cursor"></span>';
+            terminalOutput.parentElement.scrollTop = terminalOutput.parentElement.scrollHeight;
+            runButton.textContent = '▶ Iniciar Simulação Novamente';
+            runButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+            runButton.classList.add('bg-teal-500', 'hover:bg-teal-600');
+        }
+
+        runButton.addEventListener('click', () => {
+            if (isRunning) {
+                stopSimulation();
+            } else {
+                startSimulation();
+            }
+        });
+    </script>
+</body>
+</html>
