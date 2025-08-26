@@ -57,14 +57,14 @@ SERIAL_PORT = '/dev/ttyACM0'
 #SERIAL_PORT = '/dev/ttyUSB0'
 BAUD_RATE = 115200
 
-# Parâmetros da Janela Deslizante
+# Hiperparâmetros para leitura de dados em janela deslizante
 WINDOW_SIZE = 125  # Número de amostras a serem acumuladas
-STRIDE = 50        # Número de amostras a serem descartadas ao deslizar
+STRIDE = 12        # Defina o passo(stride), ou seja,
+                    # o número de amostras para avançar após cada classificação
 
 def process_line(line_str):
 ##  Inclua aqui função que você desenvolveu na atividade anterior
     ## ESCREVA SEU CÓDIGO AQUI ##
-
 
 def process_window(window_data):
     """
