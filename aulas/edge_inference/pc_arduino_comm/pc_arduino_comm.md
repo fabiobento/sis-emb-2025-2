@@ -75,7 +75,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```
 ### **Passo 3: Executar o Script**
 
