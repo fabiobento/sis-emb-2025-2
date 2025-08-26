@@ -35,8 +35,11 @@ O script final deve ser uma implementação robusta que atenda aos seguintes req
    * Garantir que o script possa ser encerrado de forma limpa com **Ctrl+C** (`KeyboardInterrupt`).  
    * A porta serial **deve ser fechada corretamente** ao final da execução. O uso do gerenciador de contexto (`with`) é fortemente recomendado.
 ---
-## Código de Exemplo
-Segue abaixo um código de exemplo.
+## **5\. Instruções: Construindo o Script**
+
+Modifique o template de código abaixo para implementar a lógica da extração de características. Os pontos a serem completados estão marcados com ``## ESCREVA SEU CÓDIGO AQUI ##``.
+
+### **Estrutura do Código (Template)**
 ```python
 import serial
 import sys

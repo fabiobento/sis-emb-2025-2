@@ -44,7 +44,7 @@ A janela deslizante funciona assim:
 
 ## **5\. Instruções: Construindo o Script**
 
-Modifique o template de código abaixo para implementar a lógica da janela deslizante. Os pontos a serem completados estão marcados com TODO.
+Modifique o template de código abaixo para implementar a lógica da janela deslizante. Os pontos a serem completados estão marcados com ``## ESCREVA SEU CÓDIGO AQUI ##``.
 
 ### **Estrutura do Código (Template)**
 
