@@ -2,7 +2,8 @@ import serial
 import sys
 
 # --- Constantes de Configuração ---
-SERIAL_PORT = '/dev/ttyACM0'  # Altere para a porta correta
+#SERIAL_PORT = '/dev/ttyACM0'  # Altere para a porta correta
+SERIAL_PORT = '/dev/ttyUSB0'  # Altere para a porta correta
 BAUD_RATE = 115200
 
 def main():

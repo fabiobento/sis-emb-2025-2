@@ -76,12 +76,28 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+**Observação:**
+1. Porque utilizar `try...except`?
+    O bloco `try-except` é usado para tratar exceções, ou seja, erros que podem ocorrer durante a execução do código. No seu exemplo, ele serve para:
+    - Evitar que o programa quebre abruptamente caso aconteça um erro ao abrir a porta serial (`serial.SerialException`), mostrando uma mensagem amigável ao usuário.
+    - Permitir encerrar o programa de forma controlada quando o usuário pressiona Ctrl+C (`KeyboardInterrupt`).
+    - Executar ações finais (como imprimir "`Finalizando o programa`") independentemente de erro ou interrupção, usando o bloco `finally`.
+    - Sem o `try-except`, qualquer erro faria o programa parar imediatamente, dificultando o diagnóstico e prejudicando a experiência do usuário.
+2. Por que usar `with`?
+
+    Use `with` para garantir que recursos externos (como arquivos, conexões de rede ou portas seriais) sejam sempre liberados corretamente. Com o `with` você cria um contexto gerenciado, garantindo que recursos sejam corretamente abertos e fechados. Seguem algumas vantagens: 
+    - Gerenciamento automático de recursos: O objeto `serial.Serial` representa uma conexão com a porta serial. Usando `with`, você garante que a porta será fechada automaticamente ao final do bloco, mesmo se ocorrer um erro.
+    - Evita vazamento de recursos: Sem o `with`, você teria que lembrar de chamar `ser.close()` manualmente. Se esquecer, pode deixar a porta aberta, causando problemas.
+    - Código mais limpo e seguro: O bloco `with` deixa claro onde o recurso está sendo usado e quando será liberado.
+    bloco.
+
+
 ### **Passo 3: Executar o Script**
 
 Abra um terminal na pasta onde você salvou o arquivo leitor\_serial.py e execute o comando:
 
 ```bash
-python leitor\_serial.py
+python leitor_serial.py
 ```
 ---
 
