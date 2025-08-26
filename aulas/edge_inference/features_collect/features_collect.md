@@ -1,14 +1,14 @@
 
 # **Roteiro de Laboratório: Extração de Features de Aceleração via Comunicação Serial**
 
-## **Visão Geral**
+## **1\. Visão Geral**
 
 O foco desta atividade é a **extração de características (raw features)** de um sensor de aceleração. Você desenvolverá um script em Python que se conecta ao hardware via porta serial para capturar dados brutos e processá-los, isolando as informações de interesse em variáveis específicas.
 
 O diferencial deste roteiro é a ênfase na atribuição correta dos dados a variáveis que representam as características físicas do movimento: a **aceleração linear nos eixos X, Y e Z**. Esta é a etapa fundamental para qualquer projeto de análise de dados, visualização ou Machine Learning com sensores.
 
 ---
-## **Requisitos Técnicos**
+## **2\. Requisitos Técnicos**
 
 O script final deve ser uma implementação robusta que atenda aos seguintes requisitos:
 
@@ -35,7 +35,7 @@ O script final deve ser uma implementação robusta que atenda aos seguintes req
    * Garantir que o script possa ser encerrado de forma limpa com **Ctrl+C** (`KeyboardInterrupt`).  
    * A porta serial **deve ser fechada corretamente** ao final da execução. O uso do gerenciador de contexto (`with`) é fortemente recomendado.
 ---
-## **5\. Instruções: Construindo o Script**
+## **3\. Instruções: Construindo o Script**
 
 Modifique o template de código abaixo para implementar a lógica da extração de características. Os pontos a serem completados estão marcados com ``## ESCREVA SEU CÓDIGO AQUI ##``.
 
