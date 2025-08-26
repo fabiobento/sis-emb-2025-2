@@ -49,92 +49,79 @@ Modifique o template de código abaixo para implementar a lógica da janela desl
 ### **Estrutura do Código (Template)**
 
 ```python
-
-import serial  
+import serial
 import sys
 
-# --- Constantes de Configuração ---  
-# TODO: Ajuste a porta serial para a correta no seu sistema (ex: 'COM3' no Windows)  
-SERIAL_PORT = '/dev/ttyUSB0'  
+# --- Constantes de Configuração ---
+SERIAL_PORT = '/dev/ttyACM0'
+#SERIAL_PORT = '/dev/ttyUSB0'
 BAUD_RATE = 115200
 
-WINDOW_SIZE = 100  # Quantas amostras (linhas) vamos armazenar na janela  
-STRIDE = 50        # Quantas amostras vamos descartar ao deslizar a janela
+# Parâmetros da Janela Deslizante
+WINDOW_SIZE = 125  # Número de amostras a serem acumuladas
+STRIDE = 50        # Número de amostras a serem descartadas ao deslizar
 
-def process_window(window_data):  
-    """  
-    Função para processar os dados acumulados na janela.  
-    Por enquanto, vamos apenas imprimir o tamanho e o primeiro e último item.  
-    """  
-    print(f"--- Processando Janela de {len(window_data)} amostras ---")  
-    if window_data:  
-        print(f"Primeira amostra: {window_data[0]}")  
-        print(f"Última amostra: {window_data[-1]}")  
+def process_line(line_str):
+##  Inclua aqui função que você desenvolveu na atividade anterior
+    ## ESCREVA SEU CÓDIGO AQUI ##
+
+
+def process_window(window_data):
+    """
+    Função chamada quando a janela está cheia. Por enquanto, apenas exibe informações.
+    """
+    print(f"--- Processando Janela de {len(window_data)} amostras ---")
+    if window_data:
+        print(f"  Primeira amostra: {window_data[0]}")
+        print(f"  Última amostra:   {window_data[-1]}")
     print("--------------------------------------------------\n")
 
-def main():  
-    """  
-    Função principal que lê da serial e gerencia a janela deslizante.  
-    """  
-    print("Iniciando leitor de dados seriais...")  
-      
-    # Lista para armazenar os dados da janela atual  
+def main():
+    """
+    Função principal: implementa a lógica da janela deslizante.
+    """
+    print("Iniciando Passo 3: Janela Deslizante...")
     data_window = []
 
-    try:  
-        # TODO 1: Inicie e abra a comunicação serial usando as constantes definidas.  
-        # Dica: use o gerenciador de contexto 'with serial.Serial(...)' para garantir  
-        # que a porta seja fechada automaticamente.  
-        with serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1) as ser:  
-            print(f"Porta serial {SERIAL_PORT} aberta com sucesso.")  
-              
-            # Limpa qualquer dado residual no buffer da serial  
-            ser.flushInput()
+    try:
+        # O 'with' garante que a porta serial seja aberta e fechada automaticamente.                
+        with serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1) as ser:
+            print(f"Porta serial '{SERIAL_PORT}' aberta com sucesso.")
+            ser.flushInput()  # Limpa o buffer de entrada para começar do zero.
 
-            while True:  
-                # TODO 2: Leia uma linha da porta serial e decodifique-a.  
-                # Dica: use ser.readline().decode('utf-8').strip()  
-                try:  
-                    line_str = ser.readline().decode('utf-8').strip()
+            while True:
+                # Lê uma linha de bytes, decodifica para string e remove espaços.                                
+                line_str = ser.readline().decode('utf-8').strip()
+                
+                if line_str:
+                    # Processa a linha recebida e extrai as features                    
+                    features = process_line(line_str)
+                    if features:
+                    # Adicione as features extraídas à janela de dados na lista data_window
+                    # Aqui, cada 'features' representa uma amostra processada do acelerômetro
+                        ## ESCREVA SEU CÓDIGO AQUI ##
 
-                    if not line_str:  
-                        continue  
-                      
-                    # TODO 3: Separe os valores da linha usando a vírgula como delimitador.  
-                    parts = line_str.split(',')
+                # Verifique se a janela atingiu o tamanho definido (WINDOW_SIZE)
+                if ## ESCREVA SEU CÓDIGO AQUI ##
+                    # Chama a função para processar os dados da janela
+                    process_window(data_window)
+                    
+                    # Implementa o "deslizamento" da janela, removendo as amostras mais antigas
+                    # e mantendo as mais recentes
+                    ## ESCREVA SEU CÓDIGO AQUI ##
 
-                    # TODO 4: Verifique se a linha contém exatamente 3 valores.  
-                    if len(parts) == 3:  
-                        # Converte os valores para float e os adiciona à janela  
-                        accel_data = [float(p) for p in parts]  
-                        data_window.append(accel_data)  
-                    else:  
-                        print(f"Aviso: Linha mal formatada ignorada: '{line_str}'")  
-                        continue
+    except serial.SerialException as e:
+        print(f"Erro crítico: Não foi possível abrir a porta serial '{SERIAL_PORT}'.")
+        print(f"Detalhes: {e}")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\nPrograma encerrado pelo usuário.")
+    finally:
+        print("Finalizando o programa.")
 
-                except (UnicodeDecodeError, ValueError) as e:  
-                    print(f"Erro ao processar a linha. Detalhes: {e}")  
-                    continue
-
-                # TODO 5: Verifique se a janela atingiu o tamanho definido (WINDOW_SIZE).  
-                if len(data_window) >= WINDOW_SIZE:  
-                    process_window(data_window)  
-                        
-                    # TODO 6: Implemente o "deslocamento".  
-                    # A nova janela deve ser uma fatia da janela antiga.  
-                    # Dica: data\_window = data_window[STRIDE:]  
-                    data_window = data_window[STRIDE:]
-
-    except serial.SerialException as e:  
-        print(f"Erro: Não foi possível abrir a porta serial {SERIAL_PORT}. Verifique a conexão. Detalhes: {e}")  
-        sys.exit(1)  
-    except KeyboardInterrupt:  
-        print("\nPrograma encerrado pelo usuário.")  
-    finally:  
-        print("Fim do programa.")
-
-if __name__== "__main__":  
+if __name__ == "__main__":
     main()
+
 ```
 
 ---

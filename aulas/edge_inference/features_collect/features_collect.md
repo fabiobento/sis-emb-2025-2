@@ -58,7 +58,7 @@ def process_line(line_str):
             acc_x = ## ESCREVA SEU CÓDIGO AQUI ##
             acc_y = ## ESCREVA SEU CÓDIGO AQUI ##
             acc_z = ## ESCREVA SEU CÓDIGO AQUI ##
-            return acc_x, acc_y, acc_z
+            return [acc_x, acc_y, acc_z]
         except (ValueError, IndexError):
             # Caso haja erro na conversão, exibe aviso
             print(f"Aviso: Não foi possível converter a linha: '{line_str}'")
