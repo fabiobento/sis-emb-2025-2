@@ -155,6 +155,6 @@ if __name__ == "__main__":
 
 ## **Recursos Adicionais:**
 
-* [Documentação do SDK Edge Impulse para Linux](https://docs.edgeimpulse.com/tools/libraries/sdks/inference/linux).  
+* [Documentação do SDK Edge Impulse para Linux](https://github.com/edgeimpulse/linux-sdk-python).  
 * [Documentação sobre Edge AI Hardware](https://docs.edgeimpulse.com/hardware/overview).
 
