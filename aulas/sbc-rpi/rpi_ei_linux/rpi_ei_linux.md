@@ -19,12 +19,12 @@ sudo apt update
 Para instalar o Node.js v16.x+ ou superior execute os seguintes comandos:
 
 ```bash
-curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash - |
+curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash - 
 ```
 
 Agora vamos instalar o [Node.js](http://Node.js) e algumas dependências:
 ```bash
-sudo apt install -y gcc g++ make build-essential nodejs sox gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-base gstreamer1.0-plugins-base-apps -y |
+sudo apt install -y gcc g++ make build-essential nodejs sox gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-base gstreamer1.0-plugins-base-apps -y 
 ```
 
 Certifique-se que o comando abaixo retorna uma versão v16 ou superior para o node. 
@@ -83,13 +83,36 @@ Essencialmente, o edge-impulse-linux entra em cena quando o seu modelo está tre
 
 Inicie a ingestão de dados transmitidos pela placa microcontroladora
 ```bash
-edge-impulse-data-forwarder 
+edge-impulse-data-forwarder --63
 ```
 
 Você verá uma tela semelhante à que está abaixo, para iniciar o envio de dados para seu projeto no edge-impulse.
 
 ```bash
-Edge Impulse data forwarder v1.34.1 Endpoints:     Websocket: wss://remote-mgmt.edgeimpulse.com     API:       https://studio.edgeimpulse.com     Ingestion: https://ingestion.edgeimpulse.com [SER] Connecting to /dev/ttyACM0 [SER] Serial is connected (85:53:13:03:63:03:51:80:51:40) [WS] Connecting to wss://remote-mgmt.edgeimpulse.com [WS] Connected to wss://remote-mgmt.edgeimpulse.com ? To which project do you want to connect this device? (🔍 type to search) (Pres s <enter> to submit)  ❯ Fabio / Cifar10_Image_Classification_60k   Fabio  Cifar10_Image_Classification_12_dog_cat   Fabio / rpi-cam   Fabio / Car Parking Occupancy Detection - FOMO (Move up and down to reveal more choices) |
+Edge Impulse data forwarder v1.34.1
+Endpoints:
+    Websocket: wss://remote-mgmt.edgeimpulse.com
+    API:       https://studio.edgeimpulse.com
+    Ingestion: https://ingestion.edgeimpulse.com
+
+[SER] Connecting to /dev/ttyACM0
+[SER] Serial is connected (85:53:13:03:63:03:51:80:51:40)
+[WS ] Connecting to wss://remote-mgmt.edgeimpulse.com
+[WS ] Connected to wss://remote-mgmt.edgeimpulse.com
+[SER] Detecting data frequency...
+[SER] Detected data frequency: 43Hz
+[SER] Sampling frequency seems to have changed (was 62Hz, but is now 43Hz), re-configuring device.
+
+? To which project do you want to connect this device? (🔍 type to search) (Pres
+s <enter> to submit) 
+❯ Fabio / my-smartphone-motion-project
+  Fabio / industrial-motion-classifier
+  Fabio / arduino-uno-motion-project
+  Fabio / Cifar10_Image_Classification_60k
+  Fabio / Cifar10_Image_Classification_12_dog_cat
+  Fabio / rpi-cam
+  Fabio / Car Parking Occupancy Detection - FOMO
+(Move up and down to reveal more choices)
 ```
 
 ## **Passo 7: Verificar o Acesso à Câmera**
@@ -101,7 +124,16 @@ edge-impulse-linux
 
 Este comando verifica se a câmera está acessível pra o Edge Impulse. Despois de ter selecionado o seu projeto do Edge Impulse,  você deve receber uma saída semelhante a esta:
 ```bash
-Edge Impulse Linux client v1.17.5 [SER] Using microphone hw:0,0 [GST] checking for /etc/os-release [SER] Connected to camera /base/soc/i2c0mux/i2c@1/imx219@10 [WS] Connecting to wss://remote-mgmt.edgeimpulse.com [WS ] Connected to wss://remote-mgmt.edgeimpulse.com [WS] Device "rpi0" is now connected to project "Aula 4 - Classificação de Imagens". To connect to another project, run `edge-impulse-linux --clean`. [WS] Go to https://studio.edgeimpulse.com/studio/420760/acquisition/training to build your machine learning model! |
+Edge Impulse Linux client v1.17.5
+
+[SER] Using microphone hw:0,0
+[GST] checking for /etc/os-release
+[SER] Connected to camera /base/soc/i2c0mux/i2c@1/imx219@10
+[WS ] Connecting to wss://remote-mgmt.edgeimpulse.com
+[WS ] Connected to wss://remote-mgmt.edgeimpulse.com
+[WS ] Device "rpi0" is now connected to project "Aula 4 - Classificação de Imagens". To connect to another project, run `edge-impulse-linux --clean`.
+[WS ] Go to https://studio.edgeimpulse.com/studio/420760/acquisition/training to build your machine learning model!
+
 ```
 
 ## **Passo 8: Confira o feed da câmera no seu projeto**
