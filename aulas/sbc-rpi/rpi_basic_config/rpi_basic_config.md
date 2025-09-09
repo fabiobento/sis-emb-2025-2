@@ -1,20 +1,20 @@
-1. # Instalação do Sistema Operacional
+# Instalação do Sistema Operacional
 
 O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). Diversas versões do OS estão disponíveis em [https://downloads.raspberrypi.org/raspios\_armhf/images/](https://downloads.raspberrypi.org/raspios_armhf/images/) 
 
-1. # Instalação do Raspberry Pi Imager
+## Instalação do Raspberry Pi Imager
 
-* Siga as instruções para instalação do *Raspberry Pi Imager*(**rpi-mager**) que você encontra no  [**site Raspberry Pi software**](https://www.raspberrypi.com/software/) . O **rpi-mager** é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. Para instalar o Raspberry Pi Imager digite a seguinte linha de comando no terminal:
+* Siga as instruções para instalação do *Raspberry Pi Imager*(`rpi-mager`) que você encontra no  [**site Raspberry Pi software**](https://www.raspberrypi.com/software/) . O **rpi-mager** é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. Para instalar o Raspberry Pi Imager digite a seguinte linha de comando no terminal:
 
-| sudo apt update sudo apt install rpi-imager |
-| :---- |
+``` bash
+sudo apt update
+sudo apt install rpi-imager
+```
 
-  2. # Instalação do Raspberry Pi OS
+ ## Instalação do Raspberry Pi OS
 
 * Insira um cartão SD no leitor do computador pessoal (ainda não é pra inserir no RPi) Abra a aplicação **Imager** no menu de aplicativos do Ubuntu:  
 ![](./imagens/rpi-imager.png)
-
-  3. ## Instalação para uso com o Edge Impulse
 
 * Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Raspiberry Pi OS (Legacy, 32-bit)** **\- A port of Debian Bullseye with the Raspberry pi and desktop environment**.
 
@@ -57,7 +57,7 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 ![](./imagens/rpi-imager-6.png)
 
-* A senha é solicitada, e começa o processo de instalação. Isso deve demorar alguns minutos**(paciência…)**.
+* A senha é solicitada, e começa o processo de instalação. Isso deve demorar alguns minutos **(paciência…)**.
 
 ![](./imagens/rpi-imager-7.png)
 
@@ -65,9 +65,9 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 ![](./imagens/rpi-imager-8.png)
 
-2. # Configuração de acesso remoto
+## Configuração de acesso remoto
 
-   1. # Habilitar o servidor VNC no RPi
+   1. Habilitar o servidor VNC no RPi
 
 * Insira o cartão SD no Raspberry Pi 3:
 
@@ -83,23 +83,27 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 * No terminal digite, substituindo **\<hostname\>** pelo nome de acordo com sua bancada (para a bancada 1, por exemplo, seria rpi1) 
 
-| ssh pi@\<hostname\>.local |
-| :---- |
+```bash
+ssh pi@<hostname>.local
+```
 
 * Responda “yes” se surgir um texto lhe perguntando:
 
-| This key is not known by any other names Are you sure you want to continue connecting (yes/no/\[fingerprint\])? |
-| :---- |
+```bash
+This key is not known by any other names Are you sure you want to continue connecting (yes/no/[fingerprint])? |
+```
 
-* Em seguida forneça a senha “pi” cadastrada no **rpi-mager**:
+* Em seguida forneça a senha `pi` cadastrada no `rpi-mager`:
 
-| pi@\<hostname\>.local's password: |
-| :---- |
+```bash
+pi@<hostname>.local's password:
+```
 
 * Em seguida você verá o prompt do terminal parecido com a figura abaixo, indicando que você está conectado com o usuário “pi” no host “rpi1”(o número final depende de seu hostname) :
 
-| pi@rpi1:\~ $ |
-| :---- |
+```bash
+pi@rpi1:\~ $
+```
 
 * No terminal do RPi digite  sudo raspi-config e na opção 3 Interfacing Options-\>I 3 VNC habilite o servidor VNC.
 
@@ -107,19 +111,21 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 * Saia do raspi-config  e reinicie o RPi com a seguinte linha de comando:
 
-| sudo reboot |
-| :---- |
+```bash
+sudo reboot
+```
 
 
-  2. # Instalação do cliente VNC no computador
+## Instalação do cliente VNC no computador
 
 * Baixe o VNC viewer: [https://www.realvnc.com/pt/connect/download/viewer/linux/](https://www.realvnc.com/pt/connect/download/viewer/linux/)  
 * Instale o VNC viewer com a seguinte linha de comando, substituindo o texto \<VERSÃO DO VNC\> que você baixou(quanto esse tutorial foi escrito era 7.12.1):
 
-| sudo dpkg \-i VNC-Viewer-\<VERSÃO DO VNC\>-Linux-x64.deb |
-| :---- |
+```bash
+sudo dpkg -i VNC-Viewer-<VERSÃO DO VNC>-Linux-x64.deb
+```
 
-* Executar o VNC viewer e se conecte em \<hostname\>.local:
+* Executar o VNC viewer e se conecte em `<hostname>.local`:
 
 ![](./imagens/pc-vnc-0.png)
 
@@ -127,7 +133,7 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 ![](./imagens/pc-vnc-1.png)
 
-3. # Configuração do módulo de câmera
+## Configuração do módulo de câmera
 
 * Nesse curso utilizaremos o módulo de [câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
 * Para conectar o módulo de câmera no RPi, desligue o RPi e siga a seção “**Conectar o Módulo de Câmera**” do tutorial disponível **[neste link](https://projects.raspberrypi.org/pt-BR/projects/getting-started-with-picamera/2)** da documentação do RPi.  
@@ -138,15 +144,17 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 * Verifique se a câmera está sendo reconhecida corretamente:
 
-| libcamera-hello \--list-cameras |
-| :---- |
+```bash
+libcamera-hello --list-cameras
+```
 
 ![](./imagens/camera-rpi-1.png)
 
 * Faça um teste para verificação do funcionamento da câmera
 
-| libcamera-hello |
-| :---- |
+```bash
+libcamera-hello
+```
 
 ![](./imagens/camera-rpi-2.png)
 
@@ -154,7 +162,7 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
   * [https://www.raspberrypi.com/documentation/accessories/camera.html](https://www.raspberrypi.com/documentation/accessories/camera.html)  
   * [https://www.raspberrypi.com/documentation/computers/camera\_software.html](https://www.raspberrypi.com/documentation/computers/camera_software.html)
 
-4. # Referências
+## Referências
 
 * Principais referências para configuração inicial:   
   * Instalação do sistema operacional:  

@@ -3,7 +3,7 @@
 - Configurações iniciais do Raspberry Pi(RPi):
   - [Roteiro de Laboratório](./rpi_basic_config/rpi_basic_config.md)
 
-- Instalação do Edge Impulse Linux CLI (Command Line Interface) no Raspberry Pi:
+- Instalação do Edge Impulse Linux CLI (Command Line Interface) no RPi:
   - [Roteiro de Laboratório](./rpi_ei_linux/rpi_ei_linux.md)
 
 - Instalação do Edge Impulse Linux Python *SDK*
