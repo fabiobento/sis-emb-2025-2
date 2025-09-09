@@ -1,6 +1,6 @@
 # Instalação do Sistema Operacional
 
-O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). Diversas versões do OS estão disponíveis em [https://downloads.raspberrypi.org/raspios\_armhf/images/](https://downloads.raspberrypi.org/raspios_armhf/images/) 
+O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). Diversas versões do OS estão disponíveis em [https://downloads.raspberrypi.org/raspios_armhf/images/](https://downloads.raspberrypi.org/raspios_armhf/images/) 
 
 ## Instalação do Raspberry Pi Imager
 
@@ -67,7 +67,7 @@ sudo apt install rpi-imager
 
 ## Configuração de acesso remoto
 
-   1. Habilitar o servidor VNC no RPi
+### Habilitar o servidor VNC no RPi
 
 * Insira o cartão SD no Raspberry Pi 3:
 
@@ -114,9 +114,7 @@ pi@rpi1:\~ $
 ```bash
 sudo reboot
 ```
-
-
-## Instalação do cliente VNC no computador
+### Instalação do cliente VNC no computador
 
 * Baixe o VNC viewer: [https://www.realvnc.com/pt/connect/download/viewer/linux/](https://www.realvnc.com/pt/connect/download/viewer/linux/)  
 * Instale o VNC viewer com a seguinte linha de comando, substituindo o texto \<VERSÃO DO VNC\> que você baixou(quanto esse tutorial foi escrito era 7.12.1):
