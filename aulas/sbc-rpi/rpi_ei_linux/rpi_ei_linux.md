@@ -122,7 +122,7 @@ Após a instalação, é importante verificar se a câmera do Raspberry Pi está
 edge-impulse-linux
 ```
 
-Este comando verifica se a câmera está acessível pra o Edge Impulse. Despois de ter selecionado o seu projeto do Edge Impulse,  você deve receber uma saída semelhante a esta:
+Este comando verifica se a câmera está acessível pra o Edge Impulse. Selecione o projeto que você criou no roteiro de laboratório [Classificação de Imagens](https://docs.google.com/presentation/d/1zI8QhWKV3fmNJB46eiIo1tHZeL8yTCaH/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true):
 ```bash
 Edge Impulse Linux client v1.17.5
 
@@ -135,10 +135,7 @@ Edge Impulse Linux client v1.17.5
 [WS ] Go to https://studio.edgeimpulse.com/studio/420760/acquisition/training to build your machine learning model!
 
 ```
-
-## **Passo 8: Confira o feed da câmera no seu projeto**
-
-Depois de executar o comando, um streaming de vídeo da câmera será transmitido para o seu projeto na parte de Data Acquisition.
+Em seguida vá à seção `Data Acquisition` no site de seu projeto no [Edge Impulse Studio](https://studio.edgeimpulse.com/) e você verá um streaming de vídeo da câmera do RPi:
 
 ![](./imagens/camera_streaming.png)
 
