@@ -133,7 +133,7 @@ sudo dpkg -i VNC-Viewer-<VERSÃO DO VNC>-Linux-x64.deb
 
 ## Configuração do módulo de câmera
 
-* Nesse curso utilizaremos o módulo de [câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
+* Nesse curso utilizaremos o [módulo de  câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
 * Para conectar o módulo de câmera no RPi, desligue o RPi e siga a seção “**Conectar o Módulo de Câmera**” do tutorial disponível **[neste link](https://projects.raspberrypi.org/pt-BR/projects/getting-started-with-picamera/2)** da documentação do RPi.  
 * Ligue o RPi  
 * Abra o terminal no ícone através do ícone no canto superior direito.
