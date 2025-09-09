@@ -40,7 +40,7 @@ A instalação pode ser feita de duas maneiras principais:
 - compilando a partir do código-fonte.
 
 A seguir, detalho o método usando pacotes `apt`, o qual recomendo para a maioria dos usuários devido à sua simplicidade e rapidez.
-> Se decidir compilar a partir do código-fonte, esteja ciente de que o processo pode ser demorado(pode levar de 6 a 12 horas no RPi 3B), complexo  e propenso a erros. Para a maior parte dos casos de uso em um Raspberry Pi 3B, a instalação via apt é mais do que suficiente e muito mais simples. A compilação a partir do código-fonte só é recomendada se você precisar de uma funcionalidade muito específica que não está disponível nos pacotes padrão.
+> Se decidir compilar a partir do código-fonte, esteja ciente de que o processo pode ser demorado (pode levar de 6 a 12 horas no RPi 3B), complexo  e propenso a erros. A compilação a partir do código-fonte só é recomendada se você precisar de uma funcionalidade muito específica que não está disponível nos pacotes padrão.
 
 Abaixo, você tem um guia completo com o método mais recomendado e atualizado: vamos usar pacotes que agilizam o processo e evitam a compilação completa, que pode levar muitas horas.
 
