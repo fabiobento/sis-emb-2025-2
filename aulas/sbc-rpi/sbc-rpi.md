@@ -6,7 +6,7 @@
 - Instalação do Edge Impulse Linux CLI (Command Line Interface) no RPi:
   - [Roteiro de Laboratório](./rpi_ei_linux/rpi_ei_linux.md)
 
-- Instalação do Edge Impulse Linux Python *SDK*
+- Instalação de Bibliotecas Python para o RPi
   - [Roteiro de Laboratório](./rpi_ei_linux_sdk/rpi_ei_linux_sdk.md)
 
   

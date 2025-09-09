@@ -1,4 +1,4 @@
-# Instalação do Edge Impulse Linux Python *SDK*
+# Instalação de Bibliotecas Python para o RPi
 Nesse roteiro de laboratório você instalará a biblioteca Edge Impulse Linux Python *SDK*. Ela permite executar modelos de aprendizado de máquina e coletar dados de sensores em máquinas Linux usando Python. O SDK é open source e está [hospedado no GitHub](https://github.com/edgeimpulse/linux-sdk-python).
 
 Além disso, você instalará o [OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
