@@ -32,6 +32,24 @@ pip3 install pyaudio
 ```
 ## Instalação de outras dependências
 
+### Pyserial
+O PySerial é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
+#### Passo 1: Instalar o PySerial
+ Para instalar o PySerial, execute o seguinte comando no terminal do RPi:
+```bash
+pip3 install pyserial
+```
+#### Passo 2: Confiurar permissões
+Por padrão no Raspberry Pi OS, o usuário `pi` (ou o seu usuário padrão) pode não ter permissão para acessar as portas seriais, o que causaria um erro de `Permission denied`.
+Para resolver isso, adicione seu usuário ao grupo dialout:
+```bash
+sudo usermod -a -G dialout $USER
+```
+Depois de executar esse comando, é necessário reiniciar o RPi para que as alterações tenham efeito:
+```bash
+sudo reboot
+```
+
 ### **OpencV**
 Instalar o OpenCV em um Raspberry Pi 3B pode ser um processo demorado, no entanto, é um passo fundamental para projetos de visão computacional.
 
