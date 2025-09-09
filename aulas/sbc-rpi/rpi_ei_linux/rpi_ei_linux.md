@@ -1,4 +1,4 @@
-# **Instalação do Edge Impulse Linux CLI no Raspberry Pi**
+# **Instalação do Edge Impulse Linux CLI e SDK no Raspberry Pi**
 
 Este tutorial guiará você pelo processo de instalação e configuração do **Edge Impulse Linux CLI** no Raspberry Pi conforme descrito pela documentação em [Edge Impulse CLI Installation](https://docs.edgeimpulse.com/tools/clis/edge-impulse-cli/installation#linux%2C-ubuntu%2C-macos%2C-and-raspbian-os) e no [Edge Impulse SDk Instalation->Raspberry Pi](https://docs.edgeimpulse.com/hardware/boards/raspberry-pi-4).
 
