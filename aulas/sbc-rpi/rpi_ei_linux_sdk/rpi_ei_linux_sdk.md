@@ -21,7 +21,7 @@ Esta biblioteca permite executar modelos de aprendizado de máquina e coletar da
 - Configure seu RPi conforme descrito no roteiro de laboratório [Configurações iniciais do RPi](./rpi_basic_config/rpi_basic_config.md)
 - Instale as ferramentas CLI e do SDK do Edge Impulse conforme o roteiro de laboratório [Instalação do Edge Impulse Linux CLI](./rpi_ei_linux/rpi_ei_linux.md)
 
-## Instalação
+## Instalação do Edge Impulse Linux Python *SDK*
 Para instalar o [Edge Impulse Linux Python *SDK*](https://docs.edgeimpulse.com/tools/libraries/sdks/inference/linux/python), execute os seguintes comandos no terminal do RPi:
 ```bash
 sudo apt-get install libatlas-base-dev libportaudio0 libportaudio2 libportaudiocpp0 portaudio19-dev
