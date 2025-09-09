@@ -4,7 +4,7 @@ Este tutorial guiará você pelo processo de instalação e configuração do **
 
 ## **Passo 1: Configurações Iniciais do Raspberry Pi**
 
-Antes de executar esse tutorial você deve ter realizado o tutorial  [Configurações iniciais do Raspberry Pi(RPi)](https://drive.google.com/file/d/1dKrleM3OK_qAawMq2JHHtL2fWWlyE3kw/view?usp=sharing). Antes de começarmos, certifique-se de que o Raspberry Pi está atualizado e com as configurações básicas prontas. Se necessário, revise as etapas iniciais de configuração do Raspberry Pi, como a habilitação da interface de câmera e a conexão com a rede. 
+Antes de executar esse tutorial você deve ter realizado o tutorial  [Configurações iniciais do Raspberry Pi(RPi)](../rpi_basic_config/rpi_basic_config.md). Antes de começarmos, certifique-se de que o Raspberry Pi está atualizado e com as configurações básicas prontas. Se necessário, revise as etapas iniciais de configuração do Raspberry Pi, como a habilitação da interface de câmera e a conexão com a rede. 
 
 ## **Passo 2: Atualização do Sistema**
 
