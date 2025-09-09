@@ -33,7 +33,14 @@ pip3 install pyaudio
 ## Instalação de outras dependências
 
 ### **OpencV**
-Instalar o OpenCV em um Raspberry Pi 3B pode ser um processo demorado, especialmente se você compilar a partir do código-fonte. No entanto, é um passo fundamental para projetos de visão computacional.
+Instalar o OpenCV em um Raspberry Pi 3B pode ser um processo demorado, no entanto, é um passo fundamental para projetos de visão computacional.
+
+A instalação pode ser feita de duas maneiras principais:
+- usando o gerenciador de pacotes `apt` ou
+- compilando a partir do código-fonte.
+
+A seguir, detalho o método usando pacotes `apt`, o qual recomendo para a maioria dos usuários devido à sua simplicidade e rapidez.
+> Se decidir compilar a partir do código-fonte, esteja ciente de que o processo pode ser demorado(pode levar de 6 a 12 horas no RPi 3B), complexo  e propenso a erros. Para a maior parte dos casos de uso em um Raspberry Pi 3B, a instalação via apt é mais do que suficiente e muito mais simples. A compilação a partir do código-fonte só é recomendada se você precisar de uma funcionalidade muito específica que não está disponível nos pacotes padrão.
 
 Abaixo, você tem um guia completo com o método mais recomendado e atualizado: vamos usar pacotes que agilizam o processo e evitam a compilação completa, que pode levar muitas horas.
 
@@ -67,3 +74,58 @@ A compilação ou instalação de pacotes pesados como o OpenCV pode consumir mu
     sudo /etc/init.d/dphys-swapfile restart
     ```
 #### Passo 3: Instalar o OpenCV e suas dependências
+Ainda bem que as versões mais recentes do Raspberry Pi OS incluem pacotes pré-compilados para o OpenCV nos seus repositórios, o que torna a instalação muito mais rápida do que compilar do zero.
+
+1. Instale as bibliotecas principais do OpenCV e os pacotes Python:
+    ```bash
+    sudo apt install python3-opencv -y
+    ```
+2. Para garantir que o OpenCV possa ler e escrever diferentes formatos de imagem e vídeo (como JPEG, PNG, MP4, etc.), instale as seguintes bibliotecas: 
+    ````bash
+    sudo apt install -y libjpeg-dev libpng-dev libtiff-dev
+    sudo apt install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+    sudo apt install -y libxvidcore-dev libx264-dev
+    sudo apt install -y libfontconfig1-dev libcairo2-dev
+    sudo apt install -y libgdk-pixbuf2.0-dev libpango1.0-dev
+    sudo apt install -y libgtk2.0-dev libgtk-3-dev
+
+    ```
+3. Instale a biblioteca ATLAS (Automatically Tuned Linear Algebra Software) pois ela ajuda a otimizar operações matemáticas:
+    ```bash
+    sudo apt install -y libatlas-base-dev
+    ```
+4. Instale a biblioteca HDF5 pois ela é útil para armazenar grandes quantidades de dados numéricos.
+    ```bash
+    sudo apt install -y libhdf5-dev libhdf5-103
+    ```
+#### Passo 4: Verificar a instalação    
+Após a conclusão da instalação, é fundamental verificar se o OpenCV foi instalado corretamente e está acessível pelo Python.
+1. Abra o terminal e inicie o interpretador Python 3:
+    ```bash
+    python3
+    ```
+2. No prompt do Python, tente importar o módulo `cv2` e verifique a versão instalada:
+    ```python
+    import cv2
+    print(cv2.__version__)
+    ```
+3. Se o OpenCV estiver instalado corretamente, você verá a versão do OpenCV impressa no terminal, algo como `4.5.3` ou similar.
+4. Saia do interpretador Python digitando:
+    ```python
+    exit()
+    ```
+#### Passo 5: Restaurar o tamanho do Swap
+Manter um arquivo de swap grande pode diminuir a vida útil do seu cartão microSD. Após a instalação, é uma boa prática restaurá-lo ao tamanho original.    
+1. Edite o arquivo de configuração novamente:
+    ```bash
+    sudo nano /etc/dphys-swapfile
+    ```
+2. Altere o valor de `CONF_SWAPSIZE` de volta para `100`:
+    ```bash
+    CONF_SWAPSIZE=100
+    ```
+3. Salve e saia: Pressione `Ctrl+X`, depois `Y` e `Enter`.
+4. Reinicie o serviço de swap para aplicar as alterações:
+    ```bash
+    sudo /etc/init.d/dphys-swapfile restart
+    ```    
