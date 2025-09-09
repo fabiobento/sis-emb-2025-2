@@ -1,4 +1,4 @@
-# Coleta e Processamento de Dados com Computador de Placa Única (*Single-Board Computer* - SBC
+# Coleta e Processamento de Dados com Computador de Placa Única (*Single-Board Computer* - SBC)
 
 - Configurações iniciais do Raspberry Pi(RPi):
   - [Roteiro de Laboratório](./rpi_basic_config/rpi_basic_config.md)
