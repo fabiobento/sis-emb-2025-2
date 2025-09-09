@@ -7,7 +7,7 @@ Esta biblioteca permite executar modelos de aprendizado de máquina e coletar da
     Para verificar a versão do Python 3 instalada no seu RPi e garantir que seja 3.7 ou superior, o método mais simples é usar o terminal.
     Abra o terminal no seu RPi e digite um dos seguintes comandos:
     ```bash
-        'python3 --version
+        python3 --version
     ```
     Ou sua forma abreviada:
     ```bash
