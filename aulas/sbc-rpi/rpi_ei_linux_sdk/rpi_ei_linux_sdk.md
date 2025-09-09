@@ -39,7 +39,7 @@ O PySerial é uma biblioteca Python que encapsula o acesso à porta serial, faci
 ```bash
 pip3 install pyserial
 ```
-#### Passo 2: Confiurar permissões
+#### Passo 2: Configurar permissões
 Por padrão no Raspberry Pi OS, o usuário `pi` (ou o seu usuário padrão) pode não ter permissão para acessar as portas seriais, o que causaria um erro de `Permission denied`.
 Para resolver isso, adicione seu usuário ao grupo dialout:
 ```bash
