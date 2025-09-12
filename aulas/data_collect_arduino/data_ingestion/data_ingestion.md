@@ -44,7 +44,7 @@ Posteriormente o encaminhador de dados determinará automaticamente a taxa de am
 Com o código rodando no dispositivo, abra um terminal no seu computador e execute o comando:
 
 ```bash
-edge-impulse-data-forwarder
+edge-impulse-data-forwarder --clean --frequency 63
 ```
 ### **Passo 3: Configuração Interativa**
 
