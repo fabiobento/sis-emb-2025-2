@@ -1,6 +1,6 @@
 # Coleta e Processamento de Dados com Computador de Placa Única (*Single-Board Computer* - SBC)
 
-- Configurações iniciais do Raspberry Pi(RPi):
+- Instalação do Sistema Operacional do Raspberry Pi(RPi):
   - [Roteiro de Laboratório](./rpi_basic_config/rpi_basic_config.md)
 
 - Instalação do Edge Impulse Linux CLI (Command Line Interface) no RPi:
@@ -9,4 +9,6 @@
 - Instalação de Bibliotecas Python para o RPi
   - [Roteiro de Laboratório](./rpi_ei_linux_sdk/rpi_ei_linux_sdk.md)
 
+- Classificação de Dados de Aceleração em Tempo Real usando bibliotecas Python no RPi
+  - [Roteiro de Laboratório](./rpi_ei_linux_sdk_accel/rpi_ei_linux_sdk_accel.md):
   
