@@ -112,7 +112,11 @@ pi@<hostname>.local's password:
 pi@rpi1:\~ $
 ```
 
-* No terminal do RPi digite  sudo raspi-config e na opção 3 Interfacing Options-\>I 3 VNC habilite o servidor VNC.
+* No terminal do RPi digite:
+```bash
+sudo raspi-config
+```
+*       e na opção 3 Interfacing Options-\>I 3 VNC habilite o servidor VNC.
 
 ![](./imagens/rpi-vnc-3.png)
 
