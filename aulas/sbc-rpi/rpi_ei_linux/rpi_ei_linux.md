@@ -119,7 +119,7 @@ s <enter> to submit)
 
 Após a instalação, é importante verificar se a câmera do Raspberry Pi está funcionando corretamente com o Edge Impulse. Então execute o seguinte comando:
 ```bash
-edge-impulse-linux
+edge-impulse-linux --clean
 ```
 
 Este comando verifica se a câmera está acessível pra o Edge Impulse. Selecione o projeto que você criou no roteiro de laboratório [Classificação de Imagens](https://docs.google.com/presentation/d/1zI8QhWKV3fmNJB46eiIo1tHZeL8yTCaH/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true):
