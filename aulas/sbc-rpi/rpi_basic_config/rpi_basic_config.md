@@ -117,7 +117,7 @@ pi@rpi1:\~ $
 sudo raspi-config
 ```
 
-*       e na opção 3 Interfacing Options-\>I 3 VNC habilite o servidor VNC.
+* e na opção 3 Interfacing Options-\>I 3 VNC habilite o servidor VNC.
 
 ![](./imagens/rpi-vnc-3.png)
 
