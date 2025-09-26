@@ -17,10 +17,14 @@ sudo apt install rpi-imager
 * Insira um cartão SD no leitor do computador pessoal (ainda não é pra inserir no RPi) Abra a aplicação **Imager** no menu de aplicativos do Ubuntu:  
 ![](./imagens/rpi-imager.png)
 
+* Formate o cartão SD antes de instalar o sisema operacional selecionando a opção `Erase-Format card as FAT32`
+
+![](./imagens/erase-sd-card.png)
+* Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD. Depois clique em `Write` e `Yes`.
+
 * Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Raspiberry Pi OS (Legacy, 32-bit)** **\- A port of Debian Bullseye with the Raspberry pi and desktop environment**.
 
 ![](./imagens/rpi-imager-0.png)
-
 
 * Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD
 
