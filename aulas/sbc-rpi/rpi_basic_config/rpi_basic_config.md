@@ -22,6 +22,8 @@ sudo apt install rpi-imager
 ![](./imagens/erase-sd-card.png)
 * Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD. Depois clique em `Write` e `Yes`.
 
+* Depois de concluída a formatação abra novamente o **rpi-imager** e inicie a instalação do sistema operacional
+
 * Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Raspiberry Pi OS (Legacy, 32-bit)** **\- A port of Debian Bullseye with the Raspberry pi and desktop environment**.
 
 ![](./imagens/rpi-imager-0.png)
