@@ -17,7 +17,7 @@ sudo apt install rpi-imager
 * Insira um cartão SD no leitor do computador pessoal (ainda não é pra inserir no RPi) Abra a aplicação **Imager** no menu de aplicativos do Ubuntu:  
 ![](./imagens/rpi-imager.png)
 
-* Formate o cartão SD antes de instalar o sisema operacional selecionando a opção `Erase-Format card as FAT32`
+* Formate o cartão SD antes de instalar o sistema operacional selecionando a opção `Erase-Format card as FAT32`
 
 ![](./imagens/erase-sd-card.png)
 * Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD. Depois clique em `Write` e `Yes`.
