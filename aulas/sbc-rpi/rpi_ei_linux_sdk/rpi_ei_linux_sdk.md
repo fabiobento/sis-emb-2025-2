@@ -146,3 +146,75 @@ Manter um arquivo de swap grande pode diminuir a vida útil do seu cartão micro
     ```bash
     sudo /etc/init.d/dphys-swapfile restart
     ```    
+
+### VSCode (opcional)
+O Visual Studio Code (VSCode) é um editor de código-fonte leve, mas poderoso, desenvolvido pela Microsoft. Ele é amplamente utilizado por desenvolvedores devido à sua versatilidade, suporte a várias linguagens de programação e uma vasta gama de extensões que aumentam sua funcionalidade. Para utilizar o VSCode remotamente no Raspberry Pi, siga os passos abaixo:
+#### Passo 1: Instalar o VSCode no computador pessoal
+1. Acesse o site oficial do [Visual Studio Code](https://code.visualstudio.com/).
+2. Baixe a versão apropriada para o seu sistema operacional (Windows, macOS ou Linux).
+3. Siga as instruções de instalação fornecidas no site.
+#### Passo 2: Instalar a extensão "Remote - SSH"
+1. Abra o VSCode no seu computador pessoal.
+2. Vá para a aba de extensões clicando no ícone de quadrado no lado esquerdo ou pressionando `Ctrl+Shift+X`.
+3. Na barra de pesquisa, digite "Remote - SSH".
+4. Clique em "Install" para instalar a extensão.
+#### Passo 3: Configurar a conexão SSH
+1. Pressione `F1` ou `Ctrl+Shift+P` para abrir a paleta de comandos.
+2. Digite "Remote-SSH: Connect to Host..." e selecione essa opção.
+3. Clique em "Add New SSH Host...".
+4. Insira o comando SSH para se conectar ao seu Raspberry Pi, por exemplo:
+    ```bash
+    ssh pi@rpi1.local
+    ```
+5. Escolha o arquivo de configuração SSH (geralmente `~/.ssh/config`).
+6. Após adicionar o host, selecione-o na lista para se conectar.
+7. A primeira vez que você se conectar, pode ser solicitado que você aceite a chave do host. Digite "yes" e pressione `Enter`.
+8. Insira a senha do usuário do Raspberry Pi quando solicitado.
+#### Passo 4: Abrir uma pasta no Raspberry Pi
+1. Após a conexão, você verá uma nova janela do VSCode.
+2. Vá para `File > Open Folder...` e navegue até o diretório no Raspberry Pi onde você deseja trabalhar.
+3. Clique em "OK" para abrir a pasta.
+#### Passo 5: **Para liberar mais recursos no RPi ao utilizar o VSCode** (opcional)
+O VSCode é uma aplicação relativamente pesada, e o Raspberry Pi 3B tem recursos limitados. Aqui estão algumas dicas para melhorar o desempenho ao usar o VSCode remotamente:
+1. Execute o Raspberry Pi em Modo Totalmente `Headless` (sem *Graphical User Interphace*-GUI):  
+Esta é, de longe, a melhoria mais significativa que você pode fazer. Se você só usa o RPi via SSH, a interface gráfica (GUI) pode estar desperdiçando centenas de megabytes de RAM.  
+   * **Como fazer:**  
+     a. Abra o terminal (via SSH) e digite:
+     ```bash
+     sudo raspi-config  
+     ```
+     b. Vá para `System Options -> Boot / Auto Login`.  
+     c. Selecione a opção `Console (Autologin)`. Isso fará com que o RPi inicie diretamente na linha de comando, sem carregar o ambiente de desktop.  
+   * **Resultado:** Isso libera cerca de 200-400 MB de RAM que agora estarão disponíveis para o VS Code Server, tornando a análise de código e a resposta do editor muito mais rápidas.  
+2. Otimize as Configurações do Workspace no VS Code:  
+O VS Code Server "monitora" a todas as pastas e arquivos do seu projeto para detectar mudanças, o que consome muita CPU. Você pode instruí-lo a ignorar diretórios que não precisam ser monitorados.  
+   * **Como fazer:** Dentro do seu projeto no VS Code, crie uma pasta .vscode e dentro dela um arquivo settings.json. Adicione o seguinte conteúdo:
+
+   ```json  
+    {
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/.venv/**": true,
+        "**/__pycache__/**": true,
+        "**/build/**": true,
+        "**/dist/**": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/.venv": true,
+        "**/build": true,
+        "**/dist": true
+    }
+    }
+    ```
+   * **O que isso faz?** Impede que o VS Code gaste recursos monitorando e indexando pastas de dependências (`node_modules`, `.venv`), cache (`__pycache__`) ou de compilação (`build`, `dist`). A diferença na responsividade é considerável, especialmente ao abrir grandes projetos.  
+3. Desative Extensões Pesadas ou Desnecessárias (no Remote):  
+   Lembre-se: as extensões rodam no RPi, não no seu computador pessoal. Extensões de temas e de interface rodam localmente, mas as de linguagem (Python, C++, Docker) rodam remotamente.  
+   * **Como fazer:**  
+     1. Com a sessão remota conectada, vá para a aba de Extensões.  
+     2. Você verá seções `Local` e `SSH: o_seu_rpi`  
+     3. Desabilite no ambiente remoto (`Disable (Workspace)`) qualquer extensão que não seja absolutamente essencial para o projeto atual. O `Pylance`, por exemplo, é poderoso mas consome muita memória. Para edições rápidas, você pode desabilitá-lo temporariamente.
