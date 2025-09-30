@@ -174,7 +174,7 @@ O Visual Studio Code (VSCode) é um editor de código-fonte leve, mas poderoso, 
 1. Após a conexão, você verá uma nova janela do VSCode.
 2. Vá para `File > Open Folder...` e navegue até o diretório no Raspberry Pi onde você deseja trabalhar.
 3. Clique em "OK" para abrir a pasta.
-#### Passo 5: **Para liberar mais recursos no RPi ao utilizar o VSCode** (opcional)
+#### Passo 5: **Para liberar mais recursos no RPi ao utilizar o VSCode** (RECOMENDADO)
 O VSCode é uma aplicação relativamente pesada, e o Raspberry Pi 3B tem recursos limitados. Aqui estão algumas dicas para melhorar o desempenho ao usar o VSCode remotamente:
 1. Execute o Raspberry Pi em Modo Totalmente `Headless` (sem *Graphical User Interphace*-GUI):  
 Esta é, de longe, a melhoria mais significativa que você pode fazer. Se você só usa o RPi via SSH, a interface gráfica (GUI) pode estar desperdiçando centenas de megabytes de RAM.  
