@@ -43,7 +43,9 @@ ls /dev/ttyUSB\*
 ```
   * Anote o nome da porta identificada (ex: `/dev/ttyUSB0` ou `/dev/ttyACM0`).  
 4. **Criar o Script Python `leitor_serial.py`:**  
-   * No RPi, crie um novo arquivo Python chamado `leitor_serial.py` (você pode usar um editor de texto como `nano` ou `vim` no terminal, ou um IDE se estiver via ssh ou VNC).  
+   * No RPi, crie um novo arquivo Python chamado `leitor_serial.py` (você pode usar um editor de texto como `nano` ou `vim` no terminal, ou um IDE se estiver via ssh ou VNC) conforme descrito na seção **VSCode (opcional)** do roteiro de laboratório [Instalação de Bibliotecas Python para o RPi](../rpi_ei_linux_sdk/rpi_ei_linux_sdk.md) .  
+
+   
    * Copie e cole o código-fonte fornecido no ["Roteiro de Laboratório: Comunicação básica de seu computador com o Arduino"](../../edge_inference/pc_arduino_comm/pc_arduino_comm.md).  
    * **Ajuste a variável `PORTA_SERIAL`** no início do código Python com o nome da porta que você identificou no passo anterior. Certifique-se também que o `baudrate` está configurado para `115200`, conforme o protocolo do Arduino.  
    * Salve o arquivo.  
