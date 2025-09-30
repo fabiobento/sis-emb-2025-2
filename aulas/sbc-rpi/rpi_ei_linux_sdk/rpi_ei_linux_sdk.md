@@ -63,7 +63,7 @@ A seguir, detalho o método usando pacotes `apt`, o qual recomendo para a maiori
 Abaixo, você tem um guia completo com o método mais recomendado e atualizado: vamos usar pacotes que agilizam o processo e evitam a compilação completa, que pode levar muitas horas.
 
 #### Passo 1: Preparar o RPi
-Primeiro, é importante garantir que seu sistema operacional e firmware estejam totalmente atualizados. Abra o terminal e execute os seguintes comandos:
+Primeiro, é importante garantir que seu sistema operacional e firmware estejam totalmente atualizados. Abra o terminal em seu computador pessoal, reestabeleça a comunicação SSH com o RPi. Depois execute os seguintes comandos:
 ```bash
 sudo apt update
 sudo apt full-upgrade -y
@@ -99,14 +99,13 @@ Ainda bem que as versões mais recentes do Raspberry Pi OS incluem pacotes pré-
     sudo apt install python3-opencv -y
     ```
 2. Para garantir que o OpenCV possa ler e escrever diferentes formatos de imagem e vídeo (como JPEG, PNG, MP4, etc.), instale as seguintes bibliotecas: 
-    ````bash
+    ```bash
     sudo apt install -y libjpeg-dev libpng-dev libtiff-dev
     sudo apt install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
     sudo apt install -y libxvidcore-dev libx264-dev
     sudo apt install -y libfontconfig1-dev libcairo2-dev
     sudo apt install -y libgdk-pixbuf2.0-dev libpango1.0-dev
     sudo apt install -y libgtk2.0-dev libgtk-3-dev
-
     ```
 3. Instale a biblioteca ATLAS (Automatically Tuned Linear Algebra Software) pois ela ajuda a otimizar operações matemáticas:
     ```bash
