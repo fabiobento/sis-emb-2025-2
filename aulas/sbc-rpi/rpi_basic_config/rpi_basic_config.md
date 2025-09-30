@@ -5,7 +5,7 @@ O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspb
 
 ## Instalação do Raspberry Pi Imager
 
-* Siga as instruções para instalação do *Raspberry Pi Imager*(`rpi-mager`) que você encontra no  [**site Raspberry Pi software**](https://www.raspberrypi.com/software/) . O **rpi-mager** é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. Para instalar o Raspberry Pi Imager digite a seguinte linha de comando no terminal:
+* Siga as instruções para instalação do *Raspberry Pi Imager*(`rpi-mager`) que você encontra no  [**site Raspberry Pi software**](https://www.raspberrypi.com/software/) . O **rpi-mager** é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. Para instalar o Raspberry Pi Imager digite a seguinte linha de comando no terminal de seu computador pessoal com Ubuntu:
 
 ``` bash
 sudo apt update
@@ -17,14 +17,14 @@ sudo apt install rpi-imager
 * Insira um cartão SD no leitor do computador pessoal (ainda não é pra inserir no RPi) Abra a aplicação **Imager** no menu de aplicativos do Ubuntu:  
 ![](./imagens/rpi-imager.png)
 
-* Formate o cartão SD antes de instalar o sistema operacional selecionando a opção `Erase-Format card as FAT32`
+* Clique no botão para selação do Sistema Operacional (ou Operativo em algumas traduções)e formate o cartão SD antes de instalar o sistema operacional selecionando a opção `Erase-Format card as FAT32` como mostrado na figura abaixo:
 
 ![](./imagens/erase-sd-card.png)
 * Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD. Depois clique em `Write` e `Yes`.
 
-* Depois de concluída a formatação abra novamente o **rpi-imager** e inicie a instalação do sistema operacional
+* Depois de concluída a formatação abra novamente o **rpi-imager**
 
-* Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Raspiberry Pi OS (Legacy, 32-bit)** **\- A port of Debian Bullseye with the Raspberry pi and desktop environment**.
+* Vamos iniciar a instalação do sistema operacional. Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Raspiberry Pi OS (Legacy, 32-bit)** **\- A port of Debian Bullseye with the Raspberry pi and desktop environment**.
 
 ![](./imagens/rpi-imager-0.png)
 
@@ -88,7 +88,7 @@ sudo apt install rpi-imager
 
 ![](./imagens/rpi-vnc-2.png)
 
-* No terminal digite, substituindo **\<hostname\>** pelo nome de acordo com sua bancada (para a bancada 1, por exemplo, seria rpi1) 
+* No terminal digite, substituindo **\<hostname\>** pelo nome de acordo com sua bancada (para a bancada 1, por exemplo, seria `ssh pi@rpi1.local`) 
 
 ```bash
 ssh pi@<hostname>.local
@@ -146,9 +146,9 @@ sudo dpkg -i VNC-Viewer-<VERSÃO DO VNC>-Linux-x64.deb
 ## Configuração do módulo de câmera
 
 * Nesse curso utilizaremos o [módulo de  câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
-* Para conectar o módulo de câmera no RPi, desligue o RPi e siga a seção “**Conectar o Módulo de Câmera**” do tutorial disponível **[neste link](https://projects.raspberrypi.org/pt-BR/projects/getting-started-with-picamera/2)** da documentação do RPi.  
+* Para **encaixar o módulo de câmera**, desligue o RPi e siga a seção esse tutorial disponível **[nesse link ( no intervalo 2min20seg até 3min22seg do vídeo)](https://youtu.be/y-856jgQdgU?t=139)**.  
 * Ligue o RPi  
-* Abra o terminal no ícone através do ícone no canto superior direito.
+* No Raspberry Pi OS, abra o terminal através do ícone no canto superior direito.
 
 ![](./imagens/camera-rpi-0.png)
 

@@ -8,7 +8,25 @@ Antes de executar esse tutorial você deve ter realizado o tutorial  [Configura�
 
 ## **Passo 2: Atualização do Sistema**
 
-Ligue o RPi e atualize o sistema para garantir que todas as bibliotecas e pacotes estejam atualizados. No terminal, execute o comando:
+* No terminal do seu computador pessoal digite, substituindo **\<hostname\>** pelo nome de acordo com sua bancada (para a bancada 1, por exemplo, seria `ssh pi@rpi1.local`) 
+
+```bash
+ssh pi@<hostname>.local
+```
+
+* Em seguida forneça a senha `pi` cadastrada no `rpi-mager`:
+
+```bash
+pi@<hostname>.local's password:
+```
+
+* Em seguida você verá o prompt do terminal parecido com a figura abaixo, indicando que você está conectado com o usuário “pi” no host “rpi1”(o número final depende de seu hostname) :
+
+```bash
+pi@rpi1:\~ $
+```
+
+* Agora que vocês está conectado ao RPi por SSH, digite os seguintes comandos para atualizar o sistema para garantir que todas as bibliotecas e pacotes estejam atualizados:
 
 ```bash
 sudo apt update
