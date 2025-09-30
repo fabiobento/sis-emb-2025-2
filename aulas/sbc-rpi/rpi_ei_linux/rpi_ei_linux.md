@@ -62,7 +62,7 @@ npm config set prefix '~/.npm-global'
 echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile 
 ```
 
-## **Passo 4: Instalar o Edge Impulse CLI (central de desenvolvimento)**
+## **Passo 4: Instalar o Edge Impulse CLI (Central de desenvolvimento)**
 
 Agora que as dependências estão instaladas, instale o **Edge Impulse Linux CLI** utilizando o **npm** (gerenciador de pacotes do Node.js):
 ```bash
@@ -73,15 +73,15 @@ Essa instalação pode demorar alguns minutos.
 
 O edge-impulse-cli é uma suíte de ferramentas de propósito geral que serve como a principal ponte entre o seu ambiente de desenvolvimento local e os projetos na nuvem do Edge Impulse Studio. Suas principais funcionalidades incluem:
 
-* **Coleta de Dados:** Através de ferramentas como o edge-impulse-data-forwarder, é possível conectar uma vasta gama de microcontroladores e sensores ao seu computador e enviar os dados diretamente para o seu projeto no Edge Impulse.  
+* **Coleta de Dados:** Através de ferramentas como o edge-impulse-data-forwarder, é possível conectar uma vários tipos de microcontroladores e sensores ao seu computador e enviar os dados diretamente para o seu projeto no Edge Impulse.  
 * **Gerenciamento de Dispositivos:** Permite o controle de dispositivos locais conectados, atuando como um proxy para sincronizar dados de placas que não possuem conexão direta com a internet.  
 * **Upload de Arquivos:** Facilita o envio de conjuntos de dados já existentes (como arquivos de áudio, imagens ou CSV) para a plataforma.  
 * **Execução de Impulsos em Dispositivos Conectados:** Com o comando edge-impulse-run-impulse, é possível testar o seu modelo (impulso) em tempo real no dispositivo que está coletando os dados.  
 * **Flash de Firmware:** Inclui utilitários para gravar o firmware em placas de desenvolvimento específicas.
 
-Em resumo, o edge-impulse-cli é a sua ferramenta essencial durante a fase de coleta de dados, treinamento e iteração do seu modelo de Machine Learning.
+Em resumo, o edge-impulse-cli é uma ferramenta usada durante a fase de coleta de dados, treinamento e iteração do seu modelo de Machine Learning.
 
-## **Passo 5: Instalar o Edge Impulse para Linux(Executor de Inferência)**
+## **Passo 5: Instalar o Edge Impulse para Linux (Executor de Inferência)**
 
 Para isso, instale as ferramentas destinadas a testes em dispositivos de inferência: 
 ```bash
@@ -95,13 +95,13 @@ Por outro lado, o edge-impulse-linux é uma ferramenta especializada, focada na 
 * **Otimização para a Arquitetura Alvo:** Os modelos `.eim` são compilados e otimizados especificamente para a arquitetura do processador do seu dispositivo Linux, garantindo o melhor desempenho possível.  
 * **SDKs para Integração:** Fornece Kits de Desenvolvimento de Software (SDKs) para linguagens como Python, Node.js e Go, permitindo que você integre facilmente a execução do modelo em suas próprias aplicações.
 
-Essencialmente, o edge-impulse-linux entra em cena quando o seu modelo está treinado e pronto para ser implantado em um dispositivo Linux para uso em um produto ou aplicação final.
+Essencialmente, o edge-impulse-linux é usado quando o seu modelo está treinado e pronto para ser implantado em um dispositivo Linux para uso em um produto ou aplicação final.
 
 ## **Passo 6: Verificar o Acesso à Porta Serial**
 
-Inicie a ingestão de dados transmitidos pela placa microcontroladora
+Inicie a ingestão de dados transmitidos pela placa microcontroladora, conforme você fez no [**Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050**](aulas/data_collect_arduino/arduino_imu_comm/arduino_imu_comm.md) e inicie o `edge-impulse-data-forwarder` com o seguinte comando:
 ```bash
-edge-impulse-data-forwarder --63
+edge-impulse-data-forwarder --clean --63
 ```
 
 Você verá uma tela semelhante à que está abaixo, para iniciar o envio de dados para seu projeto no edge-impulse.
@@ -135,7 +135,7 @@ s <enter> to submit)
 
 ## **Passo 7: Verificar o Acesso à Câmera**
 
-Após a instalação, é importante verificar se a câmera do Raspberry Pi está funcionando corretamente com o Edge Impulse. Então execute o seguinte comando:
+Digite `CTRL+C` para sair da execução do programa anterio, pois agora você vai verificar se a câmera do Raspberry Pi está funcionando corretamente com o Edge Impulse. Então execute o seguinte comando:
 ```bash
 edge-impulse-linux --clean
 ```
@@ -153,7 +153,7 @@ Edge Impulse Linux client v1.17.5
 [WS ] Go to https://studio.edgeimpulse.com/studio/420760/acquisition/training to build your machine learning model!
 
 ```
-Em seguida vá à seção `Data Acquisition` no site de seu projeto no [Edge Impulse Studio](https://studio.edgeimpulse.com/) e você verá um streaming de vídeo da câmera do RPi:
+Em seguida vá à seção `Data Acquisition` no site de seu projeto no [Edge Impulse Studio](https://studio.edgeimpulse.com/), selecione o `Device` e o `Camera(640x480)`. Assim você verá um streaming de vídeo da câmera do RPi:
 
 ![](./imagens/camera_streaming.png)
 
