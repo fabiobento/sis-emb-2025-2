@@ -99,7 +99,7 @@ Essencialmente, o edge-impulse-linux é usado quando o seu modelo está treinado
 
 ## **Passo 6: Verificar o Acesso à Porta Serial**
 
-Inicie a ingestão de dados transmitidos pela placa microcontroladora, conforme você fez no [**Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050**](aulas/data_collect_arduino/arduino_imu_comm/arduino_imu_comm.md) e inicie o `edge-impulse-data-forwarder` com o seguinte comando:
+Inicie a ingestão de dados transmitidos pela placa microcontroladora, conforme você fez no [**Roteiro de Laboratório: Leitura e Serialização de Dados do MPU-6050**](../../data_collect_arduino/arduino_imu_comm/arduino_imu_comm.md) e inicie o `edge-impulse-data-forwarder` com o seguinte comando:
 ```bash
 edge-impulse-data-forwarder --clean --63
 ```
