@@ -29,7 +29,7 @@ pi@rpi1:\~ $
 * Agora que vocês está conectado ao RPi por SSH, digite os seguintes comandos para atualizar o sistema para garantir que todas as bibliotecas e pacotes estejam atualizados:
 
 ```bash
-sudo apt update
+sudo upgrade -y
 ```
 
 ## **Passo 3: Instalar Node.js**
