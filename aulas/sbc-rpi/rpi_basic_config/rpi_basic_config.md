@@ -1,6 +1,6 @@
 # Instalação do Sistema Operacional do Raspberry Pi(RPi)
 
-O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). Diversas versões do OS estão disponíveis em [https://downloads.raspberrypi.org/raspios_armhf/images/](https://downloads.raspberrypi.org/raspios_armhf/images/).
+O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). A versão do sistema operacional que utilizaremos está disponível em [[https://downloads.raspberrypi.org/raspios_armhf/images/](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/)]([https://downloads.raspberrypi.org/raspios_armhf/images/](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/)).
 
 
 ## Instalação do Raspberry Pi Imager
