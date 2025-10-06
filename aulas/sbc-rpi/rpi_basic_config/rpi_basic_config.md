@@ -24,9 +24,11 @@ sudo apt install rpi-imager
 
 * Depois de concluída a formatação abra novamente o **rpi-imager**
 
-* Vamos iniciar a instalação do sistema operacional. Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Raspiberry Pi OS (Legacy, 32-bit)** **\- A port of Debian Bullseye with the Raspberry pi and desktop environment**.
+* Vamos iniciar a instalação do sistema operacional. Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Use Custom**(Utilizar Customizado) e Selecione a imagem `2023-05-03-raspios-bullseye-armhf.img.xz` que gravamos em disco. Essa imagem  é o *Raspberry Pi OS (Legacy, 32-bit)*, um *port* do Debian Bullseye .
 
-![](./imagens/rpi-imager-0.png)
+![](./imagens/custom-os.png)
+
+![](./imagens/custom-os-2.png)
 
 * Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD
 
@@ -48,7 +50,7 @@ sudo apt install rpi-imager
     * Password: **pi**  
   * Configure wireless LAN:  
     * SSID: **LabSEA 2.4GHz**  
-    * Password:  
+    * Password:0790b7e1fbc7ffc0292e525f7c041887af3f0fedd14867ae6a50d7efe50a1b99  
   * *Set locale settings*(Definições de idioma e região):  
     * Time zone: America/Sao\_Paulo  
     * Keyboard layout: br
@@ -181,3 +183,4 @@ libcamera-hello
     * [https://www.raspberrypi.com/documentation/computers/configuration.html](https://www.raspberrypi.com/documentation/computers/configuration.html)  
   * Configuração de acesso remoto:  
     * [https://www.raspberrypi.com/documentation/computers/remote-access.htm](https://www.raspberrypi.com/documentation/computers/remote-access.html)
+
