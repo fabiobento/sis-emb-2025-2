@@ -38,8 +38,8 @@ Para este laboratório, o Raspberry Pi e o Arduino já devem estar configurados 
 
 No terminal do RPi, execute um dos seguintes comandos para listar as portas seriais disponíveis. A porta do Arduino geralmente aparece como `/dev/ttyACM*` ou `/dev/ttyUSB*`.  
 ```bash 
-ls /dev/ttyACM\*  
-ls /dev/ttyUSB\*
+ls /dev/ttyACM*  
+ls /dev/ttyUSB*
 ```
   * Anote o nome da porta identificada (ex: `/dev/ttyUSB0` ou `/dev/ttyACM0`).  
 4. **Criar o Script Python `leitor_serial.py`:**  
@@ -92,7 +92,7 @@ Execute o script no terminal do RPi:
 
 Execute o script no terminal do RPi:  
 ```bash
- python3 janela\_deslizante.py
+ python3 janela_deslizante.py
 ```
   * **Resultado Esperado:** O script deverá imprimir os "blocos" de dados de aceleração, representando as janelas completas, à medida que são coletadas e "processadas". Isso demonstra que os dados estão sendo acumulados e preparados para inferência.  
   * Pressione `Ctrl+C` para encerrar.
@@ -118,7 +118,7 @@ No terminal do RPi, use o comando fornecido no roteiro para baixar o modelo trei
 4. **Executar o Script:**
 No terminal do RPi, execute o script Python, passando o modelo `.eim` como argumento:  
 ```bash
-python3 classifica\_aceleracao.py modelfile.eim
+python3 classifica_aceleracao.py modelfile.eim
 ```
   * **Resultado Esperado:** O script deverá exibir no terminal as classificações em tempo real dos movimentos detectados pelo acelerômetro (ex: "idle", "updown", "snake", "wave"), juntamente com a probabilidade associada a cada gesto e o tempo necessário para realizar a inferência (classificação). Isso demonstra que o modelo de ML está funcionando localmente no RPi.  
   * Pressione `Ctrl+C` para encerrar.
