@@ -80,13 +80,13 @@ Execute o script no terminal do RPi:
 
 ### **Parte 3: Janela Deslizante para Análise de Dados de Acelerômetro com Python no RPi**
 
-*(Baseado no "[Roteiro de Laboratório: Janela Deslizante para Análise de Dados de Acelerômetro com Python"](../../edge_inference/sliding_window/sliding_window.py))*
+*(Baseado no "[Roteiro de Laboratório: Janela Deslizante para Análise de Dados de Acelerômetro com Python"](../../edge_inference/sliding_window/sliding_window.md))*
 
 **Objetivo:** Implementar o conceito de **janela deslizante (sliding window)** para agrupar os dados de aceleração coletados, simulando um processamento em blocos. A janela deslizante permite analisar um "pedaço" de tempo dos dados, crucial para entender o contexto do movimento, ao invés de amostras isoladas.
 
 1. **Criar o Script Python `janela_deslizante.py`:**  
    * No RPi, crie um novo arquivo Python chamado `janela_deslizante.py`.  
-   * Copie o código que você desenvolveu no roteiro "[Roteiro de Laboratório: Janela Deslizante para Análise de Dados de Acelerômetro com Python"](../../edge_inference/sliding_window/sliding_window.py)".  
+   * Copie o código que você desenvolveu no roteiro "[Roteiro de Laboratório: Janela Deslizante para Análise de Dados de Acelerômetro com Python"](../../edge_inference/sliding_window/sliding_window.md)".  
    * Salve o arquivo.  
 2. **Executar o Script:**
 
