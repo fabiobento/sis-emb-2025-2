@@ -187,7 +187,7 @@ A estratégia a seguir instalará **ambos**, permitindo que você escolha o mais
 Este comando único instala o ambiente Jupyter completo, incluindo o Lab e o Notebook clássico.
 
 ```bash
-pip3 install jupyterlab notebook
+pip3 install jupyterlab
 ```
 **Solução de Problema Comum:** Se o sistema não encontrar o comando jupyter após a instalação, adicione o diretório de instalação ao PATH do seu sistema com os comandos abaixo:
 ```bash
