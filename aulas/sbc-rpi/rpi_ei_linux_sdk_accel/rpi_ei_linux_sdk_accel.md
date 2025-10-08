@@ -61,13 +61,13 @@ python3 leitor_serial.py
 
 ### **Parte 2: Extração de Features de Aceleração via Comunicação Serial no RPi**
 
-*(Baseado no "[Roteiro de Laboratório: Extração de Features de Aceleração via Comunicação Serial](../../../edge_inference/features_collect/features_collect.md)")*
+*(Baseado no "[Roteiro de Laboratório: Extração de Features de Aceleração via Comunicação Serial](../../edge_inference/features_collect/features_collect.md)")*
 
 **Objetivo:** Adaptar o script para extrair e atribuir corretamente as características de aceleração a variáveis nomeadas, lidando com o processamento e validação dos dados da porta serial. A **extração de características** é crucial para transformar dados brutos em informações mais significativas e concisas para o modelo de ML, reduzindo a complexidade computacional.
 
 1. **Criar o Script Python `extrai_features.py`:**  
    * No RPi, crie um novo arquivo Python chamado `extrai_features.py`.  
-   * Copie o código que você desenvolveu no roteiro "[Roteiro de Laboratório: Extração de Features de Aceleração via Comunicação Serial](../../../edge_inference/features_collect/features_collect.md)").  
+   * Copie o código que você desenvolveu no roteiro "[Roteiro de Laboratório: Extração de Features de Aceleração via Comunicação Serial](../../edge_inference/features_collect/features_collect.md)").  
    * Salve o arquivo.  
 2. **Executar o Script:**
 Execute o script no terminal do RPi:  
