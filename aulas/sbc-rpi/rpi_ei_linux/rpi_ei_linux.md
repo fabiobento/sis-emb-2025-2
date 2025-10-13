@@ -56,7 +56,7 @@ pi@rpi1:\~ $
     * **Flash de Firmware:** Inclui utilitários para gravar o firmware em placas de desenvolvimento específicas.
 
     Em resumo, o edge-impulse-cli é uma ferramenta usada durante a fase de coleta de dados, treinamento e iteração do seu modelo de Machine Learning. Seguem um link para a [documentação oficial do Edge Impulse CLI](https://docs.edgeimpulse.com/tools/clis/edge-impulse-cli) para mais informações.
-  ### O que é o Edge Impulse para Linux (Executor de Inferência)**
+  ### O que é o Edge Impulse para Linux (Executor de Inferência)
     O edge-impulse-linux é uma ferramenta especializada, focada na etapa de implantação do seu modelo treinado em dispositivos que rodam um sistema operacional Linux, como Raspberry Pi, NVIDIA Jetson Nano ou qualquer computador com arquitetura x86_64, ARMv7 ou AARCH64. Suas características centrais são:
       * **Download de Modelos Compilados:** A principal função, executada através do edge-impulse-linux-runner, é baixar o seu impulso treinado como um arquivo executável autocontido (.eim).  
       * **Execução de Inferência Local:** Permite que você execute o modelo (.eim) diretamente no dispositivo Linux para realizar a inferência, ou seja, fazer previsões com base em novos dados.  
