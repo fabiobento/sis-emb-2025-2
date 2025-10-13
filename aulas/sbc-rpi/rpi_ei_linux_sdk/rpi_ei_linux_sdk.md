@@ -121,13 +121,39 @@ Para instalar o Matplotlib, execute o seguinte comando no terminal do RPi:
     ```
 ### Instalação do TFLite
 - [TensorFlow Lite (TFLite)](https://www.tensorflow.org/lite) é uma versão leve do TensorFlow, projetada para executar modelos de aprendizado de máquina em dispositivos com recursos limitados, como smartphones, microcontroladores e computadores de placa única (SBCs) como o Raspberry Pi. Ele é otimizado para desempenho e eficiência, permitindo que modelos complexos sejam executados em tempo real em dispositivos com pouca memória e poder de processamento.
-```bash
-# Baixe o arquivo wheel para Python 3.9 e arquitetura ARMv7l
-wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
-
-# Instale o arquivo baixado usando o pip
-pip3 install tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
-```
+- O processo de instalação do TFLite envolve encontrar o arquivo `.whl` (wheel) pré-compilado correto para a arquitetura do seu Pi 3B (que é `armv7l` ou `armhf`) e a sua versão do Python.
+- Uma instalação manual é mais garantida, e esse método envolve baixar o arquivo `wheel` correto manualmente e instalá-lo:
+    - **Passo 1: Descobrir a sua versão do Python**:  
+    Você precisa saber a versão do Python para baixar o arquivo correto. No terminal, digite:
+        ```bash
+        python3 --version
+        ``` 
+        A saída será algo como `Python 3.9.2` ou Python `3.7.3`. Anote a sua versão (por exemplo, **3.9**).
+    - **Passo 2: Baixar o arquivo `wheel` correto**:  
+    O Google não hospeda oficialmente os arquivos para todas as versões, mas a equipe do Coral (também do Google) mantém um repositório confiável.
+        - Vá para a página de downloads: https://github.com/google-coral/pycoral/releases
+        - Role para baixo até a tabela (se necessário clique em *Show all 60 assets*)e encontre a linha correspondente ao seu sistema: **Raspberry Pi OS** com arquitetura **ARM32**.
+        - Copie o link do arquivo `.whl` que corresponde à sua versão do Python.
+            - Para **Python 3.9** (Comum no Raspberry Pi OS Bullseye) use o seguinte comando:
+            ```bash
+            # Baixe o arquivo wheel para Python 3.9 e arquitetura ARMv7l
+            wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+            ``` 
+        - Após o download, você terá um arquivo com a extensão `.whl` no seu diretório. Instale-o usando `pip3`: 
+            ```bash
+            # Instale o arquivo baixado usando o pip3
+            pip3 install tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+            ```
+    - **Passo 3: Verificar a instalação**:
+        - Após a instalação, é importante verificar se o TFLite foi instalado corretamente. No terminal, digite:
+            ```bash
+            python3 -c "import tflite_runtime; print(tflite_runtime.__version__)"
+            ```
+        - Se tudo estiver correto, você verá a versão do TFLite impressa no terminal, algo como
+            ```bash
+            2.5.0.post1
+            ```
+            ou similar.
 
 ### Instalação do **OpencV**
 Instalar o OpenCV em um Raspberry Pi 3B pode ser um processo demorado, no entanto, é um passo fundamental para projetos de visão computacional.
