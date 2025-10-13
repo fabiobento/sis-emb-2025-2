@@ -37,7 +37,7 @@
     ```    
 - No mesmo diretório em que baixou o script acima, conceda permissão de execução:
     ```bash
-    chmod +x install_tools.sh ./install_tools.sh
+    chmod +x install_tools.sh
     ```
 - Agora execute o script install_tools.sh:
     ```bash
