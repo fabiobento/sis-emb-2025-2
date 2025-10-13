@@ -179,11 +179,7 @@ sudo raspi-config
 
 ![](./imagens/rpi-vnc-3.png)
 
-* Saia do raspi-config  e reinicie o RPi com a seguinte linha de comando:
 
-```bash
-sudo reboot
-```
 ### Instalação do cliente VNC no computador
 
 * Confira se o VNC viewer não está instalado em seu computador pessoal procurando pelo aplicativo conforme ilustrado na figura abaixo. O atalho de teclado para buscar um aplicativo (e outras coisas) no Ubuntu é a tecla `Super`, também conhecida como a tecla `Windows`.
