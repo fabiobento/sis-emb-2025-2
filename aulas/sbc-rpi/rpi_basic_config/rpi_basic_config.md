@@ -2,10 +2,64 @@
 
 O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). A versão do sistema operacional que utilizaremos está disponível em [https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/).
 
+## Download da imagem do sistema operacional
+
+Nessa seção vamos baixar a imagem do Raspberry Pi OS e verificar sua integridade no Ubuntu usando o terminal.
+
+O processo consiste em três etapas principais:
+
+1. Baixar a imagem do sistema operacional.  
+2. Baixar o arquivo de verificação (checksum SHA256).  
+3. Comparar o arquivo baixado com a verificação para garantir que o download não foi corrompido.
+
+### **Passo a Passo no Terminal**
+
+Abra o terminal(o atalho no teclado é `CTRL+ALT+DEL`) do seu computador pessoal e siga os comandos abaixo:
+
+**1\. Baixar a Imagem do Raspberry Pi OS**
+
+Use o comando wget com a opção `-c` (para continuar o download caso seja interrompido) para baixar o arquivo de imagem:
+```bash
+wget -c https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf.img.xz
+```
+**2\. Baixar o Arquivo de Verificação SHA256**
+
+Em seguida, baixe o arquivo de checksum SHA256, que contém o "código" de verificação do arquivo de imagem original:
+```bash
+wget https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf.img.xz.sha256
+```
+
+**3\. Verificar a Integridade do Arquivo**
+
+Agora, use o utilitário sha256sum para gerar o checksum do arquivo de imagem que você baixou e compará-lo com o valor contido no arquivo de verificação.
+
+O comando abaixo faz isso automaticamente:
+```bash
+sha256sum --check 2023-05-03-raspios-bullseye-armhf.img.xz.sha256
+```
+#### **Resultados Esperados:**
+
+* **Se o arquivo estiver íntegro**, a saída será:  
+```bash
+  2023-05-03-raspios-bullseye-armhf.img.xz: SUCESSO
+```
+  Isso confirma que o download foi concluído com sucesso e o arquivo não está corrompido.  
+* **Se o arquivo estiver corrompido**, a saída será algo como:  
+```bash
+  2023-05-03-raspios-bullseye-armhf.img.xz: FALHOU  
+  sha256sum: AVISO: 1 linha está formatada incorretamente  
+  sha256sum: AVISO: 1 das 1 somas de verificação calculadas NÃO correspondeu
+```
+  Nesse caso, você deve apagar o arquivo .img.xz e tentar baixá-lo novamente.
 
 ## Instalação do Raspberry Pi Imager
 
-* Siga as instruções para instalação do *Raspberry Pi Imager*(`rpi-mager`) que você encontra no  [**site Raspberry Pi software**](https://www.raspberrypi.com/software/) . O **rpi-mager** é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. Para instalar o Raspberry Pi Imager digite a seguinte linha de comando no terminal de seu computador pessoal com Ubuntu:
+* Agora que temos a imagem do sistema operacional, precisamos gravá-la em um cartão microSD para que o Raspberry Pi possa inicializar a partir dele. O `rpi-mager` é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. .
+* Verifique se o `rpi-mager` está instalado em seu **computador pessoal**, procurando pelo aplicativo conforme ilustrado na figura abaixo. O atalho de teclado para buscar um aplicativo (e outras coisas) no Ubuntu é a tecla `Super`, também conhecida como a tecla `Windows`.
+![](./imagens/rpi-imager-search.png)
+
+Caso não esteja instalado, siga as instruções abaixo:
+  * Conforme as instruções para instalação do *Raspberry Pi Imager*(`rpi-mager`) descritas em  [**site Raspberry Pi software**](https://www.raspberrypi.com/software/), para instalar o `Raspberry Pi Imager` digite a seguinte linha de comando no terminal de seu computador pessoal com Ubuntu:
 
 ``` bash
 sudo apt update
@@ -14,15 +68,16 @@ sudo apt install rpi-imager
 
  ## Instalação do Raspberry Pi OS
 
-* Insira um cartão SD no leitor do computador pessoal (ainda não é pra inserir no RPi) Abra a aplicação **Imager** no menu de aplicativos do Ubuntu:  
+* Insira um cartão SD no leitor **do computador pessoal** (ainda não é pra inserir no RPi) e abra a aplicação **Imager** no menu de aplicativos do Ubuntu:  
 ![](./imagens/rpi-imager.png)
-
-* Clique no botão para selação do Sistema Operacional (ou Operativo em algumas traduções)e formate o cartão SD antes de instalar o sistema operacional selecionando a opção `Erase-Format card as FAT32` como mostrado na figura abaixo:
+<!--
+* Clique no botão para selação do Sistema Operacional (ou Operativo em algumas traduções) e formate o cartão SD antes de instalar o sistema operacional selecionando a opção `Erase-Format card as FAT32` como mostrado na figura abaixo:
 
 ![](./imagens/erase-sd-card.png)
 * Clique no botão **Choose Storage**  e selecione a unidade referente ao cartão SD. Depois clique em `Write` e `Yes`.
 
 * Depois de concluída a formatação abra novamente o **rpi-imager**
+-->
 
 * Vamos iniciar a instalação do sistema operacional. Em **Rapsberry Pi Device**, escolha **Raspberry Pi 3**. Em **Operating System** escolha a opção **Use Custom**(Utilizar Customizado) e Selecione a imagem `2023-05-03-raspios-bullseye-armhf.img.xz` que gravamos em disco. Essa imagem  é o *Raspberry Pi OS (Legacy, 32-bit)*, um *port* do Debian Bullseye .
 
@@ -130,12 +185,14 @@ sudo reboot
 ```
 ### Instalação do cliente VNC no computador
 
-* Baixe o VNC viewer: [https://www.realvnc.com/pt/connect/download/viewer/linux/](https://www.realvnc.com/pt/connect/download/viewer/linux/)  
-* Instale o VNC viewer com a seguinte linha de comando, substituindo o texto \<VERSÃO DO VNC\> que você baixou(quanto esse tutorial foi escrito era 7.12.1):
-
-```bash
-sudo dpkg -i VNC-Viewer-<VERSÃO DO VNC>-Linux-x64.deb
-```
+* Confira se o VNC viewer não está instalado em seu computador pessoal procurando pelo aplicativo conforme ilustrado na figura abaixo. O atalho de teclado para buscar um aplicativo (e outras coisas) no Ubuntu é a tecla `Super`, também conhecida como a tecla `Windows`.
+![](./imagens/pc-vnc-search.png)
+* Caso não esteja instalado, siga as instruções abaixo:
+  * Baixe o VNC viewer: [https://www.realvnc.com/pt/connect/download/viewer/linux/](https://www.realvnc.com/pt/connect/download/viewer/linux/)  
+  * Instale o VNC viewer com a seguinte linha de comando, substituindo o texto \<VERSÃO DO VNC\> que você baixou(quanto esse tutorial foi escrito era 7.12.1):
+  ```bash
+  sudo dpkg -i VNC-Viewer-<VERSÃO DO VNC>-Linux-x64.deb
+  ```
 
 * Executar o VNC viewer e se conecte em `<hostname>.local`:
 
