@@ -9,25 +9,7 @@ Nesse roteiro de laboratório você instalará bibliotecas Python para o seu RPi
 - Instale o Edge Impulse Linux CLI conforme descrito no roteiro de laboratório [Instalação do Edge Impulse Linux CLI (Command Line Interface) no RPi](../rpi_ei_linux/rpi_ei_linux.md)
 - Instale bibliotecas Python conforme descrito no roteiro de laboratório [Instalação de Bibliotecas Python para o RPi](../rpi_ei_linux_sdk/rpi_ei_linux_sdk.md)
 
-## Passo 1: Configurar um ambiente virtual Python    
-Para evitar conflitos entre bibliotecas Python, é recomendável criar um ambiente virtual dedicado para este projeto.
-- Execute os seguintes comandos no terminal do seu Raspberry Pi:
-    ```bash
-    python3 -m venv ~/jupyter_env --system-site-packages
-    ```
-- Ative o ambiente virtual:
-    ```bash
-    source ~/jupyter_env/bin/activate
-    ```
-- Quando o ambiente virtual estiver ativo, você verá o nome do ambiente (neste caso, `jupyter_env`) no início da linha de comando do terminal.
-    ```bash
-    (jupyter_env) pi@rpi0:~ $
-    ```
-- Quando terminar de trabalhar no projeto, você pode desativar o ambiente virtual com o comando:
-    ```bash
-    deactivate
-    ```
-## Passo 2: Instalar bibliotecas Python necessárias dentro do ambiente virtual
+
 - Antes de iniciar a instalação, certifique-se de que o `pip` está atualizado:
     ```bash
     python -m pip install --upgrade pip
