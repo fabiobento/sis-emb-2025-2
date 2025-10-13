@@ -124,9 +124,3 @@ Edge Impulse Linux client v1.17.5
 Em seguida vá à seção `Data Acquisition` no site de seu projeto no [Edge Impulse Studio](https://studio.edgeimpulse.com/), selecione o `Device` e o `Camera(640x480)`. Assim você verá um streaming de vídeo da câmera do RPi:
 
 ![](./imagens/camera_streaming.png)
-
-## **Conclusão**
-
-A partir de agora, sua câmera está configurada e pronta para ser utilizada no **Edge Impulse Studio**, permitindo a captura de dados e desenvolvimento de modelos de machine learning diretamente no Raspberry Pi.
-
-Caso encontre problemas com o acesso à câmera ou à interface web, verifique as configurações de rede do Raspberry Pi e a ativação correta da câmera nas configurações do sistema.
