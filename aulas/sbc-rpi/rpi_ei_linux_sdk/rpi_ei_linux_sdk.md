@@ -227,6 +227,7 @@ Se preferir instalar o OpenCV manualmente, siga os passos abaixo:
         ```bash
         sudo /etc/init.d/dphys-swapfile restart
         ```    
+<!--
 ---
 ### **JupyterLab e Jupyter Notebook (opcional)**
 - O *Jupyter Notebook* é uma aplicação web que permite criar e compartilhar documentos que contêm código executável, equações, visualizações e texto narrativo. Ele é amplamente utilizado em ciência de dados, aprendizado de máquina, análise estatística e outras áreas que envolvem programação interativa.
@@ -331,7 +332,7 @@ Para não precisar copiar e colar o token toda vez, configure uma senha permanen
    ```
    
 Pronto\! Da próxima vez que você iniciar o jupyter notebook ou jupyter lab, basta acessar `http://<IP_DO_SEU_PI>:8888` e a interface pedirá a senha que você acabou de criar.
-
+-->
 ---
 ### VSCode (opcional)
 O Visual Studio Code (VSCode) é um editor de código-fonte leve, mas poderoso, desenvolvido pela Microsoft. Ele é amplamente utilizado por desenvolvedores devido à sua versatilidade, suporte a várias linguagens de programação e uma vasta gama de extensões que aumentam sua funcionalidade. Para utilizar o VSCode remotamente no Raspberry Pi, siga os passos abaixo:
