@@ -26,15 +26,6 @@ Quando terminar de trabalhar no projeto, você pode desativar o ambiente virtual
 ```bash
 deactivate
 ```
-## Passo 2: Instalar bibliotecas Python necessárias
+## Passo 2: Instalar bibliotecas Python necessárias dentro do ambiente virtual
 
-```bash
-pip install numpy # Numerical processing
-pip install pillow  # Image processing
-pip install matplotlib  # For displaying images
-pip install opencv-python  # Computer vision
-```
 
-```bash
-pip list | grep -E "(numpy|pillow|opencv|picamera)"
-```

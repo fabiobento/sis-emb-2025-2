@@ -113,7 +113,22 @@ pip3 install pyaudio
     ```bash
     sudo reboot
     ```
----
+### Instalação do Matplotlib
+- [Matplotlib](https://matplotlib.org/stable/index.html) é uma biblioteca Python amplamente utilizada para criar visualizações estáticas, animadas e interativas em 2D. Ele é especialmente útil para cientistas de dados, engenheiros e pesquisadores que desejam representar visualmente dados e resultados de análises.
+Para instalar o Matplotlib, execute o seguinte comando no terminal do RPi:
+    ```bash
+    sudo apt install python3-matplotlib
+    ```
+### Instalação do TFLite
+- [TensorFlow Lite (TFLite)](https://www.tensorflow.org/lite) é uma versão leve do TensorFlow, projetada para executar modelos de aprendizado de máquina em dispositivos com recursos limitados, como smartphones, microcontroladores e computadores de placa única (SBCs) como o Raspberry Pi. Ele é otimizado para desempenho e eficiência, permitindo que modelos complexos sejam executados em tempo real em dispositivos com pouca memória e poder de processamento.
+```bash
+# Baixe o arquivo wheel para Python 3.9 e arquitetura ARMv7l
+wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+
+# Instale o arquivo baixado usando o pip
+pip3 install tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+```
+
 ### Instalação do **OpencV**
 Instalar o OpenCV em um Raspberry Pi 3B pode ser um processo demorado, no entanto, é um passo fundamental para projetos de visão computacional.
 
