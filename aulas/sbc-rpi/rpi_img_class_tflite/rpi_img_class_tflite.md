@@ -37,12 +37,16 @@ Para evitar conflitos entre bibliotecas Python, é recomendável criar um ambien
     pip install jupyter jupyterlab notebook
     ```
 - A maneira típica de iniciar o Jupyter Notebook é esse:
-    1. No terminal do RPi, execute:  
+    1. Para descobrir o ip do RPi, digite no terminal dele:  
+        ```bash
+        hostname -I
+        ```
+    2. No terminal do RPi, execute:  
         ```bash
         jupyter lab --ip=0.0.0.0 --no-browser
         ```
-    2. Copie a URL com o token da saída do terminal.  
-    3. No navegador do seu computador desktop, cole a URL, substituindo a parte inicial pelo IP do seu Raspberry Pi:  
+    3. Copie a URL com o token da saída do terminal.  
+    4. No navegador do seu computador desktop, cole a URL, substituindo a parte inicial pelo IP do seu Raspberry Pi:  
         ```bash
         http://192.168.1.42:8888/lab?token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         ```

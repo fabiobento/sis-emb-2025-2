@@ -135,10 +135,14 @@ Para instalar o Matplotlib, execute o seguinte comando no terminal do RPi:
         - Role para baixo até a tabela (se necessário clique em *Show all 60 assets*)e encontre a linha correspondente ao seu sistema: **Raspberry Pi OS** com arquitetura **ARM32**.
         - Copie o link do arquivo `.whl` que corresponde à sua versão do Python.
             - Para **Python 3.9** (Comum no Raspberry Pi OS Bullseye) use o seguinte comando:
-            ```bash
-            # Baixe o arquivo wheel para Python 3.9 e arquitetura ARMv7l
-            wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
-            ``` 
+                ```bash
+                # Baixe o arquivo wheel para Python 3.9 e arquitetura ARMv7l
+                wget https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+                ``` 
+            - Caso o arquivo não esteja mais disponível, verifique no repositório do curso:
+                ```bash
+                wget  https://github.com/fabiobento/sis-emb-2025-2/raw/refs/heads/main/aulas/sbc-rpi/rpi_ei_linux_sdk/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+                ```
         - Após o download, você terá um arquivo com a extensão `.whl` no seu diretório. Instale-o usando `pip3`: 
             ```bash
             # Instale o arquivo baixado usando o pip3
