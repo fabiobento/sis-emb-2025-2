@@ -56,6 +56,7 @@ sha256sum --check 2023-05-03-raspios-bullseye-armhf.img.xz.sha256
 
 * Agora que temos a imagem do sistema operacional, precisamos gravá-la em um cartão microSD para que o Raspberry Pi possa inicializar a partir dele. O `rpi-mager` é a maneira rápida e fácil de instalar o **Raspberry Pi OS** e outros sistemas operacionais em um cartão microSD. .
 * Verifique se o `rpi-mager` está instalado em seu **computador pessoal**, procurando pelo aplicativo conforme ilustrado na figura abaixo. O atalho de teclado para buscar um aplicativo (e outras coisas) no Ubuntu é a tecla `Super`, também conhecida como a tecla `Windows`.
+
 ![](./imagens/rpi-imager-search.png)
 
 Caso não esteja instalado, siga as instruções abaixo:
