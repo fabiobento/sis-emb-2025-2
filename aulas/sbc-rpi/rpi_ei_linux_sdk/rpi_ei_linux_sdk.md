@@ -1,7 +1,11 @@
 # Instalação de Bibliotecas Python para o RPi
-Nesse roteiro de laboratório você instalará a biblioteca Edge Impulse Linux Python *SDK*. Ela permite executar modelos de aprendizado de máquina e coletar dados de sensores em máquinas Linux usando Python. O SDK é open source e está [hospedado no GitHub](https://github.com/edgeimpulse/linux-sdk-python).
+Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi incluindo Opencv, Edge Impulse Linux Python *SDK* e Pyserial.
 
-Além disso, você instalará o [OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
+[Edge Impulse Linux Python *SDK*](https://github.com/edgeimpulse/linux-sdk-python) permite executar modelos de aprendizado de máquina e coletar dados de sensores em máquinas Linux usando Python.
+
+[OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
+
+[PySerial](https://pyserial.readthedocs.io/en/latest/)  é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
 
 ## Requisitos
 - Configure seu RPi conforme descrito no roteiro de laboratório [Configurações iniciais do RPi](../rpi_basic_config/rpi_basic_config.md)
@@ -91,7 +95,7 @@ pip3 install edge_impulse_linux -i https://pypi.python.org/simple
 pip3 install pyaudio
 ```
 ### Instalação do Pyserial
-O PySerial é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
+ Para ter o Pyserial completamente funcional, precisamos:.
 - Passo 1: Instalar o PySerial
 
     Para instalar o PySerial, execute o seguinte comando no terminal do RPi:

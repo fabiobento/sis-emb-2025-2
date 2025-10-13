@@ -56,6 +56,13 @@ echo "----------------------------------------------------"
 npm install edge-impulse-linux -g --unsafe-perm
 
 echo "----------------------------------------------------"
+echo "Passo 6: Corrigindo permissões de execução..."
+echo "----------------------------------------------------"
+# Garante que os scripts instalados possam ser executados
+chmod +x ~/.npm-global/bin/*
+echo "Permissões de execução aplicadas aos comandos do Edge Impulse."
+
+echo "----------------------------------------------------"
 echo "Instalação concluída com sucesso!"
 echo ""
 echo "Para garantir que as alterações de PATH sejam permanentes,"
