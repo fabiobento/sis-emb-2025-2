@@ -34,7 +34,7 @@ pi@rpi1:\~ $
     ```bash
     chmod +x install_ei_linux_cli_tools.sh
     ```
-  3. Agora execute o script install_tools.sh:
+  3. Agora execute o script:
     ```bash
     ./install_ei_linux_cli_tools.sh
     ```
