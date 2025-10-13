@@ -4,35 +4,90 @@ Nesse roteiro de laboratório você instalará a biblioteca Edge Impulse Linux P
 Além disso, você instalará o [OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
 
 ## Requisitos
-- Certifique de que o RPI tem Python 3(>=3.7) instalado:
-
-    Para verificar a versão do Python 3 instalada no seu RPi e garantir que seja 3.7 ou superior, o método mais simples é usar o terminal.
+- Configure seu RPi conforme descrito no roteiro de laboratório [Configurações iniciais do RPi](../rpi_basic_config/rpi_basic_config.md)
+- Instale as ferramentas CLI e do SDK do Edge Impulse conforme o roteiro de laboratório [Instalação do Edge Impulse Linux CLI](../rpi_ei_linux/rpi_ei_linux.md)
+- Assegure-se de que estejam instalados o `python3-pip`, `python3-venv` e `python3-picamera2`:
+    - O `python3-pip` é o gerenciador de pacotes oficial para Python 3, permitindo instalar e gerenciar bibliotecas e dependências de forma simples. 
+    - o `python3-venv` é um módulo que permite criar ambientes virtuais isolados para projetos Python, facilitando a gestão de dependências específicas sem afetar o sistema global.
+        ```bash
+        sudo apt install -y python3-pip python3-venv    
+        ```
+    - Certifique de que o RPI tem Python 3(>=3.7) instalado. Para verificar a versão do Python 3 instalada no seu RPi e garantir que seja 3.7 ou superior, o método mais simples é usar o terminal.
     Abra o terminal no seu RPi e digite um dos seguintes comandos:
-    ```bash
-        python3 --version
-    ```
-    Ou sua forma abreviada:
-    ```bash
-        python3 -V
-    ```
-    Pressione `Enter` e a saída será algo como
-    ```bash
-        Python 3.9.2
-    ```
-    Se o número da versão exibido for `3.7.0` ou superior (como `3.8.x`, `3.9.x`, etc.), então você atende ao requisito.
-- Configure seu RPi conforme descrito no roteiro de laboratório [Configurações iniciais do RPi](./rpi_basic_config/rpi_basic_config.md)
-- Instale as ferramentas CLI e do SDK do Edge Impulse conforme o roteiro de laboratório [Instalação do Edge Impulse Linux CLI](./rpi_ei_linux/rpi_ei_linux.md)
+        ```bash
+            python3 --version
+        ```
+        Ou sua forma abreviada.
+        ```bash
+            python3 -V
+        ```
+        Pressione `Enter` e a saída será algo como
+        ```bash
+            Python 3.9.2
+        ```
+        Se o número da versão exibido for `3.7.0` ou superior (como `3.8.x`, `3.9.x`, etc.), então a versão do python atende ao requisito.
+## Instalação de Outras Bibliotecas em Nível de Sistema
+### Instalação de Bibliotecas para Câmera no RPi
+- Nessa seção instalaremos o [`libcamera`](https://www.raspberrypi.com/documentation/computers/camera_software.html) e o [`picamera2`](https://github.com/raspberrypi/picamera2). Consulte a [documentação oficial do libcamera](https://www.raspberrypi.com/documentation/computers/camera_software.html) e a [documentação do picamera2](https://github.com/raspberrypi/picamera2) para mais detalhes.
+    A principal diferença entre os dois reside na sua posição na arquitetura de software da câmera do Raspberry Pi:
+    - `libcamera` é a infraestrutura de baixo nível (o *backend*)
+    - `picamera2` é uma biblioteca Python de alto nível (o *frontend*) que facilita o uso da câmera.
 
-## Instalação do Edge Impulse Linux Python *SDK*
+- Pense neles da seguinte forma:
+    - `libcamera` é o motor de um carro: a parte complexa, poderosa e fundamental que faz tudo funcionar.
+    - `picamera2` é o volante e os pedais: a interface simples que você usa para controlar o motor sem precisar entender de mecânica.
+
+    Quando você escreve um código em Python para controlar a câmera do seu Raspberry Pi, você sempre usará a picamera2. Você não precisa se preocupar com os detalhes internos da libcamera, apenas precisa garantir que ela esteja instalada no seu sistema operacional (o que já é padrão nas versões recentes do Raspberry Pi OS).
+
+- Aqui está um detalhamento mais aprofundado:
+    - **libcamera**
+        * **O que é?** Uma estrutura de câmera de código aberto para Linux. No Raspberry Pi, ela substituiu a antiga pilha de câmera de código fechado.  
+        * **Nível:** **Baixo Nível**. Ela lida com a complexidade de acessar o hardware da câmera, processar os dados brutos do sensor e expor controles detalhados.  
+        * **Linguagem:** É escrita principalmente em C++.  
+        * **Uso:** Você não interage diretamente com a libcamera em seu código Python. Ela funciona nos bastidores do sistema operacional. Desenvolvedores avançados ou aplicativos do sistema (como as ferramentas de linha de comando libcamera-still e libcamera-vid) a utilizam diretamente.
+
+    - **picamera2**
+        * **O que é?** A biblioteca Python oficial e recomendada para controlar câmeras no Raspberry Pi que usam o sistema operacional "Bullseye" ou mais recente.  
+        * **Nível:** **Alto Nível**. Ela oferece uma API simples e intuitiva para tarefas comuns como tirar fotos, gravar vídeos e ajustar configurações (resolução, taxa de quadros, etc.).  
+        * **Linguagem:** É escrita em Python.  
+        * **Uso:** Esta é a biblioteca que você **importa e usa em seus scripts Python**. Cada comando que você dá na picamera2 (como picam2.start\_and\_capture\_file()) é traduzido por ela em instruções mais complexas para a libcamera.
+- Tabela Comparativa
+
+    | Característica | libcamera | picamera2 |
+    | :---- | :---- | :---- |
+    | **Função** | Infraestrutura de sistema (Backend) | Biblioteca de aplicação (Frontend) |
+    | **Nível de Abstração** | Baixo Nível | Alto Nível |
+    | **Linguagem Principal** | C++ | Python |
+    | **Público-Alvo** | Desenvolvedores do sistema operacional | Desenvolvedores de aplicações Python |
+    | **Relação** | É a base sobre a qual a picamera2 opera. | Fornece uma interface amigável para a libcamera. |
+
+- Resumindo:
+    - Quando você escreve um código em Python para controlar a câmera do seu Raspberry Pi, você sempre usará a `picamera2`. Você não precisa se preocupar com os detalhes internos da `libcamera`, apenas precisa garantir que ela esteja instalada no seu sistema operacional (o que já é padrão nas versões recentes do Raspberry Pi OS).
+
+- Então, vamos instalar o seguintes pacote:
+    - O [`python3-picamera2`](https://github.com/raspberrypi/picamera2) é a biblioteca oficial para controlar a câmera do Raspberry Pi (RPi) usando Python. Ela oferece uma interface simples e eficiente para capturar imagens e vídeos, além de fornecer acesso a várias funcionalidades da câmera, como ajuste de exposição, balanço de branco e controle de foco.
+        ```bash
+        sudo apt install -y python3-picamera2    
+        ```
+    - O [`libcamera-dev` `libcamera-tools`, `libcamera-apps`](https://www.raspberrypi.com/documentation/computers/camera_software.html) são pacotes essenciais para o desenvolvimento e uso de câmeras no Raspberry Pi.:
+        - `libcamera-dev` fornece arquivos de desenvolvimento necessários para compilar software que interage com a biblioteca libcamera.
+        - `libcamera-tools` inclui utilitários de linha de comando para capturar imagens e vídeos.
+        - `libcamera-apps` oferece aplicações pré-construídas que facilitam o uso da câmera.
+        
+
+        Para instalar esses pacotes, execute o seguinte comando no terminal do RPi:
+        ```bash
+        sudo apt install -y libcamera-dev libcamera-tools libcamera-apps
+        ```
+
+### Instalação do Edge Impulse Linux Python *SDK*
 Para instalar o [Edge Impulse Linux Python *SDK*](https://docs.edgeimpulse.com/tools/libraries/sdks/inference/linux/python), execute os seguintes comandos no terminal do RPi:
 ```bash
 sudo apt-get install libatlas-base-dev libportaudio0 libportaudio2 libportaudiocpp0 portaudio19-dev
 pip3 install edge_impulse_linux -i https://pypi.python.org/simple
 pip3 install pyaudio
 ```
-## Instalação de outras dependências
-
-### Pyserial
+## Instalação do Pyserial
 O PySerial é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
 #### Passo 1: Instalar o PySerial
  Para instalar o PySerial, execute o seguinte comando no terminal do RPi:
@@ -50,7 +105,7 @@ Depois de executar esse comando, é necessário reiniciar o RPi para que as alte
 sudo reboot
 ```
 ---
-### **OpencV**
+### Instalação do **OpencV**
 Instalar o OpenCV em um Raspberry Pi 3B pode ser um processo demorado, no entanto, é um passo fundamental para projetos de visão computacional.
 
 A instalação pode ser feita de duas maneiras principais:
@@ -65,9 +120,15 @@ Abaixo, você tem um guia completo com o método mais recomendado e atualizado: 
 #### Passo 1: Preparar o RPi
 Primeiro, é importante garantir que seu sistema operacional e firmware estejam totalmente atualizados. Abra o terminal em seu computador pessoal, reestabeleça a comunicação SSH com o RPi. Depois execute os seguintes comandos:
 ```bash
+sudo apt update -y
+```
+<!--
+```bash
 sudo apt update
 sudo apt full-upgrade -y
 ```
+-->
+
 Em seguida, reinicie o RPi para garantir que todas as atualizações sejam aplicadas:
 ```bash
 sudo reboot
