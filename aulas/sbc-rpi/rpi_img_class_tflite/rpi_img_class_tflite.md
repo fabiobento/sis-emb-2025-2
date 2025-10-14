@@ -76,7 +76,9 @@
 ## Classificação de imagens com TensorFlow Lite
 - A seguir, vamos carregar um modelo pré-treinado do TensorFlow Lite e usá-lo para classificar as imagens capturadas. Para maiores detalhes sobre o Tensorflow Lite consulte essa [Visão geral do LiteRT](https://www.tensorflow.org/lite) e o [Guia de início rápido para dispositivos baseados em Linux com Python](https://ai.google.dev/edge/litert/microcontrollers/python?hl=pt-br)
 
-### Crie um novo diretório pra trabalho
+### Configurar o TFlite
+
+#### Crie um novo diretório pra trabalho
 - Crie um novo diretório de trabalho no Raspberry Pi:
     ```bash
     mkdir Documents
@@ -88,7 +90,7 @@
     mkdir models
     cd models
     ```
-### Baixe o modelo pré-treinado MobileNetV2    
+#### Baixe o modelo pré-treinado MobileNetV2    
 
 - Um modelo pré-treinado adequado é muito importante para o sucesso da classificação de imagens em dispositivos com recursos limitados, como o Raspberry Pi.
 - O [*MobileNet*](https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet) foi projetado para aplicações móveis e de visão embarcada, com um bom equilíbrio entre precisão e velocidade
@@ -124,7 +126,7 @@
 - No entanto, apenas precisamos do modelo `mobilenet_v2_1.0_224_quant.tflite` e do arquivo `labels.txt` com os rótulos das classes. Você pode apagar os outros arquivos baixados.
     - O arquivo `labels.txt` contém os rótulos das 1001 classes do modelo MobileNetV2, que são usados para interpretar as previsões do modelo.
 
-### Verificando o setup
+#### Verificando o setup
 - Vamos testar o nosso setup rodando um simples script Python que carrega o modelo e os rótulos, e imprime algumas informações:
     ```python
     import tflite_runtime.interpreter as tflite
@@ -152,5 +154,7 @@
     ```
     ![Rodando o script de teste do setup](./images/rodando-teste-setup.png)
 
-- Ou você pode executar o código acima em um novo notebook Jupyter.
+- Ou você pode executar o código acima em um novo [notebook Jupyter](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/2_teste_setup.ipynb):
     ![](./images/notebook-teste-setup.png)
+
+### Fazendo Inferências com o  Mobilenet V2
