@@ -1,11 +1,15 @@
 # Instalação de Bibliotecas Python para o RPi
-Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi incluindo Opencv, Edge Impulse Linux Python *SDK*, Pyserial, Jupyter Notebook e VSCode.
+Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi incluindo Edge Impulse Linux Python *SDK*, Pyserial, Matplotlib, TFlite, Opencv, Jupyter Notebook e VSCode.
 
 [Edge Impulse Linux Python *SDK*](https://github.com/edgeimpulse/linux-sdk-python) permite executar modelos de aprendizado de máquina e coletar dados de sensores em máquinas Linux usando Python.
 
-[OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
-
 [PySerial](https://pyserial.readthedocs.io/en/latest/)  é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
+
+[Matplotlib](https://matplotlib.org/) é uma biblioteca de plotagem 2D para a linguagem de programação Python e sua extensão matemática NumPy. Ela fornece uma maneira de criar gráficos, histogramas, espectros de potência, diagramas de barras, gráficos de erro, dispersão, etc., com apenas algumas linhas de código.
+
+[TensorFlow Lite (TFLite)](https://www.tensorflow.org/lite) é uma versão leve do TensorFlow, projetada para executar modelos de aprendizado de máquina em dispositivos com recursos limitados, como smartphones, microcontroladores e computadores de placa única (SBCs) como o Raspberry Pi.
+
+[OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
 
 [Jupyter Notebook](https://jupyter-notebook.readthedocs.io/en/stable/) e [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) são ferramentas poderosas para desenvolvimento interativo em Python, permitindo criar e compartilhar documentos que contêm código executável, visualizações e texto explicativo.
 
