@@ -19,7 +19,7 @@
     improt matplotlib.pyplot as plt
     from picamera2 import Picamera2
     ```
-## Carregar e exibir uma imagem da internet
+### Carregar e exibir uma imagem da internet
 - Carregar uma imagem da internet, por exemplo (note que é possível executar linhas de comando de dentro no Notebook, usando ! antes do comando):
     ```python
     !wget https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg
@@ -37,7 +37,7 @@
     plt.axis('off')  # Esconder os eixos
     plt.show()
     ```
-## Capturar e exibir uma imagem local capturada pela câmera do RPi
+### Capturar e exibir uma imagem local capturada pela câmera do RPi
 - Agora, vamos utilizar a camera do RPi para capturar uma imagem local:
     ```python
     from picamera2 import Picamera2
@@ -72,6 +72,7 @@
     plt.axis('off')  # Esconder os eixos
     plt.show()
     ```
+---
 ## Classificação de imagens com TensorFlow Lite
 - A seguir, vamos carregar um modelo pré-treinado do TensorFlow Lite e usá-lo para classificar as imagens capturadas. Para maiores detalhes sobre o Tensorflow Lite consulte essa [Visão geral do LiteRT](https://www.tensorflow.org/lite) e o [Guia de início rápido para dispositivos baseados em Linux com Python](https://ai.google.dev/edge/litert/microcontrollers/python?hl=pt-br)
 
