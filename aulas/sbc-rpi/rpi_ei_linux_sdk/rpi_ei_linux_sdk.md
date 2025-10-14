@@ -282,7 +282,7 @@ Se preferir instalar o OpenCV manualmente, siga os passos abaixo:
         ```    
 
 ---
-### **JupyterLab e Jupyter Notebook (recomendado)**
+### **JupyterLab e Jupyter Notebook (RECOMENDADO)**
 - O *Jupyter Notebook* é uma aplicação web que permite criar e compartilhar documentos que contêm código executável, equações, visualizações e texto narrativo. Ele é amplamente utilizado em ciência de dados, aprendizado de máquina, análise estatística e outras áreas que envolvem programação interativa.
 - O *JupyterLab* é a interface de próxima geração para o Jupyter Notebook, oferecendo uma experiência mais flexível e poderosa. Ele permite que você trabalhe com múltiplos documentos e painéis em uma única interface, facilitando a organização do seu trabalho.
 
@@ -365,7 +365,7 @@ Agora que tudo está instalado, você pode iniciar o servidor. Escolha uma das d
         http://192.168.1.42:8888/lab?token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         ```
 
-#### **4\. Dica: Configurando uma Senha Fixa (Recomendado)**
+#### **4\. Dica: Configurando uma Senha Fixa (RECOMENDADO)**
 Para não precisar copiar e colar o token toda vez, configure uma senha permanente.
 1. Pare o servidor Jupyter se ele estiver rodando (`Ctrl + C` no terminal).  
 2. Execute o seguinte comando para gerar os arquivos de configuração:  
@@ -378,7 +378,7 @@ Para não precisar copiar e colar o token toda vez, configure uma senha permanen
     ```
 - Pronto! Da próxima vez que você iniciar o jupyter notebook ou jupyter lab, basta acessar `http://<IP_DO_SEU_PI>:8888` e a interface pedirá a senha que você acabou de criar.
 
-#### **5\. Dica: Melhore o desempenho do RPi (Recomendado)**
+#### **5\. Dica: Melhore o desempenho do RPi (RECOMENDADO)**
 - Execute o Raspberry Pi em Modo Totalmente `Headless` (sem *Graphical User Interphace*-GUI).
 - Esta é, de longe, a melhoria mais significativa que você pode fazer. Se você só usa o RPi via SSH, a interface gráfica (GUI) pode estar desperdiçando centenas de megabytes de RAM.  
 - **Como fazer:**
