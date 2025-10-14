@@ -1,11 +1,15 @@
 # Instalação de Bibliotecas Python para o RPi
-Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi incluindo Opencv, Edge Impulse Linux Python *SDK* e Pyserial.
+Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi incluindo Opencv, Edge Impulse Linux Python *SDK*, Pyserial, Jupyter Notebook e VSCode.
 
 [Edge Impulse Linux Python *SDK*](https://github.com/edgeimpulse/linux-sdk-python) permite executar modelos de aprendizado de máquina e coletar dados de sensores em máquinas Linux usando Python.
 
 [OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
 
 [PySerial](https://pyserial.readthedocs.io/en/latest/)  é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
+
+[Jupyter Notebook](https://jupyter-notebook.readthedocs.io/en/stable/) e [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) são ferramentas poderosas para desenvolvimento interativo em Python, permitindo criar e compartilhar documentos que contêm código executável, visualizações e texto explicativo.
+
+[VSCode (Visual Studio Code)](https://code.visualstudio.com/docs) é um editor de código-fonte leve, mas poderoso, que pode ser usado remotamente para editar código em um Raspberry Pi.
 
 ## Requisitos
 - Configure seu RPi conforme descrito no roteiro de laboratório [Configurações iniciais do RPi](../rpi_basic_config/rpi_basic_config.md)
