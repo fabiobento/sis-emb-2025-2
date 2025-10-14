@@ -72,3 +72,33 @@
     plt.axis('off')  # Esconder os eixos
     plt.show()
     ```
+## Classificação de imagens com TensorFlow Lite
+- A seguir, vamos carregar um modelo pré-treinado do TensorFlow Lite e usá-lo para classificar as imagens capturadas. Para maiores detalhes sobre o Tensorflow Lite consulte essa [Visão geral do LiteRT](https://www.tensorflow.org/lite) e o [Guia de início rápido para dispositivos baseados em Linux com Python](https://ai.google.dev/edge/litert/microcontrollers/python?hl=pt-br)
+
+### Crie um novo diretório pra trabalho
+- Crie um novo diretório de trabalho no Raspberry Pi:
+    ```bash
+    mkdir Documents
+    cd Documents/
+    mkdir TFLITE
+    cd TFLITE/
+    mkdir IMG_CLASS
+    cd IMG_CLASS
+    mkdir models
+    cd models
+    ```
+### Baixe o modelo pré-treinado MobileNetV2    
+
+- Um modelo pré-treinado adequado é muito importante para o sucesso da classificação de imagens em dispositivos com recursos limitados, como o Raspberry Pi.
+- O [*MobileNet*](https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet) foi projetado para aplicações móveis e de visão embarcada, com um bom equilíbrio entre precisão e velocidade
+- Várias versões estão disponíveis: `MobileNetV1`, `MobileNetV2`, `MobileNetV3`. Vamos baixar a V2:
+    ```bash
+    wget https://storage.googleapis.com/download.tensorflow.org/models/tflite_11_05_08/mobilenet_v2_1.0_224_quant.tgz
+
+    tar xzf mobilenet_v2_1.0_224_quant.tgz
+    ```
+- Agora vamos baixar também os rótulos (labels) das classes:
+    ```bash
+    wget https://raw.githubusercontent.com/Mjrovai/EdgeML-with-Raspberry-Pi/refs/heads/main/IMG_CLASS/models/labels.txt
+    ```
+### Carregue o modelo e os rótulos no Notebook    

@@ -7,7 +7,7 @@ Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi
 
 [Matplotlib](https://matplotlib.org/) é uma biblioteca de plotagem 2D para a linguagem de programação Python e sua extensão matemática NumPy. Ela fornece uma maneira de criar gráficos, histogramas, espectros de potência, diagramas de barras, gráficos de erro, dispersão, etc., com apenas algumas linhas de código.
 
-[TensorFlow Lite (TFLite)](https://www.tensorflow.org/lite) é uma versão leve do TensorFlow, projetada para executar modelos de aprendizado de máquina em dispositivos com recursos limitados, como smartphones, microcontroladores e computadores de placa única (SBCs) como o Raspberry Pi.
+[TensorFlow Lite (TFLite)](https://www.tensorflow.org/lite) é uma versão leve do TensorFlow, projetada para executar modelos de aprendizado de máquina em dispositivos com recursos limitados, como smartphones, microcontroladores e computadores de placa única (SBCs) como o Raspberry Pi. A referência será o [Guia de início rápido para dispositivos baseados em Linux com Python](https://ai.google.dev/edge/litert/microcontrollers/python?hl=pt-br)
 
 [OpenCV](https://opencv.org/), uma biblioteca de visão computacional amplamente utilizada para processamento de imagens e vídeos.
 
@@ -129,7 +129,7 @@ Para instalar o Matplotlib, execute o seguinte comando no terminal do RPi:
     ```
 ### Instalação do TFLite
 - [TensorFlow Lite (TFLite)](https://www.tensorflow.org/lite) é uma versão leve do TensorFlow, projetada para executar modelos de aprendizado de máquina em dispositivos com recursos limitados, como smartphones, microcontroladores e computadores de placa única (SBCs) como o Raspberry Pi. Ele é otimizado para desempenho e eficiência, permitindo que modelos complexos sejam executados em tempo real em dispositivos com pouca memória e poder de processamento.
-- O processo de instalação do TFLite envolve encontrar o arquivo `.whl` (wheel) pré-compilado correto para a arquitetura do seu Pi 3B (que é `armv7l` ou `armhf`) e a sua versão do Python.
+- Conforme o [Guia de início rápido para dispositivos baseados em Linux com Python](https://ai.google.dev/edge/litert/microcontrollers/python?hl=pt-br), o processo de instalação do TFLite envolve encontrar o arquivo `.whl` (wheel) pré-compilado correto para a arquitetura do seu Pi 3B (que é `armv7l` ou `armhf`) e a sua versão do Python.
 - Uma instalação manual é mais garantida, e esse método envolve baixar o arquivo `wheel` correto manualmente e instalá-lo:
     - **Passo 1: Descobrir a sua versão do Python**:  
     Você precisa saber a versão do Python para baixar o arquivo correto. No terminal, digite:
