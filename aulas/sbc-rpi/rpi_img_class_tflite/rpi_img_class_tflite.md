@@ -102,4 +102,55 @@
     ```bash
     wget https://raw.githubusercontent.com/Mjrovai/EdgeML-with-Raspberry-Pi/refs/heads/main/IMG_CLASS/models/labels.txt
     ```
-### Carregue o modelo e os rótulos no Notebook    
+- Se você listar os arquivos do diretório `models`, verá:
+    ```bash
+    ls -l
+    ```
+    ```bash
+    total 105208
+    drwxr-xr-x 3 pi pi     4096 Oct 14 11:29 .
+    drwxr-xr-x 4 pi pi     4096 Oct 14 11:31 ..
+    drwxr-xr-x 2 pi pi     4096 Oct 14 11:29 .ipynb_checkpoints
+    -rw-r--r-- 1 pi pi    10484 Oct 14 11:29 labels.txt
+    -rw-r----- 1 pi pi 28325008 Oct  2  2018 mobilenet_v2_1.0_224_quant.ckpt.data-00000-of-00001
+    -rw-r----- 1 pi pi    55835 Aug 29  2018 mobilenet_v2_1.0_224_quant.ckpt.index
+    -rw-r----- 1 pi pi 16224984 Aug 29  2018 mobilenet_v2_1.0_224_quant.ckpt.meta
+    -rw-r----- 1 pi pi  3577760 Aug 29  2018 mobilenet_v2_1.0_224_quant.tflite
+    -rw-r--r-- 1 pi pi 43420937 Oct  3  2018 mobilenet_v2_1.0_224_quant.tgz
+    -rw-r----- 1 pi pi  1622974 Aug 29  2018 mobilenet_v2_1.0_224_quant_eval.pbtxt
+    -rw-r----- 1 pi pi 14459476 Aug 29  2018 mobilenet_v2_1.0_224_quant_frozen.pb
+    -rw-r----- 1 pi pi       84 Aug 29  2018 mobilenet_v2_1.0_224_quant_info.txt
+    ``` 
+- No entanto, apenas precisamos do modelo `mobilenet_v2_1.0_224_quant.tflite` e do arquivo `labels.txt` com os rótulos das classes. Você pode apagar os outros arquivos baixados.
+    - O arquivo `labels.txt` contém os rótulos das 1001 classes do modelo MobileNetV2, que são usados para interpretar as previsões do modelo.
+
+### Verificando o setup
+- Vamos testar o nosso setup rodando um simples script Python que carrega o modelo e os rótulos, e imprime algumas informações:
+    ```python
+    import tflite_runtime.interpreter as tflite
+    import numpy as np
+    from PIL import Image
+
+    print("NumPy:", np.__version__)
+    print("Pillow:", Image.__version__)
+
+    # Try to create a TFLite Interpreter
+    model_path = "./models/mobilenet_v2_1.0_224_quant.tflite"
+    interpreter = tflite.Interpreter(model_path=model_path)
+    interpreter.allocate_tensors()
+    print("Interpretador TFLite criado com sucesso!")
+    ```
+- Podemos criar o script Python usando o editor `nano`, e salvando-o com `CTRL+O` + `ENTER`, e saindo com `CTRL+X`:
+    ```bash
+    nano test_setup.py
+    ``` 
+    ![Abrindo o editor nano para criar o script de teste](./images/nano-teste-setup.png)
+
+- E rodar o script:
+    ```bash
+    python3 test_setup.py
+    ```
+    ![Rodando o script de teste do setup](./images/rodando-teste-setup.png)
+
+- Ou você pode executar o código acima em um novo notebook Jupyter.
+    ![](./images/notebook-teste-setup.png)
