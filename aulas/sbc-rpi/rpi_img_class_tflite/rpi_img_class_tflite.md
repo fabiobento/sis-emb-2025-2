@@ -127,7 +127,12 @@
     - O arquivo `labels.txt` contém os rótulos das 1001 classes do modelo MobileNetV2, que são usados para interpretar as previsões do modelo.
 
 #### Verificando o setup
-- Vamos testar o nosso setup rodando um simples script Python que carrega o modelo e os rótulos, e imprime algumas informações:
+- Vamos testar o nosso setup rodando um simples script Python que carrega o modelo e os rótulos, e imprime algumas informações.
+- Vá para o diretório `/home/pi/Documents/TFLITE/IMG_CLASS/`:
+    ```bash
+    cd ~/Documents/TFLITE/IMG_CLASS/
+    ```
+- Crie um arquivo Python chamado `test_setup.py` com o seguinte conteúdo:
     ```python
     import tflite_runtime.interpreter as tflite
     import numpy as np
