@@ -1,6 +1,7 @@
 # Instalação de Bibliotecas Python para o RPi
 Nesse roteiro de laboratório você instalará bibliotecas python para o seu RPi incluindo Edge Impulse Linux Python *SDK*, Pyserial, Matplotlib, TFlite, Opencv, Jupyter Notebook e VSCode.
 
+## Visão Geral das Bibliotecas
 [Edge Impulse Linux Python *SDK*](https://github.com/edgeimpulse/linux-sdk-python) permite executar modelos de aprendizado de máquina e coletar dados de sensores em máquinas Linux usando Python.
 
 [PySerial](https://pyserial.readthedocs.io/en/latest/)  é uma biblioteca Python que encapsula o acesso à porta serial, facilitando a comunicação com dispositivos conectados via interfaces seriais, como USB. Ele é amplamente utilizado em projetos de automação, robótica e Internet das Coisas (IoT) para enviar e receber dados de sensores, microcontroladores e outros dispositivos seriais.
