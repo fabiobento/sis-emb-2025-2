@@ -163,3 +163,10 @@
     ![](./images/notebook-teste-setup.png)
 
 ### Fazendo Inferências com o  Mobilenet V2
+- Na última seção, configuramos o ambiente, incluindo o download de um modelo pré-treinado popular, o `Mobilenet V2`, treinado em imagens 224x224 (1,2 milhão) do `ImageNet` para 1.001 classes (1.000 categorias de objetos mais 1 fundo). O modelo foi convertido para um formato `TensorFlow Lite` compacto de 3,5 MB, tornando-o adequado para o armazenamento e a memória limitados de um RPi.
+
+![](./images/mobilinet_zero.png)
+<span style="font-size:80%">
+Fonte: <a href="https://mjrovai.github.io/
+EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
+</span>
