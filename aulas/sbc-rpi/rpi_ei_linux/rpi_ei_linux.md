@@ -100,7 +100,7 @@ s <enter> to submit)
   Fabio / Car Parking Occupancy Detection - FOMO
 (Move up and down to reveal more choices)
 ```
-
+<!--
 ## **Passo 4: Verificar o Acesso à Câmera**
 
 Digite `CTRL+C` para sair da execução do programa anterio, pois agora você vai verificar se a câmera do Raspberry Pi está funcionando corretamente com o Edge Impulse. Então execute o seguinte comando:
@@ -124,3 +124,4 @@ Edge Impulse Linux client v1.17.5
 Em seguida vá à seção `Data Acquisition` no site de seu projeto no [Edge Impulse Studio](https://studio.edgeimpulse.com/), selecione o `Device` e o `Camera(640x480)`. Assim você verá um streaming de vídeo da câmera do RPi:
 
 ![](./imagens/camera_streaming.png)
+-->
