@@ -327,6 +327,10 @@ A estratégia a seguir instalará **ambos**, permitindo que você escolha o mais
         ```bash
         pip install jupyter jupyterlab notebook
         ```
+    - Reinicie o RPi para garantir que todas as dependências sejam carregadas corretamente:
+        ```bash
+        sudo reboot
+        ```
 
 * **Passo 2: Encontrar o Endereço IP do Raspberry Pi**
     - Para descobrir o ip do RPi, digite no terminal dele:  
