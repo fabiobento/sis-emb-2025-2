@@ -16,7 +16,7 @@
     import time
     import numpy as np
     from PIL import Image
-    improt matplotlib.pyplot as plt
+    import matplotlib.pyplot as plt
     from picamera2 import Picamera2
     ```
 ### Carregar e exibir uma imagem da internet
