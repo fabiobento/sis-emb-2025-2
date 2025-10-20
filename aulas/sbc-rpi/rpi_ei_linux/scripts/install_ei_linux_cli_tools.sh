@@ -7,6 +7,7 @@ echo "----------------------------------------------------"
 echo "Passo 2: Atualizando o Sistema..."
 echo "----------------------------------------------------"
 sudo apt update -y
+sudo apt upgrade -y
 
 echo "----------------------------------------------------"
 echo "Passo 3: Instalando Node.js e dependências..."
@@ -19,6 +20,10 @@ curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 echo "Instalando Node.js, GCC, G++, Make, SOX e GStreamer..."
 sudo apt install -y gcc g++ make build-essential nodejs sox gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-base gstreamer1.0-plugins-base-apps
 
+# Limpa pacotes que não são mais necessários
+echo "Limpando pacotes desnecessários..."
+sudo apt autoremove -y
+
 # Verifica a versão do Node.js
 echo "Verificando a versão do Node.js..."
 node -v
@@ -30,13 +35,15 @@ echo "----------------------------------------------------"
 mkdir -p ~/.npm-global
 npm config set prefix '~/.npm-global'
 
-# Adiciona o novo diretório ao PATH no .profile para que os comandos fiquem disponíveis
+# Adiciona o novo diretório ao PATH nos arquivos de perfil para que os comandos fiquem disponíveis
 # A verificação 'grep' evita que a linha seja adicionada múltiplas vezes
 if ! grep -q "export PATH=~/.npm-global/bin:\$PATH" ~/.profile; then
   echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
   echo "Diretório NPM adicionado ao seu ~/.profile."
-else
-  echo "O diretório NPM já está no seu ~/.profile."
+fi
+if ! grep -q "export PATH=~/.npm-global/bin:\$PATH" ~/.bashrc; then
+  echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+  echo "Diretório NPM adicionado ao seu ~/.bashrc."
 fi
 
 # Exporta o PATH para a sessão atual, para que os próximos comandos funcionem
@@ -45,14 +52,14 @@ echo "PATH atualizado para a sessão atual."
 
 echo "----------------------------------------------------"
 echo "Passo 4: Instalando o Edge Impulse CLI..."
+echo "AVISO: Este passo pode demorar vários minutos no Raspberry Pi."
 echo "----------------------------------------------------"
-# Instala a CLI principal do Edge Impulse
 npm install edge-impulse-cli -g --unsafe-perm
 
 echo "----------------------------------------------------"
 echo "Passo 5: Instalando o Edge Impulse para Linux..."
+echo "AVISO: Este passo também pode demorar vários minutos."
 echo "----------------------------------------------------"
-# Instala as ferramentas de inferência para Linux
 npm install edge-impulse-linux -g --unsafe-perm
 
 echo "----------------------------------------------------"
@@ -67,7 +74,7 @@ echo "Instalação concluída com sucesso!"
 echo ""
 echo "Para garantir que as alterações de PATH sejam permanentes,"
 echo "feche e reabra seu terminal ou execute o comando:"
-echo "source ~/.profile"
+echo "source ~/.bashrc"
 echo ""
 echo "Depois, você pode verificar a instalação com os comandos:"
 echo "edge-impulse-data-forwarder --clean"

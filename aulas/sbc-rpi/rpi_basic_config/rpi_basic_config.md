@@ -199,6 +199,106 @@ sudo raspi-config
 
 ![](./imagens/pc-vnc-1.png)
 
+## Veriicação da conexão com a Webcam USB
+
+Esta seção mostra como verificar se sua webcam USB está sendo reconhecida pelo sistema e como capturar uma imagem de teste para confirmar seu funcionamento, tudo através da linha de comando.
+
+### **Passo 1: Verifique se a Webcam foi Detectada**
+
+Antes de instalar qualquer software, vamos garantir que o RPi está "enxergando" a câmera fisicamente.
+
+1. Liste os Dispositivos USB:  
+   Conecte a webcam em uma porta USB e execute o seguinte comando no terminal para listar todos os dispositivos USB conectados:  
+   ```bash  
+   lsusb
+   ```
+  
+   Você deve ver uma linha que descreve sua webcam. O nome pode variar, mas geralmente inclui o fabricante (como Logitech, Microsoft, etc.).  
+   * **Exemplo de Saída:**  
+    ```bash  
+     Bus 001 Device 004: ID 046d:0825 Logitech, Inc. Webcam C270
+    ```
+    Se a câmera aparecer nesta lista, o sistema a reconheceu.
+
+2. Verifique o Dispositivo de Vídeo:  
+   O Linux cria um "arquivo de dispositivo" para a câmera, que os programas usam para acessá-la.  Verifique se este arquivo foi criado:  
+    ```bash  
+   ls /dev/video*
+    ```
+   * **Saída Esperada:**  
+    ```bash  
+    /dev/video0   /dev/video12  /dev/video16  /dev/video21
+    /dev/video1   /dev/video13  /dev/video18  /dev/video22
+    /dev/video10  /dev/video14  /dev/video2   /dev/video23
+    /dev/video11  /dev/video15  /dev/video20  /dev/video31
+
+    ```
+    Se você vir `/dev/video0` (ou `/dev/video1`, etc.), significa que o driver foi carregado com sucesso e a câmera está pronta para ser usada.
+
+### **Passo 2: Instale a Ferramenta de Captura (fswebcam)**
+
+fswebcam é um utilitário de linha de comando leve e eficaz para capturar imagens de uma webcam.
+
+1. Atualize a Lista de Pacotes:  
+   É sempre uma boa prática garantir que sua lista de pacotes esteja atualizada antes de instalar um novo software.  
+   ```bash  
+   sudo apt update
+   ```
+2. Instale o fswebcam:  
+   Agora, instale a ferramenta com o seguinte comando. A flag \-y confirma automaticamente a instalação.  
+   ```bash  
+   sudo apt install fswebcam -y
+   ```
+
+### **Passo 3: Capture sua Primeira Imagem**
+
+Com a ferramenta instalada, vamos tirar uma foto de teste.
+
+1. Execute o Comando Básico de Captura:  
+   Este comando irá capturar uma imagem da sua câmera (`/dev/video0` por padrão) e salvá-la no diretório atual com o nome imagem.jpg.  
+   ```bash  
+   fswebcam imagem.jpg
+   ```  
+
+   O terminal mostrará algumas informações enquanto a captura é realizada. O processo pode levar alguns segundos, pois a ferramenta ignora os primeiros frames para permitir que o sensor da câmera se ajuste à iluminação do ambiente.  
+2. Verifique a Imagem:  
+   Para ver se funcionou, liste os arquivos no diretório (`ls -lh`) e você verá o arquivo imagem.jpg. Você pode abri-lo usando o visualizador de imagens do seu sistema ou transferi-lo para outro computador.
+
+### **Passo 4 (Opcional): Capture uma Imagem com Mais Qualidade**
+
+Você pode adicionar parâmetros ao comando fswebcam para controlar a qualidade da imagem e outras opções.
+
+1. Capture uma Imagem em Alta Resolução e Sem Banner:  
+   O comando abaixo especifica a resolução e remove a faixa de informações (banner) que o fswebcam adiciona por padrão.  
+    ```bash  
+    fswebcam -r 1280x720 --no-banner imagem_hd.jpg
+    ```  
+   * `-r 1280x720`: Define a resolução da imagem para 1280x720 pixels (HD 720p). Verifique as especificações da sua câmera para saber quais resoluções ela suporta.  
+   * `--no-banner`: Remove a tarja de texto que o fswebcam adiciona na parte inferior da imagem.  
+   * `imagem_hd.jpg`: Salva a nova imagem com um nome diferente.
+
+<!--
+### **Resumo dos Comandos**
+
+Bash
+
+\# 1\. Verificar hardware  
+lsusb  
+ls /dev/video\*
+
+\# 2\. Instalar o software  
+sudo apt update  
+sudo apt install fswebcam \-y
+
+\# 3\. Capturar uma imagem simples  
+fswebcam imagem.jpg
+
+\# 4\. Capturar uma imagem com opções personalizadas  
+fswebcam \-r 1280x720 \--no-banner imagem\_hd.jpg  
+---
+-->
+
+<!--
 ## Configuração do módulo de câmera
 
 * Nesse curso utilizaremos o [módulo de  câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
@@ -227,6 +327,7 @@ libcamera-hello
 * Para maiores detalhes leia a documentação disponível em:  
   * [https://www.raspberrypi.com/documentation/accessories/camera.html](https://www.raspberrypi.com/documentation/accessories/camera.html)  
   * [https://www.raspberrypi.com/documentation/computers/camera\_software.html](https://www.raspberrypi.com/documentation/computers/camera_software.html)
+-->
 
 ## Referências
 
