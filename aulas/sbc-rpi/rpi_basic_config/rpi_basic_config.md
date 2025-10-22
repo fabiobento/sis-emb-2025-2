@@ -199,11 +199,11 @@ sudo raspi-config
 
 ![](./imagens/pc-vnc-1.png)
 
-## Verificação da conexão com uma Webcam USB
+## Verificação da conexão com uma webcam USB
 
 Esta seção mostra como verificar se sua webcam USB está sendo reconhecida pelo sistema e como capturar uma imagem de teste para confirmar seu funcionamento, tudo através da linha de comando.
 
-### **Passo 1: Verifique se a Webcam foi Detectada**
+### **Passo 1: Verifique se a webcam foi detectada**
 
 Antes de instalar qualquer software, vamos garantir que o RPi está "enxergando" a câmera fisicamente.
 
@@ -216,7 +216,7 @@ Antes de instalar qualquer software, vamos garantir que o RPi está "enxergando"
    Você deve ver uma linha que descreve sua webcam. O nome pode variar, mas geralmente inclui o fabricante (como Logitech, Microsoft, etc.).  
    * **Exemplo de Saída:**  
     ```bash  
-     Bus 001 Device 004: ID 046d:0825 Logitech, Inc. Webcam C270
+     Bus 001 Device 004: ID 046d:0825 Logitech, Inc. webcam C270
     ```
     Se a câmera aparecer nesta lista, o sistema a reconheceu.
 
