@@ -199,7 +199,7 @@ sudo raspi-config
 
 ![](./imagens/pc-vnc-1.png)
 
-## Veriicação da conexão com a Webcam USB
+## Verificação da conexão com uma Webcam USB
 
 Esta seção mostra como verificar se sua webcam USB está sendo reconhecida pelo sistema e como capturar uma imagem de teste para confirmar seu funcionamento, tudo através da linha de comando.
 
@@ -298,10 +298,10 @@ fswebcam \-r 1280x720 \--no-banner imagem\_hd.jpg
 ---
 -->
 
-<!--
-## Configuração do módulo de câmera
 
-* Nesse curso utilizaremos o [módulo de  câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
+## Verificação da conexão com um Módulo de Câmera 2 do RPi
+
+* Podemos utilizar também o [módulo de  câmera 2 do Raspberry Pi](https://www.raspberrypi.com/products/camera-module-v2/).  
 * Para **encaixar o módulo de câmera**, desligue o RPi e siga a seção esse tutorial disponível **[nesse link ( no intervalo 2min20seg até 3min22seg do vídeo)](https://youtu.be/y-856jgQdgU?t=139)**.  
 * Ligue o RPi  
 * No Raspberry Pi OS, abra o terminal através do ícone no canto superior direito.
@@ -327,7 +327,7 @@ libcamera-hello
 * Para maiores detalhes leia a documentação disponível em:  
   * [https://www.raspberrypi.com/documentation/accessories/camera.html](https://www.raspberrypi.com/documentation/accessories/camera.html)  
   * [https://www.raspberrypi.com/documentation/computers/camera\_software.html](https://www.raspberrypi.com/documentation/computers/camera_software.html)
--->
+
 
 ## Referências
 
