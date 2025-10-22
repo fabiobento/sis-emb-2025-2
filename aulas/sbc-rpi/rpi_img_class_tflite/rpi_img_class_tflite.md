@@ -170,3 +170,8 @@
 Fonte: <a href="https://mjrovai.github.io/
 EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
 </span>
+
+```bash
+# Instalar o Flask
+pip3 install --upgrade flask
+```
