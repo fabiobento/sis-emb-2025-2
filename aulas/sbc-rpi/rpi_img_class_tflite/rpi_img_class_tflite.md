@@ -14,7 +14,7 @@
     ```
 - Baixe o notebook chamado `primeiro-notebook-jupyter.ipynb` e pratique a criação e execução de células no Jupyter Notebook.
     ```bash
-    !wget https://raw.githubusercontent.com/fabiobento/sis-emb-2025-2/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/1_primeiro-jupyter-notebook.ipynb
+    !wget https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/1_primeiro-jupyter-notebook.ipynb
     ```
 
 ---
