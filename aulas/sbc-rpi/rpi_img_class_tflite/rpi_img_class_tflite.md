@@ -58,8 +58,22 @@
 Fonte: <a href="https://mjrovai.github.io/
 EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
 </span>
+- Vamos praticar a classificação de imagens usando esse modelo pré-treinado no RPi.
+- O fluxo de trabalho geral (*inference pipeline*) para fazer inferências com o modelo `Mobilenet V2` no RPi é o seguinte:
+    1. Carregar o modelo TFLite pré-treinado no RPi.
+    2. Preparar uma imagem de entrada (redimensionar, normalizar, etc).
+    3. Executar a inferência usando o modelo carregado.
+    4. Interpretar os resultados da inferência (obter as classes previstas e suas probabilidades).
+    
+![](./images/inference-pipeline.png)
+<span style="font-size:80%">
+Fonte: <a href="https://mjrovai.github.io/
+EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
+</span>
+
 
 - Faça o upload do notebook [3_Image_Classification.ipynb](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/3_Image_Classification.ipynb) para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente. Esse notebook está na pasta `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs/3_Image_Classification.ipynb` do repositório clonado.
+
 - Agora interaja com o notebook para fazer inferências com o modelo `Mobilenet V2`.
 
 ### Treinando um modelo do zero
@@ -72,6 +86,11 @@ O modelo vai ser treinado em servidores na nuvem no *Google Colab*, convertidos 
     1. Faça o login em sua conta do Google no navegador Web do desktop (Google Chorme, Firefox, etc) 
     2. Clique no [nesse link para o notebook](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/4_CNN_Cifar_10_TFLite.ipynb)
 
+### Embarcando no RPi o modelo treinado na nuvem
+- Após treinar e converter o modelo no Colab, baixe os arquivos  `cifar10.tflite` e `cifar10_quant.tflite` para o seu computador desktop.
+- Transfira os arquivos `cifar10.tflite` e `cifar10_quant.tflite` para o RPi, na pasta `~/Documents/TFLITE/IMG_CLASS/models/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente.
+- Faça o upload do notebook [Cifar 10 - Classificação de Imagens no RPi com TFLite](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/5_Cifar_Image_Classification.ipynb) para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente. Esse notebook no arquivo `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs/5_Cifar_Image_Classification.ipynb` do repositório clonado.
+- Agora interaja com o notebook para fazer inferências com o modelo treinado no Colab e embarcado no RPi.
 
 <!--
 ```bash
