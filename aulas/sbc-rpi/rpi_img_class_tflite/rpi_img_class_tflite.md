@@ -62,6 +62,17 @@ EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
 - Faça o upload do notebook [3_Image_Classification.ipynb](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/3_Image_Classification.ipynb) para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente. Esse notebook está na pasta `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs/3_Image_Classification.ipynb` do repositório clonado.
 - Agora interaja com o notebook para fazer inferências com o modelo `Mobilenet V2`.
 
+### Treinando um modelo do zero
+
+Vamos treinar um modelo TFLite do zero para embarcá-lo no RPi.
+
+O modelo vai ser treinado em servidores na nuvem no *Google Colab*, convertidos para o formato TFlite, e embarcados no RPi.
+
+- Para iniciar o treinamento na nuvem:
+    1. Faça o login em sua conta do Google no navegador Web do desktop (Google Chorme, Firefox, etc) 
+    2. Clique no [nesse link para o notebook](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/4_CNN_Cifar_10_TFLite.ipynb)
+
+
 <!--
 ```bash
 # Instalar o Flask
