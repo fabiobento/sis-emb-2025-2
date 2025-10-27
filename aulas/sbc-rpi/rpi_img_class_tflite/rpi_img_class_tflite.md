@@ -58,13 +58,14 @@
 Fonte: <a href="https://mjrovai.github.io/
 EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
 </span>
+
 - Vamos praticar a classificação de imagens usando esse modelo pré-treinado no RPi.
 - O fluxo de trabalho geral (*inference pipeline*) para fazer inferências com o modelo `Mobilenet V2` no RPi é o seguinte:
     1. Carregar o modelo TFLite pré-treinado no RPi.
     2. Preparar uma imagem de entrada (redimensionar, normalizar, etc).
     3. Executar a inferência usando o modelo carregado.
     4. Interpretar os resultados da inferência (obter as classes previstas e suas probabilidades).
-    
+
 ![](./images/inference-pipeline.png)
 <span style="font-size:80%">
 Fonte: <a href="https://mjrovai.github.io/
