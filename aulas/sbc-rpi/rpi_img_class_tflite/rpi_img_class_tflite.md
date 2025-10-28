@@ -338,6 +338,26 @@ O script [`get_img_data.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/m
     - `stop()`: Interrompe o processo de captura e exibe um resumo.
 
 - Fluxo de uso:
-    - Inicie o script no seu RPi.
-    - Acesse a interface web a partir de um navegador.
-    - Digite uma etiqueta para as imagens que deseja capturar e pressione `Iniciar Captura`.
+    1. Inicie o script no seu RPi.
+    2. Acesse a interface web a partir de um navegador.
+    3. Digite uma etiqueta para as imagens que deseja capturar e pressione `Iniciar Captura`.
+![](./images/start-capture.png)
+    
+    4. Use a imagem ao vivo para posicionar a câmera
+    5. Clique em `Capturar Imagem` para salvar uma imagem com o rótulo atual.
+![](./images/capture-image.png)    
+    6. Mude os rótulos conforme necessário clicando em `Mudar o Rótulo`.
+    7. Quando terminar, clique em `Parar a Captura` para encerrar e visualizar um resumo das imagens capturadas.
+
+- Notas técnicas:
+    - O script usa *threading* para lidar com a captura simultânea de quadros e o serviço web.
+    - As imagens são salvas com *timestamps* de data/hora em seus nomes de arquivo para garantir a exclusividade.
+    - A interface web é responsiva e pode ser acessada a partir de dispositivos móveis.
+-Possibilidades de personalização:
+    - Ajuste a resolução da imagem na função `initialize_camera()`. Aqui, usamos QVGA ($320 \times 240$).
+    - Modifique os modelos HTML para obter uma aparência diferente.
+    - Adicione etapas adicionais de processamento ou análise de imagem na função `capture_image()`.
+
+- Número de amostras no conjunto de dados:
+    - **Obtenha cerca de 60 imagens de cada categoria**. Tente capturar diferentes ângulos, fundos e condições de luz.
+    - No RPi, terminaremos com uma pasta chamada dataset, que contém três subpastas, uma para cada classe de imagens.
