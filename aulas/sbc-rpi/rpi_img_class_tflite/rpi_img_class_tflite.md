@@ -439,8 +439,7 @@ def augment_image(image, label):
     resize_factor = random.uniform(1, 1.2)
     new_height = math.floor(resize_factor * INPUT_SHAPE[0])
     new_width = math.floor(resize_factor * INPUT_SHAPE[1])
-    image = tf.image.resize_with_crop_or_pad(image, new_height,
-                                             new_width)
+    image = tf.image.resize_with_crop_or_pad(image, new_height, new_width)
     image = tf.image.random_crop(image, size=INPUT_SHAPE)
 
     # Vary the brightness of the image
@@ -448,3 +447,28 @@ def augment_image(image, label):
 
     return image, label
 ```
+
+A exposição a essas variações durante o treinamento pode ajudar a evitar que seu modelo tome atalhos “memorizando” pistas superficiais em seus dados de treinamento, o que significa que ele pode refletir melhor os padrões profundos subjacentes em seu conjunto de dados.
+
+A camada densa final do nosso modelo terá 0 neurônios com uma queda de 10% para prevenção de sobreajuste. Aqui está o resultado do treinamento:
+![](./images/training-results.png)
+
+
+O resultado é excelente, com uma latência razoável de 12 ms (para um Raspi-4), o que deve resultar em cerca de 30 fps (*frames per second* - quadros por segundo) durante a inferência.
+
+#### Testes do Modelo
+Depois de treinar o modelo, é hora de testá-lo. Vá para a guia `Model Testing` e execute os testes para avaliar o desempenho do modelo em dados não vistos durante o treinamento. Aqui estão os resultados dos meus testes pra você comparar:
+![](./images/test-results.png)
+
+A acurácia geral é de 96,4%, o que é excelente para um modelo treinado com apenas 180 imagens. A matriz de confusão mostra que o modelo classifica corretamente a maioria das imagens, com apenas algumas confusões entre as classes `grogu` e `falcon`.
+
+#### Implantação do Modelo no RPi
+Vamos implantar o modelo treinado como `.tflite` e usar o RPi para executá-lo usando Python.
+
+Na guia `Dashboard`, baixe os modelos *Transfer learning model* *TensorFlow Lite (int8 quantized)* e *TensorFlow Lite (float32)*  clicando no ícone de download:
+![](./images/ei-models.png)
+
+- Trafira ambos modelos para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/models/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente.
+
+- Transfira o notebook "6_Image_Classification_edge_impulse.ipynb" no caminho `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs   /6_Image_Classification_edge_impulse.ipynb` do repositório clonado para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente.
+- Interaja com o notebook para fazer inferências com o modelo treinado no Edge Impulse e embarcado no RPi.  

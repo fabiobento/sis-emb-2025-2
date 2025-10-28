@@ -16,8 +16,8 @@ frame = None
 frame_lock = threading.Lock()
 is_classifying = False
 confidence_threshold = 0.8
-model_path = "./models/ei-raspi-img-class-int8-quantized-model.tflite"
-labels = ['background', 'periquito', 'robot']
+model_path = "./models/tensorflow-lite-float32-model.3.lite"
+labels = ['background', 'falcon', 'grogu']
 interpreter = None
 classification_queue = Queue(maxsize=1)
 
@@ -84,7 +84,7 @@ def classification_worker():
             if max_prob >= confidence_threshold:
                 label = labels[np.argmax(predictions)]
             else:
-                label = 'Uncertain'
+                label = 'Incerto'
             classification_queue.put({'label': label, 'probability': float(max_prob)})
         time.sleep(0.1)  # Ajustar conforme necessário
 
