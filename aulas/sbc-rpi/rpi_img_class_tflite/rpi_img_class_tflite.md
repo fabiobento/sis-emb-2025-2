@@ -361,3 +361,90 @@ O script [`get_img_data.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/m
 - Número de amostras no conjunto de dados:
     - **Obtenha cerca de 60 imagens de cada categoria**. Tente capturar diferentes ângulos, fundos e condições de luz.
     - No RPi, terminaremos com uma pasta chamada dataset, que contém três subpastas, uma para cada classe de imagens.
+### Treinando um modelo TFLite com Edge Impulse Studio
+
+Essa etapa do projeto é semelhante ao que você já aprendeu no roteiro de laboratório [Classificação de Imagens](https://docs.google.com/presentation/d/1zI8QhWKV3fmNJB46eiIo1tHZeL8yTCaH/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true). Só que agora os dados foram capturados com uma câmera conectada ao RPi e não a um smartphone.
+
+Portanto, usaremos o Edge Impulse Studio para treinar nosso modelo. Acesse a página do [Edge Impulse](https://edgeimpulse.com/), insira as credenciais da sua conta e crie um novo projeto.
+
+Você pode clonar um projeto similar para sua referência: [Projeto de Classificação de Imagens na RPi com Treino no Edge Impulse](https://studio.edgeimpulse.com/public/807438/live).
+
+Vamos percorrer quatro etapas principais usando o EI Studio (ou Studio). Essas etapas preparam o nosso modelo para uso no RPi: *Dataset*, *Impulse*, *Tests* e *Deploy* (implantação no dispositivo de borda, neste caso, o RPi).
+
+#### O conjunto de dados (*Dataset*)
+Para começar, faça o upload das imagens capturadas para o Edge Impulse Studio.
+
+No [Studio](), siga as etapas para carregar os dados capturados:
+
+1. Vá para a guia `Data acquisition` e, na seção `UPLOAD DATA`, carregue os arquivos do seu computador nas categorias escolhidas.
+2. Deixe que o Studio divida o conjunto de dados original em treinamento e teste e escolha o rótulo 
+3. Repita o procedimento para todas as três classes. No final, você deverá ver seus “dados brutos” no Studio:
+![](./images/raw-data.png)
+
+O Studio permite que você explore seus dados, mostrando uma visão completa de todos os dados do seu projeto. Você pode limpar, inspecionar ou alterar rótulos clicando em itens de dados individuais. No nosso caso, um projeto simples, os dados parecem estar corretos.
+![](./images/feature-explorer.png)
+
+#### O Impulso (*Impulse*)
+Nesta fase, devemos definir como:
+- Pré-processar nossos dados, o que consiste em redimensionar as imagens individuais e determinar a profundidade de cor(*color depth*) a ser usada (seja RGB ou escala de cinza) e
+
+- Especificar um modelo. Neste caso, será o *Transfer Learning(Images)*  para ajustar um modelo de classificação de imagens `MobileNet V2` pré-treinado em nossos dados. Esse método tem um bom desempenho mesmo com conjuntos de dados de imagens relativamente pequenos (cerca de 180 imagens no nosso caso).
+
+O aprendizado por transferência (*Transfer Learning*) com o MobileNet oferece uma abordagem simplificada para o treinamento de modelos, o que é útil para ambientes com recursos limitados e projetos com dados rotulados limitados. O MobileNet, conhecido por sua arquitetura leve, é um modelo pré-treinado que já aprendeu recursos valiosos a partir de um grande conjunto de dados ([*ImageNet*](https://www.image-net.org/)).
+![](./images/mobilinet-v2.jpg)
+<span style="font-size:80%">
+Fonte: <a href="https://mjrovai.github.io/
+EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
+</span>
+
+Ao aproveitar esses recursos aprendidos, podemos treinar um novo modelo para sua tarefa específica com menos dados e recursos computacionais e alcançar uma acurácia competitiva.
+![](./images/model_2.png)
+
+Essa abordagem reduz significativamente o tempo de treinamento e o custo computacional, tornando-a ideal para prototipagem rápida e implantação em dispositivos embarcados, onde a eficiência é fundamental.
+
+Vá para a guia *Impulse Design* e crie o impulso, definindo um tamanho de imagem de $160 \times 160$, e um *squashing* (esmagamento de forma quadrada, sem recorte). Selecione os blocos Image (Imagem) e *Transfer Learning*. Salve o impulso.
+
+#### Processamento da Imagem
+Todas as imagens QVGA/RGB565 de entrada serão convertidas para $76.800$ recursos ($160 \times 160 \times 3$).
+![](./images/proproc.png) 
+
+Clique em `Generate features` para processar todas as imagens carregadas.
+Em seguida, visualize os recursos extraídos na guia `Feature Explorer`.
+
+#### Projeto do Modelo
+MobileNet é uma família de redes neurais convolucionais eficientes projetadas para aplicações móveis e de visão incorporada. As principais características do MobileNet são:
+1. Leveza: otimizado para dispositivos móveis e sistemas incorporados com recursos computacionais limitados.
+2. Velocidade: tempos de inferência rápidos, adequados para aplicações em tempo real.
+3. Acurácia: mantém boa precisão apesar de seu tamanho compacto.
+
+O [MobileNetV2](https://arxiv.org/abs/1801.04381), lançado em 2018, aprimora a arquitetura original do MobileNet. As principais características incluem:
+1. Resíduos invertidos: estruturas residuais invertidas são usadas onde conexões diretas são feitas entre camadas estreitas de gargalo.
+2. Gargalos lineares: remove as não linearidades nas camadas estreitas para evitar a destruição de informações.
+3. Convoluções separáveis em profundidade: continua a usar essa operação eficiente do MobileNetV1.
+
+Em nosso projeto, faremos um `Tranfer Learning` com o `MobileNetV2 160x160 1.0`, o que significa que as imagens usadas para treinamento (e inferência futura) devem ter um tamanho de entrada de $160 \times 160$ pixels e um multiplicador de largura (*Width Multiplier*) de 1.0 (largura total, não reduzida). Essa configuração equilibra o tamanho do modelo.
+
+#### Treinamento do Modelo
+Outra técnica valiosa de aprendizado profundo é o aumento de dados (**Data Augmentation**). O aumento de dados melhora a acurácia dos modelos de aprendizado de máquina, criando dados artificiais adicionais. Um sistema de aumento de dados faz pequenas alterações aleatórias nos dados de treinamento durante o processo de treinamento (como inverter, recortar ou girar as imagens).
+
+Olhando "por baixo do capô", aqui você pode ver como o Edge Impulse implementa uma política de aumento de dados em seus dados:
+```python
+# Implements the data augmentation policy
+def augment_image(image, label):
+    # Flips the image randomly
+    image = tf.image.random_flip_left_right(image)
+
+    # Increase the image size, then randomly crop it down to
+    # the original dimensions
+    resize_factor = random.uniform(1, 1.2)
+    new_height = math.floor(resize_factor * INPUT_SHAPE[0])
+    new_width = math.floor(resize_factor * INPUT_SHAPE[1])
+    image = tf.image.resize_with_crop_or_pad(image, new_height,
+                                             new_width)
+    image = tf.image.random_crop(image, size=INPUT_SHAPE)
+
+    # Vary the brightness of the image
+    image = tf.image.random_brightness(image, max_delta=0.2)
+
+    return image, label
+```
