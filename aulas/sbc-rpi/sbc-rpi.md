@@ -13,5 +13,6 @@
   - [Roteiro de Laboratório](./rpi_ei_linux_sdk_accel/rpi_ei_linux_sdk_accel.md):
 
 - Classificação de Imagens usando bibliotecas Python no RPi: Introdução ao TFLite 
-  - [Roteiro de Laboratório](./rpi_img_class_tflite/rpi_img_class_tflite.md):
+  - [Roteiro de Laboratório](./rpi_img_class_tflite/rpi_img_class_tflite.md)
+  - [Projeto: Classificação de Imagens com Servidor Flask no RPi](./rpi_img_class_tflite/rpi_img_class_tflite_proj)
   
