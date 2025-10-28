@@ -10,7 +10,7 @@ from queue import Queue
 
 app = Flask(__name__)
 
-# Global variables
+# Variáveis globais
 picam2 = None
 frame = None
 frame_lock = threading.Lock()
@@ -162,7 +162,7 @@ def update_confidence():
 @app.route('/get_classification')
 def get_classification():
     if not is_classifying:
-        return jsonify({'label': 'Not classifying', 'probability': 0})
+        return jsonify({'label': 'Não classificando', 'probability': 0})
     try:
         result = classification_queue.get_nowait()
     except Queue.Empty:

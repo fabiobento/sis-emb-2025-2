@@ -471,4 +471,260 @@ Na guia `Dashboard`, baixe os modelos *Transfer learning model* *TensorFlow Lite
 - Trafira ambos modelos para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/models/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente.
 
 - Transfira o notebook "6_Image_Classification_edge_impulse.ipynb" no caminho `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs   /6_Image_Classification_edge_impulse.ipynb` do repositório clonado para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente.
-- Interaja com o notebook para fazer inferências com o modelo treinado no Edge Impulse e embarcado no RPi.  
+- Interaja com o notebook para fazer inferências com o modelo treinado no Edge Impulse e embarcado no RPi.
+
+#### Classificação de Imagens em Tempo Real com o RPi
+Vamos desenvolver um aplicativo que capture imagens com a câmera em tempo real e exiba sua classificação.
+
+Salve o código abaixo, como [`live_infer.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/scripts/live_infer.py) na pasta `~/Documents/TFLITE/IMG_CLASS/` do RPi:
+
+``` python
+from flask import Flask, Response, render_template_string, request, jsonify
+from picamera2 import Picamera2
+import io
+import threading
+import time
+import numpy as np
+from PIL import Image
+import tflite_runtime.interpreter as tflite
+from queue import Queue
+
+app = Flask(__name__)
+
+# Variáveis globais
+picam2 = None
+frame = None
+frame_lock = threading.Lock()
+is_classifying = False
+confidence_threshold = 0.8
+model_path = "./models/tensorflow-lite-float32-model.3.lite"
+labels = ['background', 'falcon', 'grogu']
+interpreter = None
+classification_queue = Queue(maxsize=1)
+
+def initialize_camera():
+    global picam2
+    picam2 = Picamera2()
+    config = picam2.create_preview_configuration(main={"size": (320, 240)})
+    picam2.configure(config)
+    picam2.start()
+    time.sleep(2)  #Espere a câmera estabilizar
+
+def get_frame():
+    global frame
+    while True:
+        stream = io.BytesIO()
+        picam2.capture_file(stream, format='jpeg')
+        with frame_lock:
+            frame = stream.getvalue()
+        time.sleep(0.1)  # Capturar frames a cada 100ms
+
+def generate_frames():
+    while True:
+        with frame_lock:
+            if frame is not None:
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        time.sleep(0.1)
+
+def load_model():
+    global interpreter
+    if interpreter is None:
+        interpreter = tflite.Interpreter(model_path=model_path)
+        interpreter.allocate_tensors()
+    return interpreter
+
+def classify_image(img, interpreter):
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    img = img.resize((input_details[0]['shape'][1], input_details[0]['shape'][2]))
+    input_data = np.expand_dims(np.array(img), axis=0).astype(input_details[0]['dtype'])
+
+    interpreter.set_tensor(input_details[0]['index'], input_data)
+    interpreter.invoke()
+
+    predictions = interpreter.get_tensor(output_details[0]['index'])[0]
+    # Lidar com quantização se necessário
+    output_dtype = output_details[0]['dtype']
+    if output_dtype in [np.int8, np.uint8]:
+        # Dequantizar os resultados
+        scale, zero_point = output_details[0]['quantization']
+        predictions = (predictions.astype(np.float32) - zero_point) * scale
+    return predictions
+
+def classification_worker():
+    interpreter = load_model()
+    while True:
+        if is_classifying:
+            with frame_lock:
+                if frame is not None:
+                    img = Image.open(io.BytesIO(frame))
+            predictions = classify_image(img, interpreter)
+            max_prob = np.max(predictions)
+            if max_prob >= confidence_threshold:
+                label = labels[np.argmax(predictions)]
+            else:
+                label = 'Incerto'
+            classification_queue.put({'label': label, 'probability': float(max_prob)})
+        time.sleep(0.1)  # Ajustar conforme necessário
+
+@app.route('/')
+def index():
+    return render_template_string('''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Classificação de Imagens</title>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                function startClassification() {
+                    $.post('/start');
+                    $('#startBtn').prop('disabled', true);
+                    $('#stopBtn').prop('disabled', false);
+                }
+                function stopClassification() {
+                    $.post('/stop');
+                    $('#startBtn').prop('disabled', false);
+                    $('#stopBtn').prop('disabled', true);
+                }
+                function updateConfidence() {
+                    var confidence = $('#confidence').val();
+                    $.post('/update_confidence', {confidence: confidence});
+                }
+                function updateClassification() {
+                    $.get('/get_classification', function(data) {
+                        $('#classification').text(data.label + ': ' + data.probability.toFixed(2));
+                    });
+                }
+                $(document).ready(function() {
+                    setInterval(updateClassification, 100);  // Update every 100ms
+                });
+            </script>
+        </head>
+        <body>
+            <h1>Classificação de Imagens</h1>
+            <img src="{{ url_for('video_feed') }}" width="640" height="480" />
+            <br>
+            <button id="startBtn" onclick="startClassification()">Iniciar Classificação</button>
+            <button id="stopBtn" onclick="stopClassification()" disabled>Parar Classificação</button>
+            <br>
+            <label for="confidence">Limite de confiança:</label>
+            <input type="number" id="confidence" name="confidence" min="0" max="1" step="0.1" value="0.8" onchange="updateConfidence()">
+            <br>
+            <div id="classification">Aguardando por classificação...</div>
+        </body>
+        </html>
+    ''')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/start', methods=['POST'])
+def start_classification():
+    global is_classifying
+    is_classifying = True
+    return '', 204
+
+@app.route('/stop', methods=['POST'])
+def stop_classification():
+    global is_classifying
+    is_classifying = False
+    return '', 204
+
+@app.route('/update_confidence', methods=['POST'])
+def update_confidence():
+    global confidence_threshold
+    confidence_threshold = float(request.form['confidence'])
+    return '', 204
+
+@app.route('/get_classification')
+def get_classification():
+    if not is_classifying:
+        return jsonify({'label': 'Não classificando', 'probability': 0})
+    try:
+        result = classification_queue.get_nowait()
+    except Queue.Empty:
+        result = {'label': 'Processing', 'probability': 0}
+    return jsonify(result)
+
+if __name__ == '__main__':
+    initialize_camera()
+    threading.Thread(target=get_frame, daemon=True).start()
+    threading.Thread(target=classification_worker, daemon=True).start()
+    app.run(host='0.0.0.0', port=5000, threaded=True)
+
+```
+
+- No terminal execute o script:
+```bash
+python3 live_infer.py
+``` 
+
+- Acesse a interface web:
+Abra um navegador web em seu computador desktop e acesse o endereço do RPi na porta 5000. Por exemplo:
+```bash
+http://rpi0.local:5000
+```
+
+O código cria uma aplicação web para classificação de imagens em tempo real utilizando um RPi, seu módulo de câmera e um modelo TensorFlow Lite. A aplicação usa o Flask para servir uma interface web onde é possível visualizar a transmissão da câmera e ver os resultados da classificação ao vivo.
+
+- Componentes Principais
+    * **Aplicação Web Flask:** Serve a interface do usuário e gerencia as requisições.
+    * **PiCamera2:** Captura imagens do módulo de câmera do Raspberry Pi.
+    * **TensorFlow Lite:** Executa o modelo de classificação de imagens.
+    * **Threading (Multithreading):** Gerencia operações concorrentes para um desempenho fluido.
+
+- Principais Funcionalidades
+    * Exibição da transmissão da câmera ao vivo
+    * Classificação de imagens em tempo real
+    * Limite de confiança ajustável
+    * Iniciar/Parar a classificação sob demanda
+
+- Estrutura do Código
+    * **Importações e Configuração:**
+        * Flask para a aplicação web
+        * PiCamera2 para o controle da câmera
+        * TensorFlow Lite para a inferência
+        * Threading e Queue para operações concorrentes
+    * **Variáveis Globais:**
+        * Gerenciamento da câmera e dos frames
+        * Controle da classificação
+        * Informações do modelo e dos rótulos
+    * **Funções da Câmera:**
+        * `initialize_camera()`: Configura a PiCamera2
+        * `get_frame()`: Captura frames continuamente
+        * `generate_frames()`: Fornece (yields) frames para a transmissão na web
+    * **Funções do Modelo:**
+        * `load_model()`: Carrega o modelo TFLite
+        * `classify_image()`: Realiza a inferência em uma única imagem
+    * **Worker de Classificação:**
+        * Executa em uma thread separada
+        * Classifica frames continuamente quando ativo
+        * Atualiza uma fila (queue) com os resultados mais recentes
+    * **Rotas do Flask:**
+        * `/`: Serve a página HTML principal
+        * `/video_feed`: Transmite o feed da câmera
+        * `/start` e `/stop`: Controlam a classificação
+        * `/update_confidence`: Ajusta o limite de confiança
+         * `/get_classification`: Retorna o resultado da classificação mais recente
+    * **Template HTML:**
+        * Exibe a transmissão da câmera e os resultados da classificação
+        * Fornece controles para iniciar/parar e ajustar as configurações
+    * **Execução Principal:**
+        * Inicializa a câmera e inicia as threads necessárias
+        * Executa a aplicação Flask
+
+- Conceitos Chave
+    * **Operações Concorrentes:** Uso de threads para lidar com a captura da câmera e a classificação separadamente do servidor web.
+    * **Atualizações em Tempo Real:** Atualizações frequentes dos resultados da classificação sem recarregar a página.
+    * **Reutilização do Modelo:** Carregar o modelo TFLite uma única vez e reutilizá-lo para maior eficiência.
+    * **Configuração Flexível:** Permitir que os usuários ajustem o limite de confiança em tempo real.
+
+- Como Usar
+    * Garanta que todas as dependências estejam instaladas.
+    * Execute o script em um Raspberry Pi com um módulo de câmera.
+    * Acesse a interface web de um navegador usando o endereço IP do Raspberry Pi.
+    * Inicie a classificação e ajuste as configurações conforme necessário.
