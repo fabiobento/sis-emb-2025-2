@@ -93,9 +93,19 @@ O modelo vai ser treinado em servidores na nuvem no *Google Colab*, convertidos 
 - Faça o upload do notebook [Cifar 10 - Classificação de Imagens no RPi com TFLite](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/5_Cifar_Image_Classification.ipynb) para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente. Esse notebook no arquivo `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs/5_Cifar_Image_Classification.ipynb` do repositório clonado.
 - Agora interaja com o notebook para fazer inferências com o modelo treinado no Colab e embarcado no RPi.
 
-<!--
-```bash
-# Instalar o Flask
-pip3 install --upgrade flask
-```
--->
+## Projeto de Classificação de Imagens com Servidor Flask no RPi
+
+Vamos criar um projeto completo de classificação de imagens usando o Edge Impulse Studio. Como fizemos com o Mobilinet V2, o modelo treinado e convertido para o formato TFLiteserá utilizado para inferencias no RPi.
+
+Esse é o fluxo de trabalho que você usará em seu projeto:
+
+![](./images/project-workflow.png)
+<span style="font-size:80%">
+Fonte: <a href="https://mjrovai.github.io/
+EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
+</span>
+
+### O Objetivo do Projeto
+O primeiro passo em qualquer projeto de ML é definir seu objetivo. Neste caso, é detectar e classificar dois objetos específicos presentes em uma imagem. Para esse projeto, usarei como exemplo dois pequenos brinquedos: um personagem (`grogu`) e uma espaçonave de ficção científica (`falcon`). Também coletei imagens de um fundo(`background`) com esses dois objetos estão ausentes.
+
+![](./images/project-classes.png)
