@@ -305,3 +305,39 @@ if __name__ == '__main__':
     python3 get_img_data.py
     ```
 4. Acesse a interface web:
+
+    Abra um navegador web em seu computador desktop e acesse o endereço do RPi na porta 5000. Por exemplo:
+    ```bash
+    http://rpi0.local:5000
+    ```
+
+O script [`get_img_data.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/scripts/get_img_data.py) cria uma interface baseada na web para capturar e organizar conjuntos de dados de imagens usando um RPi e sua câmera.
+- Principais recursos do script:
+    - **Interface web**: acessível a partir de qualquer dispositivo na mesma rede que o RPi.
+    - **Visualização ao vivo da câmera**: mostra uma transmissão em tempo real da câmera.
+    - **Sistema de rotulagem**: permite que os usuários insiram rótulos para diferentes categorias de imagens.
+    - **Armazenamento organizado**: salva automaticamente as imagens em subdiretórios específicos para cada rótulo.
+    - **Contadores por rótulo**: mantém o controle de quantas imagens são capturadas para cada rótulo.
+    - **Estatísticas resumidas**: fornece um resumo das imagens capturadas ao interromper o processo de captura.
+
+- Componentes principais:
+    - **Aplicativo Web Flask**: Gerencia o roteamento e serve a interface web.
+    - **Integração Picamera2**: Controla a câmera Raspberry Pi.
+    - **Captura de quadros em thread**: Garante uma pré-visualização ao vivo suave.
+    - **Gerenciamento de arquivos**: Organiza as imagens capturadas em diretórios rotulados.    
+
+- Funções principais:
+    - `initialize_camera()`: Configura a instância `Picamera2`.
+    - `get_frame()`: Captura quadros continuamente para a visualização ao vivo.
+    - `generate_frames()`: Produz quadros para a transmissão de vídeo ao vivo.
+    - `shutdown_server()`: Define o evento de desligamento, interrompe a câmera e desliga o servidor `Flask`.
+    - `index()`: Gerencia a página de entrada de rótulos.
+    - `capture_page()`: Exibe a interface principal de captura.
+    - `video_feed()`: Mostra uma pré-visualização ao vivo para posicionar a câmera.
+    - `capture_image()`: Salva uma imagem com a etiqueta atual.
+    - `stop()`: Interrompe o processo de captura e exibe um resumo.
+
+- Fluxo de uso:
+    - Inicie o script no seu RPi.
+    - Acesse a interface web a partir de um navegador.
+    - Digite uma etiqueta para as imagens que deseja capturar e pressione `Iniciar Captura`.
