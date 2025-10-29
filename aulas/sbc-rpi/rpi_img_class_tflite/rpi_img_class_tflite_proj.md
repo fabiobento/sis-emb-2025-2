@@ -10,12 +10,12 @@ Fonte: <a href="https://mjrovai.github.io/
 EdgeML_Made_Ease_ebook/" target="_blank">*EdgeML Made Easy*</a>
 </span>
 
-## O Objetivo do Projeto
+## 1. O Objetivo do Projeto
 O primeiro passo em qualquer projeto de ML é definir seu objetivo. Neste caso, é detectar e classificar dois objetos específicos presentes em uma imagem. Para esse projeto, usarei como exemplo dois pequenos brinquedos: um personagem (`grogu`) e uma espaçonave de ficção científica (`falcon`). Também coletei imagens de um fundo(`background`) com esses dois objetos estão ausentes.
 
 ![](./images/project-classes.png)
 
-## Coleta de Dados
+## 2. Coleta de Dados
 Depois de definirmos objetivo de nosso projeto de aprendizado de máquina, a próxima etapa, e a mais importante, é coletar o conjunto de dados.
 
 Podemos usar um telefone para capturar as imagens, mas aqui usaremos o RPi.
@@ -266,7 +266,7 @@ O script [`get_img_data.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/m
 - Número de amostras no conjunto de dados:
     - **Obtenha cerca de 60 imagens de cada categoria**. Tente capturar diferentes ângulos, fundos e condições de luz.
     - No RPi, terminaremos com uma pasta chamada dataset, que contém três subpastas, uma para cada classe de imagens.
-## Treinando um modelo TFLite com Edge Impulse Studio
+## 3. Treinando um modelo TFLite com Edge Impulse Studio
 
 Essa etapa do projeto é semelhante ao que você já aprendeu no roteiro de laboratório [Classificação de Imagens](https://docs.google.com/presentation/d/1zI8QhWKV3fmNJB46eiIo1tHZeL8yTCaH/edit?usp=sharing&ouid=110939560925015610214&rtpof=true&sd=true). Só que agora os dados foram capturados com uma câmera conectada ao RPi e não a um smartphone.
 
@@ -276,7 +276,7 @@ Você pode clonar um projeto similar para sua referência: [Projeto de Classific
 
 Vamos percorrer quatro etapas principais usando o EI Studio (ou Studio). Essas etapas preparam o nosso modelo para uso no RPi: *Dataset*, *Impulse*, *Tests* e *Deploy* (implantação no dispositivo de borda, neste caso, o RPi).
 
-### O conjunto de dados (*Dataset*)
+### 3.1 O conjunto de dados (*Dataset*)
 Para começar, faça o upload das imagens capturadas para o Edge Impulse Studio.
 
 No [Studio](), siga as etapas para carregar os dados capturados:
@@ -289,7 +289,7 @@ No [Studio](), siga as etapas para carregar os dados capturados:
 O Studio permite que você explore seus dados, mostrando uma visão completa de todos os dados do seu projeto. Você pode limpar, inspecionar ou alterar rótulos clicando em itens de dados individuais. No nosso caso, um projeto simples, os dados parecem estar corretos.
 ![](./images/feature-explorer.png)
 
-### O Impulso (*Impulse*)
+### 3.2 O Impulso (*Impulse*)
 Nesta fase, devemos definir como:
 - Pré-processar nossos dados, o que consiste em redimensionar as imagens individuais e determinar a profundidade de cor(*color depth*) a ser usada (seja RGB ou escala de cinza) e
 
@@ -309,14 +309,14 @@ Essa abordagem reduz significativamente o tempo de treinamento e o custo computa
 
 Vá para a guia *Impulse Design* e crie o impulso, definindo um tamanho de imagem de $160 \times 160$, e um *squashing* (esmagamento de forma quadrada, sem recorte). Selecione os blocos Image (Imagem) e *Transfer Learning*. Salve o impulso.
 
-### Processamento da Imagem
+### 3.3 Processamento da Imagem
 Todas as imagens QVGA/RGB565 de entrada serão convertidas para $76.800$ recursos ($160 \times 160 \times 3$).
 ![](./images/proproc.png) 
 
 Clique em `Generate features` para processar todas as imagens carregadas.
 Em seguida, visualize os recursos extraídos na guia `Feature Explorer`.
 
-### Projeto do Modelo
+### 3.4 Projeto do Modelo
 MobileNet é uma família de redes neurais convolucionais eficientes projetadas para aplicações móveis e de visão incorporada. As principais características do MobileNet são:
 1. Leveza: otimizado para dispositivos móveis e sistemas incorporados com recursos computacionais limitados.
 2. Velocidade: tempos de inferência rápidos, adequados para aplicações em tempo real.
@@ -329,7 +329,7 @@ O [MobileNetV2](https://arxiv.org/abs/1801.04381), lançado em 2018, aprimora a 
 
 Em nosso projeto, faremos um `Tranfer Learning` com o `MobileNetV2 160x160 1.0`, o que significa que as imagens usadas para treinamento (e inferência futura) devem ter um tamanho de entrada de $160 \times 160$ pixels e um multiplicador de largura (*Width Multiplier*) de 1.0 (largura total, não reduzida). Essa configuração equilibra o tamanho do modelo.
 
-### Treinamento do Modelo
+### 3.5 Treinamento do Modelo
 Outra técnica valiosa de aprendizado profundo é o aumento de dados (**Data Augmentation**). O aumento de dados melhora a acurácia dos modelos de aprendizado de máquina, criando dados artificiais adicionais. Um sistema de aumento de dados faz pequenas alterações aleatórias nos dados de treinamento durante o processo de treinamento (como inverter, recortar ou girar as imagens).
 
 Olhando "por baixo do capô", aqui você pode ver como o Edge Impulse implementa uma política de aumento de dados em seus dados:
@@ -361,13 +361,13 @@ A camada densa final do nosso modelo terá 0 neurônios com uma queda de 10% par
 
 O resultado é excelente, com uma latência razoável de 12 ms (para um Raspi-4), o que deve resultar em cerca de 30 fps (*frames per second* - quadros por segundo) durante a inferência.
 
-### Testes do Modelo
+### 3.6 Testes do Modelo
 Depois de treinar o modelo, é hora de testá-lo. Vá para a guia `Model Testing` e execute os testes para avaliar o desempenho do modelo em dados não vistos durante o treinamento. Aqui estão os resultados dos meus testes pra você comparar:
 ![](./images/test-results.png)
 
 A acurácia geral é de 96,4%, o que é excelente para um modelo treinado com apenas 180 imagens. A matriz de confusão mostra que o modelo classifica corretamente a maioria das imagens, com apenas algumas confusões entre as classes `grogu` e `falcon`.
 
-### Implantação do Modelo no RPi
+### 3.7 Implantação do Modelo no RPi
 Vamos implantar o modelo treinado como `.tflite` e usar o RPi para executá-lo usando Python.
 
 Na guia `Dashboard`, baixe os modelos *Transfer learning model* *TensorFlow Lite (int8 quantized)* e *TensorFlow Lite (float32)*  clicando no ícone de download:
@@ -378,7 +378,7 @@ Na guia `Dashboard`, baixe os modelos *Transfer learning model* *TensorFlow Lite
 - Transfira o notebook "6_Image_Classification_edge_impulse.ipynb" no caminho `sis-emb-2025-2/aulas/sbc-rpi/rpi_img_class_tflite/docs   /6_Image_Classification_edge_impulse.ipynb` do repositório clonado para o RPi na pasta `~/Documents/TFLITE/IMG_CLASS/` usando o botão `Upload Files` do `Jupyter`, conforme mostrado anteriormente.
 - Interaja com o notebook para fazer inferências com o modelo treinado no Edge Impulse e embarcado no RPi.
 
-### Classificação de Imagens em Tempo Real com o RPi
+### 3.8 Classificação de Imagens em Tempo Real com o RPi
 Vamos desenvolver um aplicativo que capture imagens com a câmera em tempo real e exiba sua classificação.
 
 Salve o código abaixo, como [`live_infer.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/scripts/live_infer.py) na pasta `~/Documents/TFLITE/IMG_CLASS/` do RPi:
