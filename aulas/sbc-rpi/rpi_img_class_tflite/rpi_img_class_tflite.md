@@ -29,7 +29,7 @@
     ```
 - Transfira o notebook chamado [`primeiro-notebook-jupyter.ipynb`](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/docs/1_primeiro-jupyter-notebook.ipynb) para seu RPi, na pasta `~/Documents/Python/` usando o botão `Upload Files` do `Jupyter`.
 
-![](./images/up-jupyter.jpg)
+![](/aulas/sbc-rpi/rpi_img_class_tflite/images/up-jupyter.jpg)
 - Clique no ícone do `File Browser` (1) para abrir o navegador de arquivos, depois clique em `Upload` (2) e selecione o arquivo do notebook em seu computador (3). Após selecionar o arquivo, clique em `Open` (4) e depois em `Upload` (5) para completar o processo.
 - Com o arquivo carregado, faça um duplo clique nele para abrir o notebook no JupyterLab.
 ![](./images/file-browser.png)
