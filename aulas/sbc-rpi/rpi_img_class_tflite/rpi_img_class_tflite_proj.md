@@ -25,6 +25,7 @@ Vamos configurar um servidor web simples no nosso RPi para visualizar as imagens
 1. Primeiro, vamos instalar a biblioteca `Flask` no RPi:
     ```bash
     pip3 install flask
+    pip3 install --user --upgrade flask
     ```
 2. Vá para a pasta de trabalho (`IMG_CLASS`) e crie um novo script Python combinando a captura de imagens com um servidor web. Vamos chamá-lo de [`get_img_data.py`](https://github.com/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_img_class_tflite/scripts/get_img_data.py):
 ```python
