@@ -1,198 +1,367 @@
+# OCR Distribuído com RPi usando imagezmq
 Usar um dispositivo de borda (o Raspberry Pi) para captura e um computador mais potente (o Desktop) para o processamento pesado é uma arquitetura muito comum em projetos de Visão Computacional e IoT.
 
-A forma mais eficiente e simples de fazer isso é usando a biblioteca **imagezmq**. Ela é otimizada exatamente para este caso de uso: enviar frames OpenCV de um computador (RPi) para outro (Desktop) pela rede com o mínimo de latência e complexidade.
+Uma forma muito eficiente e simples de fazer isso é usando a biblioteca [imagezmq](https://pypi.org/project/imagezmq/). Ela é otimizada exatamente para o seguinte caso de uso: enviar frames OpenCV de um computador para outro pela rede com o mínimo de latência e complexidade.
 
-Aqui está como você pode estruturar seu projeto:
+Por isso, nesse tutorial, você vai implementar um sistema de OCR distribuído usando Raspberry Pi para captura de imagens e um desktop para processamento.
 
-### ** Pré-requisitos**
 
-1. **No seu Desktop:**  
-   Bash  
-   pip install imagezmq  
-   \# Você já deve ter opencv-python, pytesseract, etc.
+## Pré-requisitos
 
-2. **No seu Raspberry Pi:**  
-   Bash  
-   \# Recomendo a versão "headless" se você não for usar a GUI no RPi  
-   pip install opencv-python-headless  
-   pip install imagezmq  
-   pip install picamera2
+1. No seu desktop, a essa altura do curso, você já deve ter instalado o OpenCV e outras ferramentas durante o roteiro [Instalação das ferramentas de desenvolvimento](../../data_collect_arduino/install_tools/install_tools.md). Instale mais algumas bibliotecas necessárias:  
+   ```bash
+   pip install imagezmq  pytesseract imutils gdown
+   ```
 
----
+2. No seu RPi você também já deve ter instalado várias ferramentas no roteiro [Instalação de Bibliotecas Python para o RPi](../rpi_ei_linux_sdk/rpi_ei_linux_sdk.md). Instale mais alguns dependências:*  
+   ```bash
+   pip install imagezmq pytesseract
+   ```
 
-### ** Lado do Desktop (Servidor)**
+## Lado do Desktop (Servidor)
 
 Este script irá receber os frames, processá-los com a função que criamos e exibir o resultado.
 
-Crie um arquivo chamado servidor\_processamento.py no seu desktop. Ele deve conter **todo o código anterior** (net\_create, tesseract\_setup, processar\_frame\_para\_texto, etc.) e, em vez da função main, ele terá o seguinte:
+Crie um arquivo chamado `servidor_processamento.py` no seu desktop com o seguinte código:
+```python
+import cv2
+import pytesseract
+import imutils
+from imutils.object_detection import non_max_suppression
+import os
+import gdown
+import numpy as np
+import urllib.request
 
-Python
+def download_detector(url, output):
+    """Verifica se o arquivo já existe antes de baixá-lo."""
+    if not os.path.exists(output):
+        print(f"Baixando {output}...")
+        urllib.request.urlretrieve(url, output)
+        print("Download concluído!")
+    else:
+        print(f"Arquivo {output} já existe, não é necessário fazer o download.")
 
-\# \[COLE AQUI TODO O CÓDIGO ANTERIOR\]  
-\# import cv2, pytesseract, imutils, os, gdown, np, urllib.request  
-\# def download\_detector(...):  
-\# def tesseract\_setup(...):  
-\# def preprocessar\_para\_ocr(...):  
-\# def tesseract\_OCR(...):  
-\# def net\_create(...):  
-\# def dados\_geometricos(...):  
-\# def calculos\_geometria(...):  
-\# def net\_forward(...):  
-\# def processar\_frame\_para\_texto(...):  
-\# \[FIM DO CÓDIGO ANTERIOR\]
+def tesseract_setup(config_tesseract="--tessdata-dir tessdata --psm 7"):
+    """Baixa e configura os dados de idioma do Tesseract."""
+    os.makedirs('./tessdata', exist_ok=True)
+    
+    # URL do arquivo do detector em PORTUGUÊS
+    url_por = 'https://github.com/tesseract-ocr/tessdata/blob/main/por.traineddata?raw=true'
+    output_por = './tessdata/por.traineddata'
+    download_detector(url_por, output_por)
+    
+    # URL do arquivo do detector em INGLÊS
+    url_eng = 'https://github.com/tesseract-ocr/tessdata/blob/main/eng.traineddata?raw=true'
+    output_eng = './tessdata/eng.traineddata'
+    download_detector(url_eng, output_eng)
 
-import imagezmq  
+def preprocessar_para_ocr(img):
+    """Pre-processa uma imagem (ROI) para melhor desempenho do OCR."""
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # Aumentar a imagem pode ajudar o Tesseract a ler fontes pequenas
+    maior = cv2.resize(gray, None, fx=2.0, fy=2.0, interpolation=cv2.INTER_CUBIC)
+    valor, otsu = cv2.threshold(maior, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    return otsu
+
+def tesseract_OCR(roi, config_tesseract, lang='por'):
+    """Executa OCR em uma Região de Interesse (ROI) pre-processada."""
+    # Garante que a ROI não está vazia
+    if roi.shape[0] == 0 or roi.shape[1] == 0:
+        return ""
+        
+    preprocess_roi = preprocessar_para_ocr(roi)
+    texto = pytesseract.image_to_string(preprocess_roi, lang=lang, config=config_tesseract)
+    return texto
+
+def net_create(detector='./Modelos/frozen_east_text_detection.pb'):
+    """Baixa o modelo EAST e o carrega na memória."""
+    os.makedirs('./Modelos', exist_ok=True)
+    
+    # Verifica se o arquivo já existe
+    if not os.path.exists(detector):
+        print("Baixando modelo EAST...")
+        url = 'https://drive.google.com/uc?id=1-RbGz-8K7kC_Fve6J0eLtcRZQhmKS3UQ'
+        gdown.download(url, detector, quiet=False)
+        print("Download do modelo concluído!")
+    else:
+        print("Arquivo frozen_east_text_detection.pb já existe.")
+        
+    # Carregar o modelo neural EAST
+    return cv2.dnn.readNet(detector)
+
+# --- Funções Auxiliares da Rede Neural EAST ---
+
+def dados_geometricos(geometry, y):
+    xData0 = geometry[0, 0, y]
+    xData1 = geometry[0, 1, y]
+    xData2 = geometry[0, 2, y]
+    xData3 = geometry[0, 3, y]
+    data_angulos = geometry[0, 4, y]
+    return data_angulos, xData0, xData1, xData2, xData3
+
+def calculos_geometria(x, y, data_angulos, xData0, xData1, xData2, xData3):
+    (offsetX, offsetY) = (x * 4.0, y * 4.0)
+    angulo = data_angulos[x]
+    cos = np.cos(angulo)
+    sin = np.sin(angulo)
+    h = xData0[x] + xData2[x]
+    w = xData1[x] + xData3[x]
+
+    fimX = int(offsetX + (cos * xData1[x]) + (sin * xData2[x]))
+    fimY = int(offsetY - (sin * xData1[x]) + (cos * xData2[x]))
+
+    inicioX = int(fimX - w)
+    inicioY = int(fimY - h)
+    return inicioX, inicioY, fimX, fimY
+
+def net_forward(img,
+                rede_neural,
+                min_confianca=0.90,
+                nomes_camadas=['feature_fusion/Conv_7/Sigmoid', 'feature_fusion/concat_3']):
+    """Executa a detecção de texto (EAST) na imagem."""
+    blob = cv2.dnn.blobFromImage(img, 1.0, (img.shape[1], img.shape[0]), swapRB=True, crop=False)
+    rede_neural.setInput(blob)
+    scores, geometry = rede_neural.forward(nomes_camadas)
+    
+    linhas, colunas = scores.shape[2:4]
+    caixas = []
+    confiancas = []
+    
+    for y in range(0, linhas):
+        data_scores = scores[0, 0, y]
+        data_angulos, xData0, xData1, xData2, xData3 = dados_geometricos(geometry, y)
+        
+        for x in range(0, colunas):
+            if data_scores[x] < min_confianca:
+                continue
+            
+            inicioX, inicioY, fimX, fimY = calculos_geometria(x, y, data_angulos, xData0, xData1, xData2, xData3)
+            confiancas.append(data_scores[x])
+            caixas.append((inicioX, inicioY, fimX, fimY))
+            
+    return non_max_suppression(np.array(caixas), probs=confiancas)
+
+def processar_frame_para_texto(frame, rede_neural, config_tesseract, 
+                               net_width, net_height, 
+                               margem=5, lang='por'):
+    """
+    Processa um único frame para detectar e extrair texto.
+
+    Argumentos:
+        frame: A imagem de entrada (OpenCV).
+        rede_neural: O modelo EAST carregado.
+        config_tesseract: A string de configuração do Tesseract.
+        net_width: A largura que a rede EAST espera.
+        net_height: A altura que a rede EAST espera.
+        margem: Margem (em pixels) para adicionar ao redor da caixa de detecção.
+        lang: Idioma para o Tesseract ('por', 'eng', etc.).
+
+    Retorna:
+        Tuple: (frame_processado, texto_completo)
+        - frame_processado: O frame original com as caixas de detecção desenhadas.
+        - texto_completo: Uma string com todo o texto encontrado, separado por espaços.
+    """
+    # Cria uma cópia para desenhar e extrair ROIs
+    copia_frame = frame.copy()
+    (H, W) = frame.shape[:2]
+
+    # Calcula a proporção para redimensionar as caixas de volta ao tamanho original
+    proporcao_W = W / float(net_width)
+    proporcao_H = H / float(net_height)
+
+    # Redimensiona a imagem para o tamanho esperado pela rede neural
+    img_redimensionada = cv2.resize(frame, (net_width, net_height))
+
+    # Executa a detecção de texto
+    deteccoes = net_forward(img_redimensionada, rede_neural)
+    
+    textos_extraidos = []
+
+    for (inicioX, inicioY, fimX, fimY) in deteccoes:
+        # Redimensiona as coordenadas da caixa de volta ao tamanho original
+        inicioX_orig = int(inicioX * proporcao_W)
+        inicioY_orig = int(inicioY * proporcao_H)
+        fimX_orig = int(fimX * proporcao_W)
+        fimY_orig = int(fimY * proporcao_H)
+
+        # Adiciona uma margem e garante que a ROI não saia dos limites da imagem
+        roi_inicioY = max(0, inicioY_orig - margem)
+        roi_inicioX = max(0, inicioX_orig - margem)
+        roi_fimY = min(H, fimY_orig + margem)
+        roi_fimX = min(W, fimX_orig + margem)
+
+        # Extrai a ROI do frame *original*
+        roi = copia_frame[roi_inicioY:roi_fimY, roi_inicioX:roi_fimX]
+
+        # Executa o Tesseract na ROI
+        texto = tesseract_OCR(roi, config_tesseract, lang=lang)
+        
+        texto_limpo = texto.strip()
+        if texto_limpo:
+            textos_extraidos.append(texto_limpo)
+            
+        # Desenha a caixa de detecção (sem a margem) no frame
+        cv2.rectangle(copia_frame, (inicioX_orig, inicioY_orig), (fimX_orig, fimY_orig), (0, 255, 0), 2)
+
+    # Junta todos os textos encontrados em uma única string
+    texto_completo = " ".join(textos_extraidos)
+    
+    return copia_frame, texto_completo
+
+import imagezmq
 import traceback
 
-def iniciar\_servidor():  
-    print("Iniciando servidor de processamento...")  
-      
-    \#\#\#\# CONFIGURAÇÃO (Executado apenas uma vez) \#\#\#\#  
-    CONFIG\_TESSERACT \= "--tessdata-dir tessdata \--psm 7"  
-    NET\_LARGURA \= 320  
-    NET\_ALTURA \= 320  
-    MARGEM\_ROI \= 5  
-      
-    print("Iniciando configuração do Tesseract...")  
-    tesseract\_setup(CONFIG\_TESSERACT)  
-      
-    print("Iniciando carregamento da rede neural...")  
-    rede\_neural \= net\_create()  
-    print("Servidor pronto para receber imagens.")  
-    print("-" \* 30)
+def iniciar_servidor():
+    print("Iniciando servidor de processamento...")
+    
+    #### CONFIGURAÇÃO (Executado apenas uma vez) ####
+    CONFIG_TESSERACT = "--tessdata-dir tessdata --psm 7"
+    NET_LARGURA = 320
+    NET_ALTURA = 320
+    MARGEM_ROI = 5
+    
+    print("Iniciando configuração do Tesseract...")
+    tesseract_setup(CONFIG_TESSERACT)
+    
+    print("Iniciando carregamento da rede neural...")
+    rede_neural = net_create()
+    print("Servidor pronto para receber imagens.")
+    print("-" * 30)
 
-    \# Inicializa o ImageHub para receber imagens  
-    image\_hub \= imagezmq.ImageHub()  
-      
-    try:  
-        while True:  
-            \# Espera por um frame do Raspberry Pi  
-            (nome\_rpi, frame) \= image\_hub.recv\_image()  
-              
-            \# Confirma o recebimento (desbloqueia o RPi)  
-            image\_hub.send\_reply(b'OK')
+    # Inicializa o ImageHub para receber imagens
+    image_hub = imagezmq.ImageHub()
+    
+    try:
+        while True:
+            # Espera por um frame do Raspberry Pi
+            (nome_rpi, frame) = image_hub.recv_image()
+            
+            # Confirma o recebimento (desbloqueia o RPi)
+            image_hub.send_reply(b'OK')
 
-            \# Processa o frame recebido  
-            frame\_processado, texto\_encontrado \= processar\_frame\_para\_texto(  
-                frame,   
-                rede\_neural,   
-                CONFIG\_TESSERACT,   
-                NET\_LARGURA,   
-                NET\_ALTURA,   
-                MARGEM\_ROI,  
-                lang='eng' \# ou 'por'  
-            )  
-              
-            if texto\_encontrado:  
-                print(f"Texto detectado \[de {nome\_rpi}\]: {texto\_encontrado}")
+            # Processa o frame recebido
+            frame_processado, texto_encontrado = processar_frame_para_texto(
+                frame, 
+                rede_neural, 
+                CONFIG_TESSERACT, 
+                NET_LARGURA, 
+                NET_ALTURA, 
+                MARGEM_ROI,
+                lang='eng' # ou 'por'
+            )
+            
+            if texto_encontrado:
+                print(f"Texto detectado [de {nome_rpi}]: {texto_encontrado}")
 
-            \# Opcional: Mostrar o vídeo processado no desktop  
-            cv2.imshow("Processamento no Desktop", frame\_processado)  
-            if cv2.waitKey(1) & 0xFF \== ord('q'):  
-                break  
-                  
-    except (KeyboardInterrupt, SystemExit):  
-        print("Encerrando servidor...")  
-    except Exception as e:  
-        print("Erro no servidor:")  
-        print(traceback.format\_exc())  
-    finally:  
-        cv2.destroyAllWindows()  
+            # Opcional: Mostrar o vídeo processado no desktop
+            cv2.imshow("Processamento no Desktop", frame_processado)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+                
+    except (KeyboardInterrupt, SystemExit):
+        print("Encerrando servidor...")
+    except Exception as e:
+        print("Erro no servidor:")
+        print(traceback.format_exc())
+    finally:
+        cv2.destroyAllWindows()
         print("Servidor finalizado.")
 
-if \_\_name\_\_ \== "\_\_main\_\_":  
-    iniciar\_servidor()
-
----
-
-### ** Lado do Raspberry Pi (Cliente)**
+if __name__ == "__main__":
+    iniciar_servidor()
+```
+## Lado do Raspberry Pi (Cliente)
 
 Este script irá capturar a imagem da câmera e enviá-la para o IP do seu desktop.
 
-Crie um arquivo chamado cliente\_camera.py no seu Raspberry Pi.
+Crie um arquivo chamado `cliente_camera.py  no seu RPi.
 
-Python
-
-import cv2  
-import imagezmq  
-import socket  
-from picamera2 import Picamera2  
+```python
+import cv2
+import imagezmq
+import socket
+from picamera2 import Picamera2
 import time
 
-\# \--- CONFIGURAÇÃO \---  
-\# 1\. Altere para o IP do seu DESKTOP  
-IP\_DO\_DESKTOP \= "tcp://192.168.1.100:5555" 
+# --- CONFIGURAÇÃO ---
+# 1. Altere para o IP do seu DESKTOP
+IP_DO_DESKTOP = "tcp://192.168.18.16:5555" 
 
-\# 2\. Configurações da Câmera  
-LARGURA\_IMG \= 1280  
-ALTURA\_IMG \= 720  
-\# \--- FIM DA CONFIGURAÇÃO \---
+# 2. Configurações da Câmera
+LARGURA_IMG = 1280
+ALTURA_IMG = 720
+# --- FIM DA CONFIGURAÇÃO ---
 
 print("Iniciando cliente da câmera...")
 
-\# Conecta-se ao servidor no desktop  
-try:  
-    sender \= imagezmq.ImageSender(connect\_to=IP\_DO\_DESKTOP)  
-except Exception as e:  
-    print(f"Erro ao conectar ao servidor {IP\_DO\_DESKTOP}")  
-    print("Verifique se o IP está correto e se o script 'servidor\_processamento.py' está em execução no desktop.")  
-    print(f"Erro: {e}")  
+# Conecta-se ao servidor no desktop
+try:
+    sender = imagezmq.ImageSender(connect_to=IP_DO_DESKTOP)
+except Exception as e:
+    print(f"Erro ao conectar ao servidor {IP_DO_DESKTOP}")
+    print("Verifique se o IP está correto e se o script 'servidor_processamento.py' está em execução no desktop.")
+    print(f"Erro: {e}")
     exit()
 
-\# Obtém o nome do RPi para identificar no servidor  
-nome\_rpi \= socket.gethostname()  
-print(f"Conectado ao servidor. Enviando como '{nome\_rpi}'")
 
-\# Inicializa a Picamera2  
-picam2 \= Picamera2()  
-config \= picam2.create\_video\_configuration(main={"size": (LARGURA\_IMG, ALTURA\_IMG)})  
-picam2.configure(config)  
+# Obtém o nome do RPi para identificar no servidor
+nome_rpi = socket.gethostname()
+print(f"Conectado ao servidor. Enviando como '{nome_rpi}'")
+
+# Inicializa a Picamera2
+picam2 = Picamera2()
+config = picam2.create_video_configuration(main={"size": (LARGURA_IMG, ALTURA_IMG)})
+picam2.configure(config)
 picam2.start()
 
-\# Dá um tempo para a câmera "aquecer"  
-time.sleep(2.0)  
+# Dá um tempo para a câmera "aquecer"
+time.sleep(2.0)
 print("Câmera iniciada. Enviando frames...")
 
-try:  
-    while True:  
-        \# Captura um frame como um array numpy  
-        \# 'capture\_array()' retorna um array RGB  
-        frame\_rgb \= picam2.capture\_array()  
-          
-        \# O OpenCV (e seu código) espera BGR. Precisamos converter.  
-        frame\_bgr \= cv2.cvtColor(frame\_rgb, cv2.COLOR\_RGB2BGR)
+try:
+    while True:
+        # Captura um frame como um array numpy
+        # 'capture_array()' retorna um array RGB
+        frame_rgb = picam2.capture_array()
+        
+        # O OpenCV (e seu código) espera BGR. Precisamos converter.
+        frame_bgr = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
 
-        \# Envia o frame para o desktop e espera a resposta 'OK'  
-        \# Isso sincroniza o RPi e o Desktop, evitando sobrecarga de rede  
-        reply \= sender.send\_image(nome\_rpi, frame\_bgr)  
-          
-        \# Opcional: Adicionar um pequeno delay se o processamento for muito rápido  
-        \# time.sleep(0.1) 
+        # Envia o frame para o desktop e espera a resposta 'OK'
+        # Isso sincroniza o RPi e o Desktop, evitando sobrecarga de rede
+        reply = sender.send_image(nome_rpi, frame_bgr)
+        
+        # Opcional: Adicionar um pequeno delay se o processamento for muito rápido
+        # time.sleep(0.1) 
 
-except (KeyboardInterrupt, SystemExit):  
-    print("Encerrando cliente...")  
-finally:  
-    picam2.stop()  
-    sender.close()  
+except (KeyboardInterrupt, SystemExit):
+    print("Encerrando cliente...")
+finally:
+    picam2.stop()
+    sender.close()
     print("Cliente finalizado.")
+```
 
-### ** Instruções de Execução**
+## Instruções de Execução
 
 1. **Descubra o IP do seu Desktop:**  
-   * No Linux/macOS: ifconfig ou ip a  
-   * No Windows: ipconfig  
-   * Procure pelo endereço IPv4 da sua conexão (Wi-Fi ou Ethernet). Ex: 192.168.1.100.  
+   * No Linux/macOS: `hoistname -I`, `ifconfig` ou `ip a` 
+   * No Windows: `ipconfig` 
+   * Procure pelo endereço `IPv4` da sua conexão (*Wi-Fi* ou Ethernet). Ex: $192.168.1.100$.  
 2. **Atualize o IP no Raspberry Pi:**  
-   * Edite o arquivo cliente\_camera.py e mude o valor da variável IP\_DO\_DESKTOP para o IP que você encontrou.  
+   * Edite o arquivo `cliente_camera.py` e mude o valor da variável `IP_DO_DESKTOP` para o IP que você encontrou.  
 3. **Execute o Servidor (Desktop):**  
    * Abra um terminal no seu desktop e execute:  
-     Bash  
-     python servidor\_processamento.py
+    ```bash
+     python servidor_processamento.py
+     ```
 
-   * Você deverá ver as mensagens de configuração e, por fim, "Servidor pronto para receber imagens."  
-4. **Execute o Cliente (Raspberry Pi):**  
-   * Abra um terminal no seu Raspberry Pi (pode ser por SSH, como você já faz) e execute:  
-     Bash  
-     python cliente\_camera.py
+   * Você deverá ver as mensagens de configuração e, por fim, `Servidor pronto para receber imagens.`  
+4. **Execute o Cliente (RPi):**  
+   * Abra um terminal no seu RPi (pode ser por `SSH`, como você já faz) e execute:  
+    ```bash
+     python cliente_camera.py
+    ```
 
-Agora, o Raspberry Pi começará a capturar imagens, enviá-las para o seu desktop, e o desktop irá processá-las, imprimir o texto e mostrar o vídeo com as detecções.
+Agora, o RPi começará a capturar imagens, enviá-las para o seu desktop, e o desktop irá processá-las, imprimir o texto e mostrar o vídeo com as detecções.

@@ -116,8 +116,6 @@ def net_forward(img,
             
     return non_max_suppression(np.array(caixas), probs=confiancas)
 
-# --- Nova Função de Processamento ---
-
 def processar_frame_para_texto(frame, rede_neural, config_tesseract, 
                                net_width, net_height, 
                                margem=5, lang='por'):
