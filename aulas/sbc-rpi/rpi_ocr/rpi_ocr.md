@@ -1,10 +1,38 @@
-# OCR Distribuído com RPi usando imagezmq
+# OCR Distribuído com Raspberry Pi e `imagezmq`
 Usar um dispositivo de borda (o Raspberry Pi) para captura e um computador mais potente (o Desktop) para o processamento pesado é uma arquitetura muito comum em projetos de Visão Computacional e IoT.
 
-Uma forma muito eficiente e simples de fazer isso é usando a biblioteca [imagezmq](https://pypi.org/project/imagezmq/). Ela é otimizada exatamente para o seguinte caso de uso: enviar frames OpenCV de um computador para outro pela rede com o mínimo de latência e complexidade.
+Uma forma muito eficiente e simples de fazer isso é usando a biblioteca [imagezmq](https://pypi.org/project/imagezmq/). Ela é otimizada exatamente para o seguinte caso de uso: enviar frames OpenCV de um computador para outro pela rede com o mínimo de latência e complexidade. 
 
 Por isso, nesse tutorial, você vai implementar um sistema de OCR distribuído usando Raspberry Pi para captura de imagens e um desktop para processamento.
 
+## Introdução
+### O que é imagezmq? 
+
+[imagezmq](https://pypi.org/project/imagezmq/) é um conjunto de classes Python leve, rápido e multiplataforma (funciona em RPi, Jetson Nano, Linux, Mac, Windows) projetado para uma tarefa muito específica:
+- transportar imagens OpenCV de um computador para outro pela rede usando a biblioteca de mensageria ZMQ (ZeroMQ).
+
+Ele foi criado exatamente para o cenário de "computação distribuída" que estamos implementando: múltiplos dispositivos de borda (como RPi com câmeras) capturando imagens e as enviando para um servidor central mais potente (seu desktop) para processamento pesado, como nosso OCR.
+
+Aqui estão alguns pontos-chave sobre o imagezmq:
+#### 1. Padrões de Mensageria: REQ/REP vs. PUB/SUB
+
+Isso é o mais importante: imagezmq oferece dois modos de comunicação.
+* **Padrão REQ/REP (Request/Reply):**  
+  * **Como funciona:** O cliente (RPi) envia uma imagem (REQ) e **obrigatoriamente espera** por uma resposta (REP) do servidor (Desktop) antes de poder enviar a próxima imagem.  
+  * **Nosso Código:** É **exatamente** o que estamos usando. O RPi usa sender.send\_image() e fica "bloqueado" até receber o image\_hub.send\_reply(b'OK') do servidor.  
+  * **Vantagem:** É ótimo para sincronização. O RPi não vai sobrecarregar o servidor ou a rede, pois ele só envia um novo frame quando o servidor confirma que terminou o processamento (ou pelo menos recebeu) o anterior.  
+* **Padrão PUB/SUB (Publish/Subscribe):**  
+  * **Como funciona:** O cliente (RPi) "publica" (envia) frames de vídeo o mais rápido que pode, sem se importar se o servidor os recebeu. Ele **não espera por nenhuma resposta**.  
+  * **Vantagem:** Permite uma taxa de quadros (FPS) muito mais alta, pois não há bloqueio.  
+  * **Desvantagem:** Se o servidor for mais lento que o cliente, ele começará a perder frames. Não há garantia de entrega.
+
+#### 2. Estrutura da Mensagem: (texto, imagem)
+As mensagens enviadas não são apenas a imagem. Elas são um **tupla (texto, imagem)**.
+* O **imagem** é o frame do OpenCV, que o imagezmq comprime em JPEG por padrão para economizar banda de rede.  
+* O **texto** é uma string usada para identificação. No nosso script, estamos usando o nome\_rpi (hostname) nesse campo. Isso é crucial porque permite que o servidor (ImageHub) receba frames de *múltiplos* clientes e saiba quem enviou o quê.
+
+#### **3\. O "Hub"**
+O componente do servidor é chamado de **ImageHub** (e não ImageReceiver) por um motivo: ele é projetado para atuar como um "hub" central, recebendo e organizando imagens de *muitos* emissores (ImageSender) simultaneamente.
 
 ## Pré-requisitos
 
