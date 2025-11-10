@@ -17,6 +17,7 @@
   - [Projeto: Classificação de Imagens com Servidor Flask no RPi](./rpi_img_class_tflite/rpi_img_class_tflite_proj.md)
 
 - Reconhecimento Ótico de Caracteres (OCR) no RPi
-  - [Roteiro de Laboratório](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/1-OCR_com_Python_e_Tesseract.ipynb)
-  - [Roteiro de Laboratório](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/2-OCR_com_Python_Pr%C3%A9_processamento.ipynb) 
+  - [Jupyter notebook - OCR com Python e Tesseract](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/1-OCR_com_Python_e_Tesseract.ipynb)
+  - [Jupyter notebook - Técnicas de Pré-processamento para OCR](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/2-OCR_com_Python_Pr%C3%A9_processamento.ipynb) 
+  - [Jupyter notebook - Detecção de texto em imagens com EAST detector](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/3-OCR_Detec%C3%A7%C3%A3o_de_texto_com_EAST.ipynb)
   
