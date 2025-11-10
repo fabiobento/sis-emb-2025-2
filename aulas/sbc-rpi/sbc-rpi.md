@@ -16,5 +16,6 @@
   - [Roteiro de Laboratório](./rpi_img_class_tflite/rpi_img_class_tflite.md)
   - [Projeto: Classificação de Imagens com Servidor Flask no RPi](./rpi_img_class_tflite/rpi_img_class_tflite_proj.md)
 
-- Reconhecimento Ótico de Caracteres (OCR) no RPi usando TFLite
+- Reconhecimento Ótico de Caracteres (OCR) no RPi
+  - [Roteiro de Laboratório](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/1-OCR_com_Python_e_Tesseract.ipynb)
   
