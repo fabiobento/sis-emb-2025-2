@@ -18,4 +18,5 @@
 
 - Reconhecimento Ótico de Caracteres (OCR) no RPi
   - [Roteiro de Laboratório](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/1-OCR_com_Python_e_Tesseract.ipynb)
+  - [Roteiro de Laboratório](https://colab.research.google.com/github/fabiobento/sis-emb-2025-2/blob/main/aulas/sbc-rpi/rpi_ocr/docs/2-OCR_com_Python_Pr%C3%A9_processamento.ipynb) 
   
