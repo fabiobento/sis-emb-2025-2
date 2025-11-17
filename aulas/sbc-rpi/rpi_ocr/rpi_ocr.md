@@ -47,7 +47,7 @@ O componente do servidor é chamado de **ImageHub** (e não ImageReceiver) por u
    ```
 
 ## Teste de Streaming de Vídeo com Flask no RPi
-Utilize o código abaixo no RPi para testar o streaming de vídeo simples com Flask no seu RPi, garantindo que a câmera está funcionando corretamente.
+Utilize o script [`cam-stream.py`](https://raw.githubusercontent.com/fabiobento/sis-emb-2025-2/refs/heads/main/aulas/sbc-rpi/rpi_ocr/scripts/cam-stream.py) abaixo no RPi para testar o streaming de vídeo simples com Flask no seu RPi, garantindo que a câmera está funcionando corretamente.
 
 ```python
 import cv2
@@ -147,9 +147,9 @@ if __name__ == "__main__":
 
 ## Lado do Desktop (Servidor)
 
-Este script irá receber os frames, processá-los com a função que criamos e exibir o resultado.
+Vamos iniciar pelo lado do desktop, que irá receber as imagens do RPi, processá-las com OCR e exibir o resultado.
 
-Crie um arquivo chamado `servidor_processamento.py` no seu desktop com o seguinte código:
+Crie um arquivo chamado [`servidor_processamento.py`](https://raw.githubusercontent.com/fabiobento/sis-emb-2025-2/refs/heads/main/aulas/sbc-rpi/rpi_ocr/scripts/servidor_processamento.py) no seu desktop com o seguinte código:
 ```python
 import cv2
 import pytesseract
@@ -413,7 +413,7 @@ import time
 
 # --- CONFIGURAÇÃO ---
 # 1. Altere para o IP do seu DESKTOP
-IP_DO_DESKTOP = "tcp://192.168.18.16:5555" 
+IP_DO_DESKTOP = "tcp://XXX.XXX.XX.XX:5555" 
 
 # 2. Configurações da Câmera
 LARGURA_IMG = 1280

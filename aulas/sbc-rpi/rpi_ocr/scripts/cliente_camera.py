@@ -6,7 +6,7 @@ import time
 
 # --- CONFIGURAÇÃO ---
 # 1. Altere para o IP do seu DESKTOP
-IP_DO_DESKTOP = "tcp://192.168.18.16:5555" 
+IP_DO_DESKTOP = "tcp://XXX.XXX.XXX.XXX:5555" 
 
 # 2. Configurações da Câmera
 LARGURA_IMG = 1280
