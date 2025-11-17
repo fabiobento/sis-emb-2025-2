@@ -46,6 +46,7 @@ def shutdown_server():
     shutdown_event.set()
     if picam2:
         picam2.stop()
+        picam2.close()
     # Dar algum tempo para que outros threads sejam concluídos.
     time.sleep(2)
     # Enviar SIGINT para o processo principal para encerrar o Flask
