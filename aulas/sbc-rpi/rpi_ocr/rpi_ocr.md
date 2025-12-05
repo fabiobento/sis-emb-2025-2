@@ -148,6 +148,11 @@ if __name__ == "__main__":
 ## Lado do Desktop (Servidor)
 
 Vamos iniciar pelo lado do desktop, que irá receber as imagens do RPi, processá-las com OCR e exibir o resultado.
+Antes, assegure-se de que o tesseract esteja instalado em seu desktop:
+```bash
+sudo apt update
+sudo apt install tesseract-ocr
+```
 
 Crie um arquivo chamado [`servidor_processamento.py`](https://raw.githubusercontent.com/fabiobento/sis-emb-2025-2/refs/heads/main/aulas/sbc-rpi/rpi_ocr/scripts/servidor_processamento.py) no seu desktop com o seguinte código:
 ```python
