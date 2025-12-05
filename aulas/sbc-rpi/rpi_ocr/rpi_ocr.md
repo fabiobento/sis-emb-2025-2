@@ -19,7 +19,7 @@ Aqui estão alguns pontos-chave sobre o imagezmq:
 Isso é o mais importante: imagezmq oferece dois modos de comunicação.
 * **Padrão REQ/REP (Request/Reply):**  
   * **Como funciona:** O cliente (RPi) envia uma imagem (REQ) e **obrigatoriamente espera** por uma resposta (REP) do servidor (Desktop) antes de poder enviar a próxima imagem.  
-  * **Nosso Código:** É **exatamente** o que estamos usando. O RPi usa ` sender.send_image() e fica "bloqueado" até receber o `image_hub.send_reply(b'OK')` do servidor.  
+  * **Nosso Código:** É **exatamente** o que estamos usando. O RPi usa ` sender.send_image()` e fica "bloqueado" até receber o `image_hub.send_reply(b'OK')` do servidor.  
   * **Vantagem:** É ótimo para sincronização. O RPi não vai sobrecarregar o servidor ou a rede, pois ele só envia um novo frame quando o servidor confirma que terminou o processamento (ou pelo menos recebeu) o anterior.  
 * **Padrão PUB/SUB (Publish/Subscribe):**  
   * **Como funciona:** O cliente (RPi) "publica" (envia) frames de vídeo o mais rápido que pode, sem se importar se o servidor os recebeu. Ele **não espera por nenhuma resposta**.  
