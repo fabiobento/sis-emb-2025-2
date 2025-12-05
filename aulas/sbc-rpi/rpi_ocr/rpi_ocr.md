@@ -473,7 +473,7 @@ finally:
 ## Instruções de Execução
 
 1. **Descubra o IP do seu Desktop:**  
-   * No Linux/macOS: `hoistname -I`, `ifconfig` ou `ip a` 
+   * No Linux/macOS: `hostname -I`, `ifconfig` ou `ip a` 
    * No Windows: `ipconfig` 
    * Procure pelo endereço `IPv4` da sua conexão (*Wi-Fi* ou Ethernet). Ex: $192.168.1.100$.  
 2. **Atualize o IP no Raspberry Pi:**  
