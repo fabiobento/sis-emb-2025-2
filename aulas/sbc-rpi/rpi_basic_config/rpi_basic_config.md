@@ -2,6 +2,8 @@
 
 O Raspberry Pi(RPi) precisa de um sistema operacional para funcionar: o [**Raspberry Pi OS**](https://www.raspberrypi.com/software/) (anteriormente chamado de Raspbian). A versão do sistema operacional que utilizaremos está disponível em [https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2023-05-03/).
 
+Se você for utilizar a versão lite, ou seja, sem interface gráfica, baixe a imagem em [https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/](https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2023-05-03/) .
+
 ## Download da imagem do sistema operacional
 
 Nessa seção vamos baixar a imagem do Raspberry Pi OS e verificar sua integridade no Ubuntu usando o terminal.
